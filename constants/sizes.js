@@ -7,5 +7,6 @@ export default {
     titleMedium: 18,
     titleLarge: 20,
 
-    screenPaddingHorizontal: 10,
+    screenPaddingHorizontal: 20,
+    screenPaddingVertical: 20,
 };

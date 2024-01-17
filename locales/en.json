@@ -1,3 +1,9 @@
 {
+    "login": "login",
+    "register": "register",
+    "connect": "connect",
+    "forgotPassword": "Forgot Password",
+    "youDontHaveAnAccount": "You don't have an account?",
+    "createNewAccount": "Create new account.",
     "next": "next"
 }
