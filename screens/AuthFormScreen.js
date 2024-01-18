@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import {
     Image,
     StyleSheet,
@@ -6,11 +6,15 @@ import {
     View,
     TextInput,
     Pressable,
+    Keyboard,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import MaskInput, { Masks } from "react-native-mask-input";
+import { formatWithMask, Masks } from "react-native-mask-input";
+import Checkbox from "expo-checkbox";
+import { CountryPicker } from "react-native-country-codes-picker";
 
 import { Ionicons } from "@expo/vector-icons";
+import { Feather } from "@expo/vector-icons";
 
 import Button from "../components/Button";
 
@@ -21,15 +25,50 @@ import Strings from "../util/strings";
 const modes = {
     login: {
         title: Strings.login,
+        buttonTitle: Strings.connect,
         image: require("../assets/illustrations/login.png"),
+        phone: true,
+        password: true,
+        forgotPassword: true,
+        notHaveAnAccount: true,
+    },
+    register: {
+        title: Strings.register,
+        buttonTitle: Strings.joinUs,
+        image: require("../assets/illustrations/register.png"),
+        name: true,
+        phone: true,
+        password: true,
+        terms: true,
+        haveAnAccount: true,
     },
 };
 
 export default function AuthFormScreen() {
-    const [mode, setMode] = useState("login");
+    const phoneRef = useRef(null);
+    const [mode, setMode] = useState("register");
+    const [name, setName] = useState("");
+    const [countryCode, setCountryCode] = useState("");
     const [phone, setPhone] = useState("");
+    const [phoneValue, setPhoneValue] = useState("");
     const [password, setPassword] = useState("");
     const [passwordVisible, setPasswordVisible] = useState(false);
+    const [tacChecked, setTacChecked] = useState(false);
+    const [showCountrySelector, setShowCountrySelector] = useState(false);
+
+    const phoneNumberOnChangeTextHandler = (text = "") => {
+        text = text.slice(countryCode.length).trim();
+        const formatWithMaskConfig = { text, mask: Masks.USA_PHONE };
+        const { masked, unmasked } = formatWithMask(formatWithMaskConfig);
+        setPhone(unmasked);
+        setPhoneValue(
+            countryCode || phone ? `${countryCode || ""} ${masked}` : ""
+        );
+    };
+
+    useEffect(() => {
+        phoneNumberOnChangeTextHandler(phoneRef.current.value);
+    }, [countryCode]);
 
     return (
         <LinearGradient
@@ -47,67 +86,140 @@ export default function AuthFormScreen() {
             </View>
             <View style={styles.formContainer}>
                 <Text style={styles.title}>{modes[mode].title}</Text>
-                <View style={styles.inputContainer}>
-                    <Ionicons
-                        name='person-circle-outline'
-                        size={24}
-                        color='black'
-                        style={[
-                            styles.inputIcon,
-                            { display: phone ? "none" : "flex" },
-                        ]}
-                    />
-                    <MaskInput
-                        style={Styles.textInput}
-                        value={phone}
-                        placeholder='       Phone Number'
-                        onChangeText={(_, unmasked) => setPhone(unmasked)}
-                        mask={Masks.USA_PHONE}
-                        showObfuscatedValue={true}
-                    />
-                </View>
-                <View style={styles.inputContainer}>
-                    <Ionicons
-                        name='lock-closed-outline'
-                        size={24}
-                        color='black'
-                        style={[
-                            styles.inputIcon,
-                            { display: password ? "none" : "flex" },
-                        ]}
-                    />
-                    <TextInput
-                        style={Styles.textInput}
-                        value={password}
-                        placeholder='       Password'
-                        onChangeText={setPassword}
-                        secureTextEntry={!passwordVisible}
-                    />
-                    <Pressable
-                        onPress={() => setPasswordVisible((prev) => !prev)}
-                        style={[
-                            styles.inputIcon,
-                            { left: "initial", right: 10 },
-                        ]}
-                    >
+                {modes[mode].name && (
+                    <View style={styles.inputContainer}>
                         <Ionicons
-                            name={passwordVisible ? "eye-off" : "eye"}
-                            size={24}
+                            name='person-circle-outline'
+                            size={20}
                             color='black'
+                            style={[
+                                styles.inputIcon,
+                                { display: name ? "none" : "flex" },
+                            ]}
                         />
-                    </Pressable>
-                </View>
+                        <TextInput
+                            style={Styles.textInput}
+                            value={name}
+                            placeholder={`       ${Strings.name}`}
+                            onChangeText={setName}
+                        />
+                    </View>
+                )}
+                {modes[mode].phone && (
+                    <>
+                        <CountryPicker
+                            style={styles.countryCodePicker}
+                            show={showCountrySelector}
+                            pickerButtonOnPress={(item) => {
+                                setCountryCode(item.dial_code);
+                                setShowCountrySelector(false);
+                                phoneRef.current.focus();
+                            }}
+                        />
+                        <View style={styles.inputContainer}>
+                            <Feather
+                                name='phone'
+                                size={20}
+                                color='black'
+                                style={[
+                                    styles.inputIcon,
+                                    {
+                                        display:
+                                            countryCode || phone
+                                                ? "none"
+                                                : "flex",
+                                    },
+                                ]}
+                            />
+                            <TextInput
+                                ref={phoneRef}
+                                style={Styles.textInput}
+                                value={phoneValue}
+                                placeholder={`       ${Strings.phoneNumber}`}
+                                onChangeText={phoneNumberOnChangeTextHandler}
+                                keyboardType='numeric'
+                                onPressIn={() => setShowCountrySelector(true)}
+                            />
+                        </View>
+                    </>
+                )}
+                {modes[mode].password && (
+                    <View style={styles.inputContainer}>
+                        <Ionicons
+                            name='lock-closed-outline'
+                            size={20}
+                            color='black'
+                            style={[
+                                styles.inputIcon,
+                                { display: password ? "none" : "flex" },
+                            ]}
+                        />
+                        <TextInput
+                            style={Styles.textInput}
+                            value={password}
+                            placeholder={`       ${Strings.password}`}
+                            onChangeText={setPassword}
+                            secureTextEntry={!passwordVisible}
+                        />
+                        <Pressable
+                            onPress={() => setPasswordVisible((prev) => !prev)}
+                            style={[
+                                styles.inputIcon,
+                                { left: "initial", right: 10 },
+                            ]}
+                        >
+                            <Ionicons
+                                name={passwordVisible ? "eye-off" : "eye"}
+                                size={20}
+                                color='black'
+                            />
+                        </Pressable>
+                    </View>
+                )}
 
-                <Button mode='text' style={styles.forgotPassword}>
-                    {Strings.forgotPassword}
-                </Button>
+                {modes[mode].forgotPassword && (
+                    <Button mode='text' style={styles.forgotPassword}>
+                        {Strings.forgotPassword}
+                    </Button>
+                )}
+                {modes[mode].terms && (
+                    <View style={styles.tacContainer}>
+                        <Checkbox
+                            style={styles.checkbox}
+                            value={tacChecked}
+                            onValueChange={() => setTacChecked((prev) => !prev)}
+                        />
+                        <Text>{Strings.iAgreeToThe} </Text>
+                        <Pressable>
+                            <Text style={styles.tacText}>
+                                {Strings.termsAndConditions}
+                            </Text>
+                        </Pressable>
+                    </View>
+                )}
                 <Button mode='primary' style={styles.confirmButton}>
-                    {Strings.connect}
+                    {modes[mode].buttonTitle}
                 </Button>
-                <Text style={{ marginTop: 18 }}>
-                    {Strings.youDontHaveAnAccount}
-                </Text>
-                <Button mode='text'>{Strings.createNewAccount}</Button>
+                {modes[mode].notHaveAnAccount && (
+                    <>
+                        <Text style={[styles.text, { marginTop: 18 }]}>
+                            {Strings.youDontHaveAnAccount}
+                        </Text>
+                        <Button mode='text' onPress={() => setMode("register")}>
+                            {Strings.createNewAccount}
+                        </Button>
+                    </>
+                )}
+                {modes[mode].haveAnAccount && (
+                    <>
+                        <Text style={[styles.text, { marginTop: 18 }]}>
+                            {Strings.youDontHaveAnAccount}
+                        </Text>
+                        <Button mode='text' onPress={() => setMode("login")}>
+                            {Strings.loginNow}
+                        </Button>
+                    </>
+                )}
             </View>
         </LinearGradient>
     );
@@ -129,16 +241,16 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         marginTop: "auto",
         paddingHorizontal: 68,
-        paddingVertical: 40,
+        paddingVertical: 30,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
         alignItems: "center",
     },
     title: {
         fontSize: 24,
-        fontWeight: "bold",
+        fontFamily: "poppins-bold",
         color: Colors.coloredText,
-        marginBottom: 20,
+        marginBottom: 10,
         textTransform: "uppercase",
     },
     forgotPassword: {
@@ -151,12 +263,28 @@ const styles = StyleSheet.create({
     },
     inputContainer: {
         width: "100%",
-        marginVertical: 12,
+        marginVertical: 8,
     },
     inputIcon: {
         position: "absolute",
-        top: 7,
-        left: 6,
+        top: 8,
+        left: 8,
         opacity: 0.5,
     },
+    text: {
+        fontFamily: "poppins-",
+    },
+    tacContainer: {
+        flexDirection: "row",
+        marginTop: 12,
+        marginBottom: 20,
+    },
+    checkbox: {
+        aspectRatio: 1,
+        marginRight: 10,
+    },
+    tacText: {
+        color: Colors.coloredText,
+    },
+    countryCodePicker: {},
 });

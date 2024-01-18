@@ -2,8 +2,15 @@
     "login": "login",
     "register": "register",
     "connect": "connect",
+    "joinUs": "join us",
     "forgotPassword": "Forgot Password",
-    "youDontHaveAnAccount": "You don't have an account?",
+    "iAgreeToThe": "I agree to the",
+    "termsAndConditions": "Terms and Conditions",
+    "youDontHaveAnAccount": "Don't you have an account?",
+    "youHaveAnAccount": "Do you have an existing account?",
     "createNewAccount": "Create new account.",
-    "next": "next"
+    "loginNow": "Login Now",
+    "name": "Name",
+    "phoneNumber": "Phone Number",
+    "password": "Password"
 }

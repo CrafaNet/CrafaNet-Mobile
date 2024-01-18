@@ -6,7 +6,9 @@ export default StyleSheet.create({
         borderWidth: 1,
         borderColor: "#0002",
         fontSize: 16,
-        paddingVertical: 4,
+        paddingTop: 6,
+        paddingBottom: 2,
         paddingHorizontal: 6,
+        fontFamily: "poppins-",
     },
 });

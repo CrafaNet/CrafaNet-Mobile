@@ -38,12 +38,13 @@ const styleModes = {
             height: "100%",
             justifyContent: "center",
             alignItems: "center",
+            paddingTop: 4,
         },
         text: {
             color: "white",
             fontSize: 18,
-            fontWeight: "bold",
             textTransform: "uppercase",
+            fontFamily: "poppins-bold",
         },
     }),
     text: StyleSheet.create({
@@ -53,6 +54,7 @@ const styleModes = {
         gradient: {},
         text: {
             color: Colors.coloredText,
+            fontFamily: "poppins-",
         },
     }),
 };
