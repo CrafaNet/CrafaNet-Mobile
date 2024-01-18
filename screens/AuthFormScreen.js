@@ -22,11 +22,15 @@ import Colors from "../constants/colors";
 import Styles from "../constants/styles";
 import Strings from "../util/strings";
 
+const loginIllustration = require("../assets/illustrations/login.png");
+const registerIllustration = require("../assets/illustrations/register.png");
+const resetPasswordIllustration = require("../assets/illustrations/resetPassword.png");
+
 const modes = {
     login: {
         title: Strings.login,
         buttonTitle: Strings.connect,
-        image: require("../assets/illustrations/login.png"),
+        image: loginIllustration,
         phone: true,
         password: true,
         forgotPassword: true,
@@ -35,18 +39,26 @@ const modes = {
     register: {
         title: Strings.register,
         buttonTitle: Strings.joinUs,
-        image: require("../assets/illustrations/register.png"),
+        image: registerIllustration,
         name: true,
         phone: true,
         password: true,
         terms: true,
         haveAnAccount: true,
     },
+    resetPassword: {
+        title: Strings.resetPassword,
+        buttonTitle: Strings.sendCode,
+        image: resetPasswordIllustration,
+        phone: true,
+        notHaveAnAccount: true,
+        iRemember: true,
+    },
 };
 
 export default function AuthFormScreen() {
     const phoneRef = useRef(null);
-    const [mode, setMode] = useState("register");
+    const [mode, setMode] = useState("resetPassword");
     const [name, setName] = useState("");
     const [countryCode, setCountryCode] = useState("");
     const [phone, setPhone] = useState("");
@@ -178,7 +190,11 @@ export default function AuthFormScreen() {
                 )}
 
                 {modes[mode].forgotPassword && (
-                    <Button mode='text' style={styles.forgotPassword}>
+                    <Button
+                        mode='text'
+                        style={styles.forgotPassword}
+                        onPress={() => setMode("resetPassword")}
+                    >
                         {Strings.forgotPassword}
                     </Button>
                 )}
@@ -194,6 +210,14 @@ export default function AuthFormScreen() {
                             <Text style={styles.tacText}>
                                 {Strings.termsAndConditions}
                             </Text>
+                        </Pressable>
+                    </View>
+                )}
+                {modes[mode].iRemember && (
+                    <View style={styles.tacContainer}>
+                        <Text>{Strings.iRememberMyPassword} </Text>
+                        <Pressable onPress={() => setMode("login")}>
+                            <Text style={styles.tacText}>{Strings.login}</Text>
                         </Pressable>
                     </View>
                 )}
@@ -285,6 +309,7 @@ const styles = StyleSheet.create({
     },
     tacText: {
         color: Colors.coloredText,
+        textTransform: "capitalize",
     },
     countryCodePicker: {},
 });

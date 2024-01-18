@@ -38,7 +38,6 @@ const styleModes = {
             height: "100%",
             justifyContent: "center",
             alignItems: "center",
-            paddingTop: 4,
         },
         text: {
             color: "white",

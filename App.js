@@ -14,6 +14,8 @@ export default function App() {
         "poppins-bold": require("./assets/fonts/Poppins-Bold.ttf"),
     });
 
+    if (!fontsLoaded) return null;
+
     return (
         <>
             <StatusBar style='auto' />

@@ -12,5 +12,8 @@
     "loginNow": "Login Now",
     "name": "Name",
     "phoneNumber": "Phone Number",
-    "password": "Password"
+    "password": "Password",
+    "resetPassword": "Reset Password",
+    "sendCode": "send code",
+    "iRememberMyPassword": "I remember my password"
 }
