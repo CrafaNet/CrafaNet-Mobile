@@ -1,5 +1,12 @@
 import { useState } from "react";
-import { Image, StyleSheet, Text, View, TextInput } from "react-native";
+import {
+    Image,
+    StyleSheet,
+    Text,
+    View,
+    TextInput,
+    Pressable,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import MaskInput, { Masks } from "react-native-mask-input";
 
@@ -21,6 +28,8 @@ const modes = {
 export default function AuthFormScreen() {
     const [mode, setMode] = useState("login");
     const [phone, setPhone] = useState("");
+    const [password, setPassword] = useState("");
+    const [passwordVisible, setPasswordVisible] = useState(false);
 
     return (
         <LinearGradient
@@ -38,14 +47,56 @@ export default function AuthFormScreen() {
             </View>
             <View style={styles.formContainer}>
                 <Text style={styles.title}>{modes[mode].title}</Text>
-                <MaskInput
-                    style={Styles.textInput}
-                    value={phone}
-                    onChangeText={(_, unmasked) => setPhone(unmasked)}
-                    mask={Masks.USA_PHONE}
-                    showObfuscatedValue={true}
-                />
-                <TextInput style={Styles.textInput} />
+                <View style={styles.inputContainer}>
+                    <Ionicons
+                        name='person-circle-outline'
+                        size={24}
+                        color='black'
+                        style={[
+                            styles.inputIcon,
+                            { display: phone ? "none" : "flex" },
+                        ]}
+                    />
+                    <MaskInput
+                        style={Styles.textInput}
+                        value={phone}
+                        placeholder='       Phone Number'
+                        onChangeText={(_, unmasked) => setPhone(unmasked)}
+                        mask={Masks.USA_PHONE}
+                        showObfuscatedValue={true}
+                    />
+                </View>
+                <View style={styles.inputContainer}>
+                    <Ionicons
+                        name='lock-closed-outline'
+                        size={24}
+                        color='black'
+                        style={[
+                            styles.inputIcon,
+                            { display: password ? "none" : "flex" },
+                        ]}
+                    />
+                    <TextInput
+                        style={Styles.textInput}
+                        value={password}
+                        placeholder='       Password'
+                        onChangeText={setPassword}
+                        secureTextEntry={!passwordVisible}
+                    />
+                    <Pressable
+                        onPress={() => setPasswordVisible((prev) => !prev)}
+                        style={[
+                            styles.inputIcon,
+                            { left: "initial", right: 10 },
+                        ]}
+                    >
+                        <Ionicons
+                            name={passwordVisible ? "eye-off" : "eye"}
+                            size={24}
+                            color='black'
+                        />
+                    </Pressable>
+                </View>
 
                 <Button mode='text' style={styles.forgotPassword}>
                     {Strings.forgotPassword}
@@ -97,5 +148,15 @@ const styles = StyleSheet.create({
     confirmButton: {
         width: "100%",
         height: 44,
+    },
+    inputContainer: {
+        width: "100%",
+        marginVertical: 12,
+    },
+    inputIcon: {
+        position: "absolute",
+        top: 7,
+        left: 6,
+        opacity: 0.5,
     },
 });

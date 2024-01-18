@@ -8,6 +8,5 @@ export default StyleSheet.create({
         fontSize: 16,
         paddingVertical: 4,
         paddingHorizontal: 6,
-        marginVertical: 12,
     },
 });
