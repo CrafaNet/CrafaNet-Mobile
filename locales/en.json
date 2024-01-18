@@ -13,7 +13,10 @@
     "name": "Name",
     "phoneNumber": "Phone Number",
     "password": "Password",
+    "newPassword": "New Password",
     "resetPassword": "Reset Password",
     "sendCode": "send code",
-    "iRememberMyPassword": "I remember my password"
+    "iRememberMyPassword": "I remember my password",
+    "reset": "reset",
+    "resetCode": "Reset Code"
 }

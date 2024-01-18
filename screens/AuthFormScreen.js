@@ -54,11 +54,20 @@ const modes = {
         notHaveAnAccount: true,
         iRemember: true,
     },
+    resetPasswordCode: {
+        title: Strings.resetPassword,
+        buttonTitle: Strings.reset,
+        image: resetPasswordIllustration,
+        newPassword: true,
+        notHaveAnAccount: true,
+        iRemember: true,
+        resetCode: true,
+    },
 };
 
 export default function AuthFormScreen() {
     const phoneRef = useRef(null);
-    const [mode, setMode] = useState("resetPassword");
+    const [mode, setMode] = useState("resetPasswordCode");
     const [name, setName] = useState("");
     const [countryCode, setCountryCode] = useState("");
     const [phone, setPhone] = useState("");
@@ -67,6 +76,7 @@ export default function AuthFormScreen() {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [tacChecked, setTacChecked] = useState(false);
     const [showCountrySelector, setShowCountrySelector] = useState(false);
+    const [resetCode, setResetCode] = useState("");
 
     const phoneNumberOnChangeTextHandler = (text = "") => {
         text = text.slice(countryCode.length).trim();
@@ -79,7 +89,7 @@ export default function AuthFormScreen() {
     };
 
     useEffect(() => {
-        phoneNumberOnChangeTextHandler(phoneRef.current.value);
+        phoneNumberOnChangeTextHandler(phoneRef?.current?.value);
     }, [countryCode]);
 
     return (
@@ -155,7 +165,27 @@ export default function AuthFormScreen() {
                         </View>
                     </>
                 )}
-                {modes[mode].password && (
+                {modes[mode].resetCode && (
+                    <View style={styles.inputContainer}>
+                        <Ionicons
+                            name='barcode-outline'
+                            size={20}
+                            color='black'
+                            style={[
+                                styles.inputIcon,
+                                { display: resetCode ? "none" : "flex" },
+                            ]}
+                        />
+                        <TextInput
+                            style={Styles.textInput}
+                            value={resetCode}
+                            placeholder={`       ${Strings.resetCode}`}
+                            onChangeText={setResetCode}
+                            keyboardType='numeric'
+                        />
+                    </View>
+                )}
+                {(modes[mode].password || modes[mode].newPassword) && (
                     <View style={styles.inputContainer}>
                         <Ionicons
                             name='lock-closed-outline'
@@ -169,7 +199,11 @@ export default function AuthFormScreen() {
                         <TextInput
                             style={Styles.textInput}
                             value={password}
-                            placeholder={`       ${Strings.password}`}
+                            placeholder={`       ${
+                                modes[mode].newPassword
+                                    ? Strings.newPassword
+                                    : Strings.password
+                            }`}
                             onChangeText={setPassword}
                             secureTextEntry={!passwordVisible}
                         />
