@@ -21,5 +21,9 @@
     "resetCode": "Reset Code",
     "confirmAccount": "Confirm Account",
     "confirm": "confirm",
-    "confirmCode": "Confirm Code"
+    "confirmCode": "Confirm Code",
+    "community": "Community",
+    "skillhub": "SkillHub",
+    "learnmate": "LearnMate",
+    "workfolio": "Workfolio"
 }

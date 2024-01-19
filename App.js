@@ -7,7 +7,7 @@ import Navigation from "./Navigation";
 import AuthFormScreen from "./screens/AuthFormScreen";
 
 export default function App() {
-    const isAuthenticated = false;
+    const isAuthenticated = true;
 
     const [fontsLoaded] = useFonts({
         "poppins-": require("./assets/fonts/Poppins-Regular.ttf"),
