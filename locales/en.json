@@ -18,5 +18,8 @@
     "sendCode": "send code",
     "iRememberMyPassword": "I remember my password",
     "reset": "reset",
-    "resetCode": "Reset Code"
+    "resetCode": "Reset Code",
+    "confirmAccount": "Confirm Account",
+    "confirm": "confirm",
+    "confirmCode": "Confirm Code"
 }

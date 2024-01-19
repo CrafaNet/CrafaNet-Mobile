@@ -15,6 +15,7 @@ import { CountryPicker } from "react-native-country-codes-picker";
 
 import { Ionicons } from "@expo/vector-icons";
 import { Feather } from "@expo/vector-icons";
+import { Octicons } from "@expo/vector-icons";
 
 import Button from "../components/Button";
 
@@ -25,6 +26,7 @@ import Strings from "../util/strings";
 const loginIllustration = require("../assets/illustrations/login.png");
 const registerIllustration = require("../assets/illustrations/register.png");
 const resetPasswordIllustration = require("../assets/illustrations/resetPassword.png");
+const verifiedIllustration = require("../assets/illustrations/verified.png");
 
 const modes = {
     login: {
@@ -63,11 +65,18 @@ const modes = {
         iRemember: true,
         resetCode: true,
     },
+    confirmAccount: {
+        title: Strings.confirmAccount,
+        buttonTitle: Strings.confirm,
+        image: verifiedIllustration,
+        haveAnAccount: true,
+        confirmCode: true,
+    },
 };
 
 export default function AuthFormScreen() {
     const phoneRef = useRef(null);
-    const [mode, setMode] = useState("resetPasswordCode");
+    const [mode, setMode] = useState("confirmAccount");
     const [name, setName] = useState("");
     const [countryCode, setCountryCode] = useState("");
     const [phone, setPhone] = useState("");
@@ -77,6 +86,7 @@ export default function AuthFormScreen() {
     const [tacChecked, setTacChecked] = useState(false);
     const [showCountrySelector, setShowCountrySelector] = useState(false);
     const [resetCode, setResetCode] = useState("");
+    const [confirmCode, setConfirmCode] = useState("");
 
     const phoneNumberOnChangeTextHandler = (text = "") => {
         text = text.slice(countryCode.length).trim();
@@ -222,7 +232,26 @@ export default function AuthFormScreen() {
                         </Pressable>
                     </View>
                 )}
-
+                {modes[mode].confirmCode && (
+                    <View style={styles.inputContainer}>
+                        <Octicons
+                            name='verified'
+                            size={20}
+                            color='black'
+                            style={[
+                                styles.inputIcon,
+                                { display: confirmCode ? "none" : "flex" },
+                            ]}
+                        />
+                        <TextInput
+                            style={Styles.textInput}
+                            value={confirmCode}
+                            placeholder={`       ${Strings.confirmCode}`}
+                            onChangeText={setConfirmCode}
+                            keyboardType='numeric'
+                        />
+                    </View>
+                )}
                 {modes[mode].forgotPassword && (
                     <Button
                         mode='text'
