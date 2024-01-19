@@ -13,5 +13,6 @@ export default StyleSheet.create({
     screenContainer: {
         flex: 1,
         backgroundColor: "white",
+        paddingHorizontal: 24,
     },
 });

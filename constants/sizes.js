@@ -1,7 +1,7 @@
 export default {
-    textSmall: 14,
-    textMedium: 16,
-    textLarge: 18,
+    textSmall: 12,
+    textMedium: 14,
+    textLarge: 16,
 
     titleSmall: 16,
     titleMedium: 18,
