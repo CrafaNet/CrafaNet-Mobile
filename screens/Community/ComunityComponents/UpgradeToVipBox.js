@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: "row",
         position: "relative",
-        marginVertical: 40,
+        marginTop: 20,
         padding: 24,
         borderRadius: 14,
     },

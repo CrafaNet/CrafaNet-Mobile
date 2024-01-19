@@ -7,9 +7,7 @@ import SkillHubHomeScreen from "./screens/SkillHub/SkillHubHomeScreen";
 import LearnMateHomeScreen from "./screens/LearnMate/LearnMateHomeScreen";
 import WorkfolioHomeScreen from "./screens/Workfolio/WorkfolioHomeScreen";
 
-import { Ionicons } from "@expo/vector-icons";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { Entypo } from "@expo/vector-icons";
+import { Ionicons, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 
 import Colors from "./constants/colors";
 import Strings from "./util/strings";

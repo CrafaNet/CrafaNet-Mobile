@@ -13,9 +13,7 @@ import { formatWithMask, Masks } from "react-native-mask-input";
 import Checkbox from "expo-checkbox";
 import { CountryPicker } from "react-native-country-codes-picker";
 
-import { Ionicons } from "@expo/vector-icons";
-import { Feather } from "@expo/vector-icons";
-import { Octicons } from "@expo/vector-icons";
+import { Ionicons, Feather, Octicons } from "@expo/vector-icons";
 
 import Button from "../components/Button";
 
