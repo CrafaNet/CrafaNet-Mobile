@@ -20,6 +20,7 @@ import Strings from "../../util/strings";
 
 import categories from "../../DUMMY_DATA/categories.json";
 import classes from "../../DUMMY_DATA/classes.json";
+import AppHeader from "../../components/AppHeader";
 
 export default function CommunityHomeScreen() {
     const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
@@ -31,46 +32,50 @@ export default function CommunityHomeScreen() {
     }
 
     return (
-        <ScrollView
-            style={Styles.screenContainer}
-            contentContainerStyle={styles.container}
-            stickyHeaderIndices={[1]}
-        >
-            <UpgradeToVipBox />
-            <View style={styles.stickyHeaderWrapper}>
-                <View style={styles.searchBoxWrapper}>
-                    <SearchBox />
+        <View style={Styles.screenContainer}>
+            <ScrollView
+                contentContainerStyle={styles.container}
+                stickyHeaderIndices={[0, 2]}
+                stickyHeaderHiddenOnScroll={true}
+                showsVerticalScrollIndicator={false}
+            >
+                <AppHeader />
+                <UpgradeToVipBox />
+                <View style={styles.stickyHeaderWrapper}>
+                    <View style={styles.searchBoxWrapper}>
+                        <SearchBox />
+                    </View>
+
+                    <SafeAreaView>
+                        <FlatList
+                            data={categories}
+                            keyExtractor={(item) => item}
+                            renderItem={(props) => (
+                                <Pressable
+                                    onPress={() =>
+                                        setActiveCategoryIndex(props.index)
+                                    }
+                                >
+                                    {categoriesItem(props, activeCategoryIndex)}
+                                </Pressable>
+                            )}
+                            horizontal
+                            showsHorizontalScrollIndicator={false}
+                        />
+                    </SafeAreaView>
                 </View>
 
                 <SafeAreaView>
                     <FlatList
-                        data={categories}
-                        keyExtractor={(item) => item}
-                        renderItem={(props) => (
-                            <Pressable
-                                onPress={() =>
-                                    setActiveCategoryIndex(props.index)
-                                }
-                            >
-                                {categoriesItem(props, activeCategoryIndex)}
-                            </Pressable>
-                        )}
-                        horizontal
-                        showsHorizontalScrollIndicator={false}
+                        data={classesList}
+                        keyExtractor={(item) => item.name}
+                        renderItem={(props) => <ClassListItem {...props} />}
+                        showsVerticalScrollIndicator={false}
+                        scrollEnabled={false}
                     />
                 </SafeAreaView>
-            </View>
-
-            <SafeAreaView>
-                <FlatList
-                    data={classesList}
-                    keyExtractor={(item) => item.name}
-                    renderItem={(props) => <ClassListItem {...props} />}
-                    showsVerticalScrollIndicator={false}
-                    scrollEnabled={false}
-                />
-            </SafeAreaView>
-        </ScrollView>
+            </ScrollView>
+        </View>
     );
 }
 
@@ -105,8 +110,8 @@ const styles = StyleSheet.create({
         marginBottom: 16,
     },
     categoriesItem: {
-        paddingVertical: 8,
-        paddingHorizontal: 16,
+        paddingVertical: 6,
+        paddingHorizontal: 14,
         borderRadius: 8,
     },
     categoriesItemText: {

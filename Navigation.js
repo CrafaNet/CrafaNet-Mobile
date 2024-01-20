@@ -102,33 +102,54 @@ const bottomTabScreenOptions = {
 const stackScreenOptions = {
     headerTitle: "CrafaNet",
     headerShadowVisible: false,
+    headerShown: false,
     headerTitleStyle: {
         color: Colors.primary500,
         fontFamily: "poppins-bold",
-        fontSize: 26,
+        fontSize: 24,
     },
     headerRight: () => (
         <Entypo
             name='dots-three-vertical'
-            size={24}
+            size={20}
             color={Colors.primary500}
         />
     ),
 };
 
 const communityBottomTabOptions = {
-    tabBarIcon: (props) => <Ionicons name='people' {...props} />,
+    tabBarIcon: (props) => (
+        <Ionicons
+            name={`people${props.focused ? "" : "-outline"}`}
+            {...props}
+        />
+    ),
     tabBarLabel: Strings.community,
 };
 const skillHubBottomTabOptions = {
-    tabBarIcon: (props) => <MaterialCommunityIcons name='puzzle' {...props} />,
+    tabBarIcon: (props) => (
+        <MaterialCommunityIcons
+            name={`puzzle${props.focused ? "" : "-outline"}`}
+            {...props}
+        />
+    ),
     tabBarLabel: Strings.skillhub,
 };
 const learnMateBottomTabOptions = {
-    tabBarIcon: (props) => <Ionicons name='chatbubbles' {...props} />,
+    tabBarIcon: (props) => (
+        <MaterialCommunityIcons
+            name={`robot-happy${props.focused ? "" : "-outline"}`}
+            {...props}
+        />
+    ),
     tabBarLabel: Strings.learnmate,
 };
 const workfolioBottomTabOptions = {
-    tabBarIcon: (props) => <Ionicons name='person' {...props} />,
+    tabBarIcon: (props) => (
+        <MaterialCommunityIcons
+            name={`briefcase-account${props.focused ? "" : "-outline"}`}
+            {...props}
+        />
+    ),
     tabBarLabel: Strings.workfolio,
 };
