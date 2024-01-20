@@ -28,5 +28,15 @@
     "workfolio": "Workfolio",
     "upgradeToVip": "Upgrade To VIP",
     "becomeAVipMemberToGetYourPrivateClassNow": "Become a VIP Member to get your Private Class now!",
-    "subjectClassEtc": "Subject, Class, etc..."
+    "subjectClassEtc": "Subject, Class, etc...",
+    "join": "join",
+    "members": "Members",
+    "miniClass": "Mini Class",
+    "all": "all",
+    "popular": "popular",
+    "academic": "academic",
+    "non_academic": "non-academic",
+    "art": "art",
+    "music": "music",
+    "sports": "sports"
 }

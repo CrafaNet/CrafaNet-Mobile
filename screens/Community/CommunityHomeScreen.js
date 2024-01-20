@@ -11,23 +11,23 @@ import { LinearGradient } from "expo-linear-gradient";
 
 import UpgradeToVipBox from "./ComunityComponents/UpgradeToVipBox";
 import SearchBox from "./ComunityComponents/SearchBox";
+import ClassListItem from "./ComunityComponents/ClassListItem";
 
 import Styles from "../../constants/styles";
 import Colors from "../../constants/colors";
+import Strings from "../../util/strings";
 
-const categories = [
-    "All",
-    "Popular",
-    "Academic",
-    "Non-Academic",
-    "Public",
-    "Art",
-    "Music",
-    "Sports",
-];
+import categories from "../../DUMMY_DATA/categories.json";
+import classes from "../../DUMMY_DATA/classes.json";
 
 export default function CommunityHomeScreen() {
     const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
+    let classesList = classes;
+    if (categories[activeCategoryIndex] !== "all") {
+        classesList = classes.filter(
+            (item) => item.category === categories[activeCategoryIndex]
+        );
+    }
 
     return (
         <View style={[Styles.screenContainer, styles.container]}>
@@ -46,6 +46,14 @@ export default function CommunityHomeScreen() {
                     )}
                     horizontal
                     showsHorizontalScrollIndicator={false}
+                />
+            </SafeAreaView>
+            <SafeAreaView>
+                <FlatList
+                    data={classesList}
+                    keyExtractor={(item) => item.name}
+                    renderItem={(props) => <ClassListItem {...props} />}
+                    showsVerticalScrollIndicator={false}
                 />
             </SafeAreaView>
         </View>
@@ -68,7 +76,7 @@ function categoriesItem({ item, index }, activeCategoryIndex) {
             end={{ x: 1, y: 0 }}
             style={styles.categoriesItem}
         >
-            <Text style={textStyles}>{item}</Text>
+            <Text style={textStyles}>{Strings[item]}</Text>
         </LinearGradient>
     );
 }
@@ -84,6 +92,7 @@ const styles = StyleSheet.create({
     },
     categoriesItemText: {
         fontFamily: "poppins-",
+        textTransform: "capitalize",
     },
     activeCategoryText: {
         color: "white",
