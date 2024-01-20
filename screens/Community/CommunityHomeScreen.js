@@ -6,6 +6,7 @@ import {
     FlatList,
     Pressable,
     SafeAreaView,
+    ScrollView,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
@@ -30,33 +31,46 @@ export default function CommunityHomeScreen() {
     }
 
     return (
-        <View style={[Styles.screenContainer, styles.container]}>
+        <ScrollView
+            style={Styles.screenContainer}
+            contentContainerStyle={styles.container}
+            stickyHeaderIndices={[1]}
+        >
             <UpgradeToVipBox />
-            <SearchBox />
-            <SafeAreaView>
-                <FlatList
-                    data={categories}
-                    keyExtractor={(item) => item}
-                    renderItem={(props) => (
-                        <Pressable
-                            onPress={() => setActiveCategoryIndex(props.index)}
-                        >
-                            {categoriesItem(props, activeCategoryIndex)}
-                        </Pressable>
-                    )}
-                    horizontal
-                    showsHorizontalScrollIndicator={false}
-                />
-            </SafeAreaView>
+            <View style={styles.stickyHeaderWrapper}>
+                <View style={styles.searchBoxWrapper}>
+                    <SearchBox />
+                </View>
+
+                <SafeAreaView>
+                    <FlatList
+                        data={categories}
+                        keyExtractor={(item) => item}
+                        renderItem={(props) => (
+                            <Pressable
+                                onPress={() =>
+                                    setActiveCategoryIndex(props.index)
+                                }
+                            >
+                                {categoriesItem(props, activeCategoryIndex)}
+                            </Pressable>
+                        )}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                    />
+                </SafeAreaView>
+            </View>
+
             <SafeAreaView>
                 <FlatList
                     data={classesList}
                     keyExtractor={(item) => item.name}
                     renderItem={(props) => <ClassListItem {...props} />}
                     showsVerticalScrollIndicator={false}
+                    scrollEnabled={false}
                 />
             </SafeAreaView>
-        </View>
+        </ScrollView>
     );
 }
 
@@ -82,8 +96,13 @@ function categoriesItem({ item, index }, activeCategoryIndex) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        gap: 16,
+    container: {},
+    stickyHeaderWrapper: {
+        paddingVertical: 16,
+        backgroundColor: "white",
+    },
+    searchBoxWrapper: {
+        marginBottom: 16,
     },
     categoriesItem: {
         paddingVertical: 8,
