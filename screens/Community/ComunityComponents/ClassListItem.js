@@ -5,7 +5,7 @@ import {
     ImageBackground,
     Pressable,
 } from "react-native";
-
+import { useNavigation } from "@react-navigation/native";
 import { Octicons } from "@expo/vector-icons";
 
 import Colors from "../../../constants/colors";
@@ -13,6 +13,7 @@ import Sizes from "../../../constants/sizes";
 import Strings from "../../../util/strings";
 
 export default function ClassListItem({ item }) {
+    const navigation = useNavigation();
     let memberText = `+50 ${Strings.members}`;
     if (item.memberCount < 50)
         memberText = `${item.memberCount} ${Strings.members}`;
@@ -32,7 +33,12 @@ export default function ClassListItem({ item }) {
                         <Text style={styles.memberCount}>{memberText}</Text>
                     </View>
                 </View>
-                <Pressable style={styles.joinButton}>
+                <Pressable
+                    style={styles.joinButton}
+                    onPress={() =>
+                        navigation.navigate("JoinClassScreen", { item })
+                    }
+                >
                     <Text style={styles.joinButtonText}>{Strings.join}</Text>
                 </Pressable>
             </View>

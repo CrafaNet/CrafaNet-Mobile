@@ -2,9 +2,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
+// Community
 import CommunityHomeScreen from "./screens/Community/CommunityHomeScreen";
+import JoinClassScreen from "./screens/Community/JoinClassScreen";
+// SkillHub
 import SkillHubHomeScreen from "./screens/SkillHub/SkillHubHomeScreen";
+// LearnMate
 import LearnMateHomeScreen from "./screens/LearnMate/LearnMateHomeScreen";
+// Workfolio
 import WorkfolioHomeScreen from "./screens/Workfolio/WorkfolioHomeScreen";
 
 import { Ionicons, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
@@ -51,6 +56,7 @@ function CommunityStack() {
                 name='CommunityHome'
                 component={CommunityHomeScreen}
             />
+            <Stack.Screen name='JoinClassScreen' component={JoinClassScreen} />
         </Stack.Navigator>
     );
 }

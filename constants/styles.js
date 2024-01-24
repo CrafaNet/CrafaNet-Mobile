@@ -10,10 +10,4 @@ export default StyleSheet.create({
         paddingHorizontal: 6,
         fontFamily: "poppins-",
     },
-    screenContainer: {
-        flex: 1,
-        backgroundColor: "white",
-        paddingHorizontal: 24,
-        paddingTop: 40,
-    },
 });

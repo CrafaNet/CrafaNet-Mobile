@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
 
-import Styles from "../../constants/styles";
+import ScreenContainer from "../../components/ScreenContainer";
 
 export default function WorkfolioHomeScreen() {
-    return <View style={Styles.screenContainer}></View>;
+    return <ScreenContainer></ScreenContainer>;
 }
 
 const styles = StyleSheet.create({});

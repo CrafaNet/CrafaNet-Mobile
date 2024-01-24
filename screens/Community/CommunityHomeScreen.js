@@ -10,17 +10,17 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
+import ScreenContainer from "../../components/ScreenContainer";
+import AppHeader from "../../components/AppHeader";
 import UpgradeToVipBox from "./ComunityComponents/UpgradeToVipBox";
 import SearchBox from "./ComunityComponents/SearchBox";
 import ClassListItem from "./ComunityComponents/ClassListItem";
 
-import Styles from "../../constants/styles";
 import Colors from "../../constants/colors";
 import Strings from "../../util/strings";
 
 import categories from "../../DUMMY_DATA/categories.json";
 import classes from "../../DUMMY_DATA/classes.json";
-import AppHeader from "../../components/AppHeader";
 
 export default function CommunityHomeScreen() {
     const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
@@ -32,7 +32,7 @@ export default function CommunityHomeScreen() {
     }
 
     return (
-        <View style={Styles.screenContainer}>
+        <ScreenContainer>
             <ScrollView
                 contentContainerStyle={styles.container}
                 stickyHeaderIndices={[0, 2]}
@@ -75,7 +75,7 @@ export default function CommunityHomeScreen() {
                     />
                 </SafeAreaView>
             </ScrollView>
-        </View>
+        </ScreenContainer>
     );
 }
 
