@@ -41,5 +41,9 @@
     "sports": "sports",
     "applyNow": "Apply Now",
     "DUMMY_CLASS_DESCRIPTION": "Finance is a broad term that describes activities associated with banking, leverage or debt, credit, capital markets, money, and investments.",
-    "joinClass": "Join Class"
+    "joinClass": "Join Class",
+    "currentEvents": "Current Events",
+    "digitalClass": "Digital Class",
+    "watchVideos": "Watch Videos",
+    "joinLiveClass": "Join Live Class"
 }

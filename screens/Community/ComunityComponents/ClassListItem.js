@@ -35,9 +35,7 @@ export default function ClassListItem({ item }) {
                 </View>
                 <Pressable
                     style={styles.joinButton}
-                    onPress={() =>
-                        navigation.navigate("JoinClassScreen", { item })
-                    }
+                    onPress={() => navigation.navigate("ClassScreen", { item })}
                 >
                     <Text style={styles.joinButtonText}>{Strings.join}</Text>
                 </Pressable>

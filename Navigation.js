@@ -5,6 +5,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // Community
 import CommunityHomeScreen from "./screens/Community/CommunityHomeScreen";
 import JoinClassScreen from "./screens/Community/JoinClassScreen";
+import ClassScreen from "./screens/Community/ClassScreen";
 // SkillHub
 import SkillHubHomeScreen from "./screens/SkillHub/SkillHubHomeScreen";
 // LearnMate
@@ -57,6 +58,7 @@ function CommunityStack() {
                 component={CommunityHomeScreen}
             />
             <Stack.Screen name='JoinClassScreen' component={JoinClassScreen} />
+            <Stack.Screen name='ClassScreen' component={ClassScreen} />
         </Stack.Navigator>
     );
 }
