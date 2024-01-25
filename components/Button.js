@@ -27,7 +27,7 @@ const gradientColorModes = {
 const styleModes = {
     primary: StyleSheet.create({
         container: {
-            height: 26,
+            height: 44,
             justifyContent: "center",
             alignItems: "center",
             borderRadius: 8,

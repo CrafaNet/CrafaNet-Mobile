@@ -344,7 +344,6 @@ const styles = StyleSheet.create({
     },
     confirmButton: {
         width: "100%",
-        height: 44,
     },
     inputContainer: {
         width: "100%",

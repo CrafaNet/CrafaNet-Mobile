@@ -5,14 +5,15 @@ import { Ionicons, AntDesign } from "@expo/vector-icons";
 
 import Colors from "../constants/colors";
 
-export default function AppHeader({ hasBack }) {
+export default function AppHeader() {
     const navigation = useNavigation();
+    const hasBackBtn = navigation.getState().index !== 0;
     const iconSize = 26;
 
     return (
         <View style={styles.container}>
             <View style={styles.headerRight}>
-                {hasBack && (
+                {hasBackBtn && (
                     <Pressable
                         style={styles.backBtn}
                         onPress={navigation.goBack}
