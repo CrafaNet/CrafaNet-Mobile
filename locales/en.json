@@ -45,5 +45,11 @@
     "currentEvents": "Current Events",
     "digitalClass": "Digital Class",
     "watchVideos": "Watch Videos",
-    "joinLiveClass": "Join Live Class"
+    "joinLiveClass": "Join Live Class",
+    "upgradeToVipMember": "Upgrade to VIP Member",
+    "upgradeToVipMemberDescription": "Get an unlimited CrafaNet experience as a VIP Crafa member. Join the VIP Crafa members now.",
+    "upgradeToVipMemberListItem0": "Unlimited use of some digital tools.",
+    "upgradeToVipMemberListItem1": "Unlimited messaging with LearnMate.",
+    "upgradeToVipMemberListItem2": "Unlimited SkillHub content sharing.",
+    "upgradeNow": "Upgrade Now"
 }

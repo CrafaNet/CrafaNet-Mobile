@@ -32,49 +32,47 @@ export default function CommunityHomeScreen() {
     }
 
     return (
-        <ScreenContainer>
-            <ScrollView
-                contentContainerStyle={styles.container}
-                stickyHeaderIndices={[0, 2]}
-                stickyHeaderHiddenOnScroll={true}
-                showsVerticalScrollIndicator={false}
-            >
-                <AppHeader />
-                <UpgradeToVipBox />
-                <View style={styles.stickyHeaderWrapper}>
-                    <View style={styles.searchBoxWrapper}>
-                        <SearchBox />
-                    </View>
-
-                    <SafeAreaView>
-                        <FlatList
-                            data={categories}
-                            keyExtractor={(item) => item}
-                            renderItem={(props) => (
-                                <Pressable
-                                    onPress={() =>
-                                        setActiveCategoryIndex(props.index)
-                                    }
-                                >
-                                    {categoriesItem(props, activeCategoryIndex)}
-                                </Pressable>
-                            )}
-                            horizontal
-                            showsHorizontalScrollIndicator={false}
-                        />
-                    </SafeAreaView>
+        <ScreenContainer
+            contentContainerStyle={styles.container}
+            stickyHeaderIndices={[0, 2]}
+            stickyHeaderHiddenOnScroll={true}
+            showsVerticalScrollIndicator={false}
+        >
+            <AppHeader />
+            <UpgradeToVipBox />
+            <View style={styles.stickyHeaderWrapper}>
+                <View style={styles.searchBoxWrapper}>
+                    <SearchBox />
                 </View>
 
                 <SafeAreaView>
                     <FlatList
-                        data={classesList}
-                        keyExtractor={(item) => item.name}
-                        renderItem={(props) => <ClassListItem {...props} />}
-                        showsVerticalScrollIndicator={false}
-                        scrollEnabled={false}
+                        data={categories}
+                        keyExtractor={(item) => item}
+                        renderItem={(props) => (
+                            <Pressable
+                                onPress={() =>
+                                    setActiveCategoryIndex(props.index)
+                                }
+                            >
+                                {categoriesItem(props, activeCategoryIndex)}
+                            </Pressable>
+                        )}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
                     />
                 </SafeAreaView>
-            </ScrollView>
+            </View>
+
+            <SafeAreaView>
+                <FlatList
+                    data={classesList}
+                    keyExtractor={(item) => item.name}
+                    renderItem={(props) => <ClassListItem {...props} />}
+                    showsVerticalScrollIndicator={false}
+                    scrollEnabled={false}
+                />
+            </SafeAreaView>
         </ScreenContainer>
     );
 }

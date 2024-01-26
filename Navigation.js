@@ -12,6 +12,8 @@ import SkillHubHomeScreen from "./screens/SkillHub/SkillHubHomeScreen";
 import LearnMateHomeScreen from "./screens/LearnMate/LearnMateHomeScreen";
 // Workfolio
 import WorkfolioHomeScreen from "./screens/Workfolio/WorkfolioHomeScreen";
+// Other screens
+import UpgradeToVipScreen from "./screens/UpgradeToVipScreen";
 
 import { Ionicons, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 
@@ -59,6 +61,10 @@ function CommunityStack() {
             />
             <Stack.Screen name='JoinClassScreen' component={JoinClassScreen} />
             <Stack.Screen name='ClassScreen' component={ClassScreen} />
+            <Stack.Screen
+                name='UpgradeToVipScreen'
+                component={UpgradeToVipScreen}
+            />
         </Stack.Navigator>
     );
 }

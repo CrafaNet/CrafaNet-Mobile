@@ -11,7 +11,7 @@ const comingSoonIllustration = require("../../assets/illustrations/comingSoon.pn
 
 export default function LearnMateHomeScreen() {
     return (
-        <ScreenContainer>
+        <ScreenContainer contentContainerStyle={{ flex: 1 }}>
             <View style={styles.container}>
                 <AppHeader />
                 <Text style={styles.title}>{Strings.learnmate}</Text>
@@ -28,6 +28,7 @@ export default function LearnMateHomeScreen() {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         alignItems: "center",
     },
     title: {

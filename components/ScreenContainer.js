@@ -1,7 +1,19 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 
-export default function ScreenContainer({ children }) {
-    return <View style={styles.container}>{children}</View>;
+export default function ScreenContainer(props) {
+    return (
+        <View style={styles.container}>
+            <ScrollView
+                {...props}
+                contentContainerStyle={[
+                    styles.scrollView,
+                    props.contentContainerStyle,
+                ]}
+            >
+                {props.children}
+            </ScrollView>
+        </View>
+    );
 }
 
 const styles = StyleSheet.create({
@@ -10,5 +22,8 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         paddingHorizontal: 24,
         paddingTop: 40,
+    },
+    scrollView: {
+        flexGrow: 1,
     },
 });

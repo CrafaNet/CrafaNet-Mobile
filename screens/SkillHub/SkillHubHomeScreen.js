@@ -11,7 +11,7 @@ const comingSoonIllustration = require("../../assets/illustrations/comingSoon.pn
 
 export default function SkillHubHomeScreen() {
     return (
-        <ScreenContainer>
+        <ScreenContainer contentContainerStyle={{ flex: 1 }}>
             <View style={styles.container}>
                 <AppHeader />
                 <Text style={styles.title}>{Strings.skillhub}</Text>
@@ -28,6 +28,7 @@ export default function SkillHubHomeScreen() {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         alignItems: "center",
     },
     title: {

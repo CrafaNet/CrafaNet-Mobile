@@ -1,5 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import { useNavigation } from "@react-navigation/core";
 
 import Colors from "../../../constants/colors";
 import Strings from "../../../util/strings";
@@ -8,25 +9,33 @@ import Sizes from "../../../constants/sizes";
 const vipIllustration = require("../../../assets/illustrations/vip.png");
 
 export default function UpgradeToVipBox() {
+    const navigation = useNavigation();
+
+    const onPressHandler = () => navigation.navigate("UpgradeToVipScreen");
+
     return (
-        <LinearGradient
-            colors={Colors.mainLinearGradient}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.container}
-        >
-            <View style={styles.textContainer}>
-                <Text style={styles.title}>{Strings.upgradeToVip}</Text>
-                <Text style={styles.text}>
-                    {Strings.becomeAVipMemberToGetYourPrivateClassNow}
-                </Text>
-            </View>
-            <Image
-                source={vipIllustration}
-                resizeMode='contain'
-                style={styles.image}
-            />
-        </LinearGradient>
+        <Pressable onPress={onPressHandler}>
+            <LinearGradient
+                colors={Colors.mainLinearGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.container}
+            >
+                <View style={styles.textContainer}>
+                    <Text style={styles.title}>{Strings.upgradeToVip}</Text>
+                    <Text style={styles.text}>
+                        {Strings.becomeAVipMemberToGetYourPrivateClassNow}
+                    </Text>
+                </View>
+                <View style={styles.imageContainer}>
+                    <Image
+                        source={vipIllustration}
+                        resizeMode='contain'
+                        style={styles.image}
+                    />
+                </View>
+            </LinearGradient>
+        </Pressable>
     );
 }
 
@@ -42,12 +51,16 @@ const styles = StyleSheet.create({
         width: "60%",
         gap: 4,
     },
-    image: {
-        width: "40%",
-        height: "194%",
+    imageContainer: {
+        width: "42%",
         position: "absolute",
         bottom: 0,
         right: 10,
+        aspectRatio: 1,
+    },
+    image: {
+        width: "100%",
+        height: "100%",
     },
     title: {
         color: "white",
