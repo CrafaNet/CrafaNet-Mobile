@@ -6,6 +6,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import CommunityHomeScreen from "./screens/Community/CommunityHomeScreen";
 import JoinClassScreen from "./screens/Community/JoinClassScreen";
 import ClassScreen from "./screens/Community/ClassScreen";
+import ClassVideosScreen from "./screens/Community/ClassVideosScreen";
+import VideoScreen from "./screens/Community/VideoScreen";
 // SkillHub
 import SkillHubHomeScreen from "./screens/SkillHub/SkillHubHomeScreen";
 // LearnMate
@@ -65,6 +67,11 @@ function CommunityStack() {
                 name='UpgradeToVipScreen'
                 component={UpgradeToVipScreen}
             />
+            <Stack.Screen
+                name='ClassVideosScreen'
+                component={ClassVideosScreen}
+            />
+            <Stack.Screen name='VideoScreen' component={VideoScreen} />
         </Stack.Navigator>
     );
 }

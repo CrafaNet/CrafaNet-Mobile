@@ -12,18 +12,21 @@ import Colors from "../../../constants/colors";
 import Sizes from "../../../constants/sizes";
 import Strings from "../../../util/strings";
 
-export default function ClassListItem({ item }) {
+export default function ClassListItem({ item: course }) {
     const navigation = useNavigation();
     let memberText = `+50 ${Strings.members}`;
-    if (item.memberCount < 50)
-        memberText = `${item.memberCount} ${Strings.members}`;
-    if (item.memberCount < 11) memberText = Strings.miniClass;
+    if (course.memberCount < 50)
+        memberText = `${course.memberCount} ${Strings.members}`;
+    if (course.memberCount < 11) memberText = Strings.miniClass;
 
     return (
-        <ImageBackground style={styles.container} source={{ uri: item.image }}>
+        <ImageBackground
+            style={styles.container}
+            source={{ uri: course.image }}
+        >
             <View style={styles.contentContainer}>
                 <View>
-                    <Text style={styles.title}>{item.name}</Text>
+                    <Text style={styles.title}>{course.name}</Text>
                     <View style={styles.row}>
                         <Octicons
                             name='people'
@@ -35,7 +38,9 @@ export default function ClassListItem({ item }) {
                 </View>
                 <Pressable
                     style={styles.joinButton}
-                    onPress={() => navigation.navigate("ClassScreen", { item })}
+                    onPress={() =>
+                        navigation.navigate("ClassScreen", { course })
+                    }
                 >
                     <Text style={styles.joinButtonText}>{Strings.join}</Text>
                 </Pressable>

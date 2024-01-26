@@ -14,17 +14,24 @@ const DUMMY_EVENTS = [
     "Lorem ipsum dolor sit amet.",
 ];
 
-export default function ClassScreen({ route }) {
-    const { item } = route.params || {};
+export default function ClassScreen({ route, navigation }) {
+    const { course } = route.params || {};
+
+    const watchVideosButtonPressHandler = () => {
+        navigation.navigate("ClassVideosScreen", { course });
+    };
 
     return (
         <ScreenContainer>
             <AppHeader />
-            <Text style={styles.title}>{item.name}</Text>
+            <Text style={styles.title}>{course.name}</Text>
             <Text style={styles.text}>{Strings.DUMMY_CLASS_DESCRIPTION}</Text>
-            <Button mode='secondary'>{Strings.watchVideos}</Button>
+            <Button mode='secondary' onPress={watchVideosButtonPressHandler}>
+                {Strings.watchVideos}
+            </Button>
             <Text style={styles.subTitle}>{Strings.currentEvents}</Text>
             <FlatList
+                style={styles.eventList}
                 data={DUMMY_EVENTS}
                 keyExtractor={(item) => Math.random()}
                 renderItem={({ item }) => (
@@ -63,5 +70,8 @@ const styles = StyleSheet.create({
     },
     text: {
         fontFamily: "poppins-",
+    },
+    eventList: {
+        flexGrow: 0,
     },
 });
