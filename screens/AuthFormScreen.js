@@ -6,7 +6,6 @@ import {
     View,
     TextInput,
     Pressable,
-    Keyboard,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { formatWithMask, Masks } from "react-native-mask-input";
@@ -74,9 +73,10 @@ const modes = {
 
 export default function AuthFormScreen() {
     const phoneRef = useRef(null);
-    const [mode, setMode] = useState("confirmAccount");
+    const [mode, setMode] = useState("login");
     const [name, setName] = useState("");
     const [countryCode, setCountryCode] = useState("");
+    const [flag, setFlag] = useState("");
     const [phone, setPhone] = useState("");
     const [phoneValue, setPhoneValue] = useState("");
     const [password, setPassword] = useState("");
@@ -87,7 +87,7 @@ export default function AuthFormScreen() {
     const [confirmCode, setConfirmCode] = useState("");
 
     const phoneNumberOnChangeTextHandler = (text = "") => {
-        text = text.slice(countryCode.length).trim();
+        text = text.slice(flag.length + countryCode.length).trim();
         const formatWithMaskConfig = { text, mask: Masks.USA_PHONE };
         const { masked, unmasked } = formatWithMask(formatWithMaskConfig);
         setPhone(unmasked);
@@ -141,6 +141,7 @@ export default function AuthFormScreen() {
                             style={styles.countryCodePicker}
                             show={showCountrySelector}
                             pickerButtonOnPress={(item) => {
+                                setFlag(item.flag);
                                 setCountryCode(item.dial_code);
                                 setShowCountrySelector(false);
                                 phoneRef.current.focus();
@@ -164,7 +165,7 @@ export default function AuthFormScreen() {
                             <TextInput
                                 ref={phoneRef}
                                 style={Styles.textInput}
-                                value={phoneValue}
+                                value={flag + phoneValue}
                                 placeholder={`       ${Strings.phoneNumber}`}
                                 onChangeText={phoneNumberOnChangeTextHandler}
                                 keyboardType='numeric'
