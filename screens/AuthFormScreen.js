@@ -6,6 +6,8 @@ import {
     View,
     TextInput,
     Pressable,
+    KeyboardAvoidingView,
+    Platform,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import MaskInput, { formatWithMask, Masks } from "react-native-mask-input";
@@ -21,7 +23,7 @@ import Button from "../components/Button";
 
 import Colors from "../constants/colors";
 import Styles from "../constants/styles";
-import Strings from "../util/strings";
+import Strings, { deviceLang } from "../util/strings";
 
 const loginIllustration = require("../assets/illustrations/login.png");
 const registerIllustration = require("../assets/illustrations/register.png");
@@ -63,7 +65,7 @@ const modes = {
         newPassword: true,
         notHaveAnAccount: true,
         iRemember: true,
-        resetCode: true,
+        resetPasswordCode: true,
     },
     checkConfirmCode: {
         title: Strings.confirmAccount,
@@ -84,7 +86,7 @@ export default function AuthFormScreen() {
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [tacChecked, setTacChecked] = useState(false);
     const [showCountrySelector, setShowCountrySelector] = useState(false);
-    const [resetCode, setResetCode] = useState("");
+    const [resetPasswordCode, setResetPasswordCode] = useState("");
     const [confirmCode, setConfirmCode] = useState("");
 
     const mutation = useMutation({
@@ -96,242 +98,284 @@ export default function AuthFormScreen() {
         },
     });
 
-    const submitButtonPressHandler = () => {};
+    const submitButtonPressHandler = () => {
+        const data = {
+            name,
+            phone: countryCode + phone,
+            password,
+            newPassword: password,
+            confirmCode,
+            resetPasswordCode,
+        };
+        mutation.mutate(data);
+    };
 
     return (
-        <LinearGradient
-            colors={Colors.mainLinearGradient}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 0 }}
-            style={styles.background}
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.select({ android: "height", ios: "padding" })}
         >
-            <View style={styles.imageContainer}>
-                <Image
-                    source={modes[mode].image}
-                    resizeMode='contain'
-                    style={styles.image}
-                />
-            </View>
-            <View style={styles.formContainer}>
-                <Text style={styles.title}>{modes[mode].title}</Text>
-                {modes[mode].name && (
-                    <View style={styles.inputContainer}>
-                        <Ionicons
-                            name='person-circle-outline'
-                            size={20}
-                            color='black'
-                            style={[
-                                styles.inputIcon,
-                                { display: name ? "none" : "flex" },
-                            ]}
-                        />
-                        <TextInput
-                            style={Styles.textInput}
-                            value={name}
-                            placeholder={`       ${Strings.name}`}
-                            onChangeText={setName}
-                        />
-                    </View>
-                )}
-                {modes[mode].phone && (
-                    <>
-                        <CountryPicker
-                            style={styles.countryCodePicker}
-                            show={showCountrySelector}
-                            pickerButtonOnPress={(item) => {
-                                setFlag(item.flag);
-                                setCountryCode(item.dial_code);
-                                setShowCountrySelector(false);
-                            }}
-                        />
-                        <View style={styles.phoneInputContainer}>
-                            <Pressable
-                                style={styles.countryCodePickerButton}
-                                onPress={() => {
-                                    setShowCountrySelector(true);
-                                }}
-                            >
-                                <Text>
-                                    {flag || countryCode ? (
-                                        `${flag} ${countryCode}`
-                                    ) : (
-                                        <Feather
-                                            name='flag'
-                                            size={18}
-                                            color='#0006'
-                                        />
-                                    )}
-                                </Text>
-                            </Pressable>
-                            <View
-                                style={[
-                                    styles.inputContainer,
-                                    styles.phoneTextInputContainer,
-                                ]}
-                            >
-                                <Feather
-                                    name='phone'
-                                    size={20}
-                                    color='black'
-                                    style={[
-                                        styles.inputIcon,
-                                        {
-                                            display: phone ? "none" : "flex",
-                                        },
-                                    ]}
-                                />
-                                <MaskInput
-                                    style={Styles.textInput}
-                                    value={phone}
-                                    placeholder={`       ${Strings.phoneNumber}`}
-                                    keyboardType='numeric'
-                                    onChangeText={(_, unmasked) => {
-                                        setPhone(unmasked);
-                                    }}
-                                    mask={Masks.USA_PHONE}
-                                />
-                            </View>
-                        </View>
-                    </>
-                )}
-                {modes[mode].resetCode && (
-                    <View style={styles.inputContainer}>
-                        <Ionicons
-                            name='barcode-outline'
-                            size={20}
-                            color='black'
-                            style={[
-                                styles.inputIcon,
-                                { display: resetCode ? "none" : "flex" },
-                            ]}
-                        />
-                        <TextInput
-                            style={Styles.textInput}
-                            value={resetCode}
-                            placeholder={`       ${Strings.resetCode}`}
-                            onChangeText={setResetCode}
-                            keyboardType='numeric'
-                        />
-                    </View>
-                )}
-                {(modes[mode].password || modes[mode].newPassword) && (
-                    <View style={styles.inputContainer}>
-                        <Ionicons
-                            name='lock-closed-outline'
-                            size={20}
-                            color='black'
-                            style={[
-                                styles.inputIcon,
-                                { display: password ? "none" : "flex" },
-                            ]}
-                        />
-                        <TextInput
-                            style={Styles.textInput}
-                            value={password}
-                            placeholder={`       ${
-                                modes[mode].newPassword
-                                    ? Strings.newPassword
-                                    : Strings.password
-                            }`}
-                            onChangeText={setPassword}
-                            secureTextEntry={!passwordVisible}
-                        />
-                        <Pressable
-                            onPress={() => setPasswordVisible((prev) => !prev)}
-                            style={[
-                                styles.inputIcon,
-                                { left: "initial", right: 10 },
-                            ]}
-                        >
+            <LinearGradient
+                colors={Colors.mainLinearGradient}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 0 }}
+                style={styles.background}
+            >
+                <View style={styles.imageContainer}>
+                    <Image
+                        source={modes[mode].image}
+                        resizeMode='contain'
+                        style={styles.image}
+                    />
+                </View>
+                <View style={styles.formContainer}>
+                    <Text style={styles.title}>{modes[mode].title}</Text>
+                    {modes[mode].name && (
+                        <View style={styles.inputContainer}>
                             <Ionicons
-                                name={passwordVisible ? "eye-off" : "eye"}
+                                name='person-circle-outline'
                                 size={20}
                                 color='black'
+                                style={[
+                                    styles.inputIcon,
+                                    { display: name ? "none" : "flex" },
+                                ]}
                             />
-                        </Pressable>
-                    </View>
-                )}
-                {modes[mode].confirmCode && (
-                    <View style={styles.inputContainer}>
-                        <Octicons
-                            name='verified'
-                            size={20}
-                            color='black'
-                            style={[
-                                styles.inputIcon,
-                                { display: confirmCode ? "none" : "flex" },
-                            ]}
-                        />
-                        <TextInput
-                            style={Styles.textInput}
-                            value={confirmCode}
-                            placeholder={`       ${Strings.confirmCode}`}
-                            onChangeText={setConfirmCode}
-                            keyboardType='numeric'
-                        />
-                    </View>
-                )}
-                {modes[mode].forgotPassword && (
+                            <TextInput
+                                style={Styles.textInput}
+                                value={name}
+                                placeholder={`       ${Strings.name}`}
+                                onChangeText={setName}
+                                returnKeyType='done'
+                            />
+                        </View>
+                    )}
+                    {modes[mode].phone && (
+                        <>
+                            <CountryPicker
+                                style={styles.countryCodePicker}
+                                show={showCountrySelector}
+                                onBackdropPress={() =>
+                                    setShowCountrySelector(false)
+                                }
+                                pickerButtonOnPress={(item) => {
+                                    setFlag(item.flag);
+                                    setCountryCode(item.dial_code);
+                                    setShowCountrySelector(false);
+                                }}
+                                lang={deviceLang}
+                            />
+                            <View style={styles.phoneInputContainer}>
+                                <Pressable
+                                    style={styles.countryCodePickerButton}
+                                    onPress={() => {
+                                        setShowCountrySelector(true);
+                                    }}
+                                >
+                                    <Text>
+                                        {flag || countryCode ? (
+                                            `${flag} ${countryCode}`
+                                        ) : (
+                                            <Feather
+                                                name='flag'
+                                                size={18}
+                                                color='#0006'
+                                            />
+                                        )}
+                                    </Text>
+                                </Pressable>
+                                <View
+                                    style={[
+                                        styles.inputContainer,
+                                        styles.phoneTextInputContainer,
+                                    ]}
+                                >
+                                    <Feather
+                                        name='phone'
+                                        size={20}
+                                        color='black'
+                                        style={[
+                                            styles.inputIcon,
+                                            {
+                                                display: phone
+                                                    ? "none"
+                                                    : "flex",
+                                            },
+                                        ]}
+                                    />
+                                    <MaskInput
+                                        style={Styles.textInput}
+                                        value={phone}
+                                        placeholder={`       ${Strings.phoneNumber}`}
+                                        keyboardType='phone-pad'
+                                        onChangeText={(_, unmasked) => {
+                                            setPhone(unmasked);
+                                        }}
+                                        mask={Masks.USA_PHONE}
+                                        returnKeyType='done'
+                                    />
+                                </View>
+                            </View>
+                        </>
+                    )}
+                    {modes[mode].resetPasswordCode && (
+                        <View style={styles.inputContainer}>
+                            <Ionicons
+                                name='barcode-outline'
+                                size={20}
+                                color='black'
+                                style={[
+                                    styles.inputIcon,
+                                    {
+                                        display: resetPasswordCode
+                                            ? "none"
+                                            : "flex",
+                                    },
+                                ]}
+                            />
+                            <TextInput
+                                style={Styles.textInput}
+                                value={resetPasswordCode}
+                                placeholder={`       ${Strings.resetPasswordCode}`}
+                                onChangeText={setResetPasswordCode}
+                                keyboardType='numeric'
+                                returnKeyType='done'
+                            />
+                        </View>
+                    )}
+                    {(modes[mode].password || modes[mode].newPassword) && (
+                        <View style={styles.inputContainer}>
+                            <Ionicons
+                                name='lock-closed-outline'
+                                size={20}
+                                color='black'
+                                style={[
+                                    styles.inputIcon,
+                                    { display: password ? "none" : "flex" },
+                                ]}
+                            />
+                            <TextInput
+                                style={Styles.textInput}
+                                value={password}
+                                placeholder={`       ${
+                                    modes[mode].newPassword
+                                        ? Strings.newPassword
+                                        : Strings.password
+                                }`}
+                                onChangeText={setPassword}
+                                secureTextEntry={!passwordVisible}
+                                returnKeyType='done'
+                            />
+                            <Pressable
+                                onPress={() =>
+                                    setPasswordVisible((prev) => !prev)
+                                }
+                                style={[
+                                    styles.inputIcon,
+                                    { left: "initial", right: 10 },
+                                ]}
+                            >
+                                <Ionicons
+                                    name={passwordVisible ? "eye-off" : "eye"}
+                                    size={20}
+                                    color='black'
+                                />
+                            </Pressable>
+                        </View>
+                    )}
+                    {modes[mode].confirmCode && (
+                        <View style={styles.inputContainer}>
+                            <Octicons
+                                name='verified'
+                                size={20}
+                                color='black'
+                                style={[
+                                    styles.inputIcon,
+                                    { display: confirmCode ? "none" : "flex" },
+                                ]}
+                            />
+                            <TextInput
+                                style={Styles.textInput}
+                                value={confirmCode}
+                                placeholder={`       ${Strings.confirmCode}`}
+                                onChangeText={setConfirmCode}
+                                keyboardType='numeric'
+                                returnKeyType='done'
+                            />
+                        </View>
+                    )}
+                    {modes[mode].forgotPassword && (
+                        <Button
+                            mode='text'
+                            style={styles.forgotPassword}
+                            onPress={() => setMode("resetPassword")}
+                        >
+                            {Strings.forgotPassword}
+                        </Button>
+                    )}
+                    {modes[mode].terms && (
+                        <View style={styles.tacContainer}>
+                            <Checkbox
+                                style={styles.checkbox}
+                                value={tacChecked}
+                                onValueChange={() =>
+                                    setTacChecked((prev) => !prev)
+                                }
+                            />
+                            <Text>{Strings.iAgreeToThe} </Text>
+                            <Pressable>
+                                <Text style={styles.tacText}>
+                                    {Strings.termsAndConditions}
+                                </Text>
+                            </Pressable>
+                        </View>
+                    )}
+                    {modes[mode].iRemember && (
+                        <View style={styles.tacContainer}>
+                            <Text>{Strings.iRememberMyPassword} </Text>
+                            <Pressable onPress={() => setMode("login")}>
+                                <Text style={styles.tacText}>
+                                    {Strings.login}
+                                </Text>
+                            </Pressable>
+                        </View>
+                    )}
                     <Button
-                        mode='text'
-                        style={styles.forgotPassword}
-                        onPress={() => setMode("resetPassword")}
+                        mode='primary'
+                        style={styles.confirmButton}
+                        onPress={submitButtonPressHandler}
                     >
-                        {Strings.forgotPassword}
+                        {modes[mode].buttonTitle}
                     </Button>
-                )}
-                {modes[mode].terms && (
-                    <View style={styles.tacContainer}>
-                        <Checkbox
-                            style={styles.checkbox}
-                            value={tacChecked}
-                            onValueChange={() => setTacChecked((prev) => !prev)}
-                        />
-                        <Text>{Strings.iAgreeToThe} </Text>
-                        <Pressable>
-                            <Text style={styles.tacText}>
-                                {Strings.termsAndConditions}
+                    {modes[mode].notHaveAnAccount && (
+                        <>
+                            <Text style={[styles.text, { marginTop: 18 }]}>
+                                {Strings.youDontHaveAnAccount}
                             </Text>
-                        </Pressable>
-                    </View>
-                )}
-                {modes[mode].iRemember && (
-                    <View style={styles.tacContainer}>
-                        <Text>{Strings.iRememberMyPassword} </Text>
-                        <Pressable onPress={() => setMode("login")}>
-                            <Text style={styles.tacText}>{Strings.login}</Text>
-                        </Pressable>
-                    </View>
-                )}
-                <Button
-                    mode='primary'
-                    style={styles.confirmButton}
-                    onPress={submitButtonPressHandler}
-                >
-                    {modes[mode].buttonTitle}
-                </Button>
-                {modes[mode].notHaveAnAccount && (
-                    <>
-                        <Text style={[styles.text, { marginTop: 18 }]}>
-                            {Strings.youDontHaveAnAccount}
-                        </Text>
-                        <Button mode='text' onPress={() => setMode("register")}>
-                            {Strings.createNewAccount}
-                        </Button>
-                    </>
-                )}
-                {modes[mode].haveAnAccount && (
-                    <>
-                        <Text style={[styles.text, { marginTop: 18 }]}>
-                            {Strings.youDontHaveAnAccount}
-                        </Text>
-                        <Button mode='text' onPress={() => setMode("login")}>
-                            {Strings.loginNow}
-                        </Button>
-                    </>
-                )}
-            </View>
-        </LinearGradient>
+                            <Button
+                                mode='text'
+                                onPress={() => setMode("register")}
+                            >
+                                {Strings.createNewAccount}
+                            </Button>
+                        </>
+                    )}
+                    {modes[mode].haveAnAccount && (
+                        <>
+                            <Text style={[styles.text, { marginTop: 18 }]}>
+                                {Strings.youDontHaveAnAccount}
+                            </Text>
+                            <Button
+                                mode='text'
+                                onPress={() => setMode("login")}
+                            >
+                                {Strings.loginNow}
+                            </Button>
+                        </>
+                    )}
+                </View>
+            </LinearGradient>
+        </KeyboardAvoidingView>
     );
 }
 
@@ -396,7 +440,11 @@ const styles = StyleSheet.create({
         color: Colors.coloredText,
         textTransform: "capitalize",
     },
-    countryCodePicker: {},
+    countryCodePicker: {
+        modal: {
+            height: "70%",
+        },
+    },
     countryCodePickerButton: {
         width: "28%",
         borderWidth: 1,
