@@ -1,8 +1,11 @@
-export async function sendRequest({ api, method, data, token }) {
-    const url = "";
+import { QueryClient } from "@tanstack/react-query";
+export const queryClient = new QueryClient();
+
+export async function sendRequest({ api, data, token }) {
+    const url = "31.223.111.227:3000";
 
     const config = {
-        method,
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ api, data: { token, ...data } }),
     };

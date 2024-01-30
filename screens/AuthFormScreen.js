@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import { useState } from "react";
 import {
     Image,
     StyleSheet,
@@ -8,11 +8,14 @@ import {
     Pressable,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { formatWithMask, Masks } from "react-native-mask-input";
+import MaskInput, { formatWithMask, Masks } from "react-native-mask-input";
 import Checkbox from "expo-checkbox";
 import { CountryPicker } from "react-native-country-codes-picker";
+import { useMutation } from "@tanstack/react-query";
 
 import { Ionicons, Feather, Octicons } from "@expo/vector-icons";
+
+import { sendRequest } from "../util/http";
 
 import Button from "../components/Button";
 
@@ -45,7 +48,7 @@ const modes = {
         terms: true,
         haveAnAccount: true,
     },
-    resetPassword: {
+    sendResetPasswordCode: {
         title: Strings.resetPassword,
         buttonTitle: Strings.sendCode,
         image: resetPasswordIllustration,
@@ -53,7 +56,7 @@ const modes = {
         notHaveAnAccount: true,
         iRemember: true,
     },
-    resetPasswordCode: {
+    checkResetPasswordCode: {
         title: Strings.resetPassword,
         buttonTitle: Strings.reset,
         image: resetPasswordIllustration,
@@ -62,7 +65,7 @@ const modes = {
         iRemember: true,
         resetCode: true,
     },
-    confirmAccount: {
+    checkConfirmCode: {
         title: Strings.confirmAccount,
         buttonTitle: Strings.confirm,
         image: verifiedIllustration,
@@ -72,13 +75,11 @@ const modes = {
 };
 
 export default function AuthFormScreen() {
-    const phoneRef = useRef(null);
     const [mode, setMode] = useState("login");
     const [name, setName] = useState("");
     const [countryCode, setCountryCode] = useState("");
     const [flag, setFlag] = useState("");
     const [phone, setPhone] = useState("");
-    const [phoneValue, setPhoneValue] = useState("");
     const [password, setPassword] = useState("");
     const [passwordVisible, setPasswordVisible] = useState(false);
     const [tacChecked, setTacChecked] = useState(false);
@@ -86,19 +87,16 @@ export default function AuthFormScreen() {
     const [resetCode, setResetCode] = useState("");
     const [confirmCode, setConfirmCode] = useState("");
 
-    const phoneNumberOnChangeTextHandler = (text = "") => {
-        text = text.slice(flag.length + countryCode.length).trim();
-        const formatWithMaskConfig = { text, mask: Masks.USA_PHONE };
-        const { masked, unmasked } = formatWithMask(formatWithMaskConfig);
-        setPhone(unmasked);
-        setPhoneValue(
-            countryCode || phone ? `${countryCode || ""} ${masked}` : ""
-        );
-    };
+    const mutation = useMutation({
+        mutationFn: (data) => {
+            return sendRequest({ api: `/user/${mode}`, data });
+        },
+        onSuccess: (response) => {
+            console.log("success");
+        },
+    });
 
-    useEffect(() => {
-        phoneNumberOnChangeTextHandler(phoneRef?.current?.value);
-    }, [countryCode]);
+    const submitButtonPressHandler = () => {};
 
     return (
         <LinearGradient
@@ -144,33 +142,55 @@ export default function AuthFormScreen() {
                                 setFlag(item.flag);
                                 setCountryCode(item.dial_code);
                                 setShowCountrySelector(false);
-                                phoneRef.current.focus();
                             }}
                         />
-                        <View style={styles.inputContainer}>
-                            <Feather
-                                name='phone'
-                                size={20}
-                                color='black'
+                        <View style={styles.phoneInputContainer}>
+                            <Pressable
+                                style={styles.countryCodePickerButton}
+                                onPress={() => {
+                                    setShowCountrySelector(true);
+                                }}
+                            >
+                                <Text>
+                                    {flag || countryCode ? (
+                                        `${flag} ${countryCode}`
+                                    ) : (
+                                        <Feather
+                                            name='flag'
+                                            size={18}
+                                            color='#0006'
+                                        />
+                                    )}
+                                </Text>
+                            </Pressable>
+                            <View
                                 style={[
-                                    styles.inputIcon,
-                                    {
-                                        display:
-                                            countryCode || phone
-                                                ? "none"
-                                                : "flex",
-                                    },
+                                    styles.inputContainer,
+                                    styles.phoneTextInputContainer,
                                 ]}
-                            />
-                            <TextInput
-                                ref={phoneRef}
-                                style={Styles.textInput}
-                                value={flag + phoneValue}
-                                placeholder={`       ${Strings.phoneNumber}`}
-                                onChangeText={phoneNumberOnChangeTextHandler}
-                                keyboardType='numeric'
-                                onPressIn={() => setShowCountrySelector(true)}
-                            />
+                            >
+                                <Feather
+                                    name='phone'
+                                    size={20}
+                                    color='black'
+                                    style={[
+                                        styles.inputIcon,
+                                        {
+                                            display: phone ? "none" : "flex",
+                                        },
+                                    ]}
+                                />
+                                <MaskInput
+                                    style={Styles.textInput}
+                                    value={phone}
+                                    placeholder={`       ${Strings.phoneNumber}`}
+                                    keyboardType='numeric'
+                                    onChangeText={(_, unmasked) => {
+                                        setPhone(unmasked);
+                                    }}
+                                    mask={Masks.USA_PHONE}
+                                />
+                            </View>
                         </View>
                     </>
                 )}
@@ -283,7 +303,11 @@ export default function AuthFormScreen() {
                         </Pressable>
                     </View>
                 )}
-                <Button mode='primary' style={styles.confirmButton}>
+                <Button
+                    mode='primary'
+                    style={styles.confirmButton}
+                    onPress={submitButtonPressHandler}
+                >
                     {modes[mode].buttonTitle}
                 </Button>
                 {modes[mode].notHaveAnAccount && (
@@ -326,7 +350,7 @@ const styles = StyleSheet.create({
     formContainer: {
         backgroundColor: "white",
         marginTop: "auto",
-        paddingHorizontal: 68,
+        paddingHorizontal: 60,
         paddingVertical: 30,
         borderTopLeftRadius: 20,
         borderTopRightRadius: 20,
@@ -373,4 +397,20 @@ const styles = StyleSheet.create({
         textTransform: "capitalize",
     },
     countryCodePicker: {},
+    countryCodePickerButton: {
+        width: "28%",
+        borderWidth: 1,
+        borderColor: "#0004",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    phoneInputContainer: {
+        flexDirection: "row",
+        gap: 6,
+        marginVertical: 8,
+    },
+    phoneTextInputContainer: {
+        flex: 1,
+        marginVertical: 0,
+    },
 });
