@@ -2,7 +2,7 @@ import { QueryClient } from "@tanstack/react-query";
 export const queryClient = new QueryClient();
 
 export async function sendRequest({ api, data, token }) {
-    const url = "31.223.111.227:3000";
+    const url = "http://31.223.111.227:3000";
 
     const config = {
         method: "POST",

@@ -10,7 +10,7 @@ import {
     Platform,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import MaskInput, { formatWithMask, Masks } from "react-native-mask-input";
+import MaskInput, { Masks } from "react-native-mask-input";
 import Checkbox from "expo-checkbox";
 import { CountryPicker } from "react-native-country-codes-picker";
 import { useMutation } from "@tanstack/react-query";
