@@ -10,7 +10,8 @@ export async function setItem(key, value) {
 
 export async function getItem(key) {
     try {
-        await AsyncStorage.getItem(key);
+        const item = await AsyncStorage.getItem(key);
+        return item;
     } catch (error) {
         console.error("Error getting item:", key);
     }
