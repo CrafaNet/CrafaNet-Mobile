@@ -24,6 +24,7 @@ import Button from "../components/Button";
 import Colors from "../constants/colors";
 import Styles from "../constants/styles";
 import Strings, { deviceLang } from "../util/strings";
+import { setToken } from "../store/auth";
 
 const loginIllustration = require("../assets/illustrations/login.png");
 const registerIllustration = require("../assets/illustrations/register.png");
@@ -76,7 +77,7 @@ const modes = {
     },
 };
 
-export default function AuthFormScreen() {
+export default function AuthFormScreen({ onAuth }) {
     const [mode, setMode] = useState("login");
     const [name, setName] = useState("");
     const [countryCode, setCountryCode] = useState("");
@@ -94,11 +95,17 @@ export default function AuthFormScreen() {
             return sendRequest({ api: `/user/${mode}`, data });
         },
         onSuccess: (response) => {
-            console.log("success");
+            if (["login", "register"].includes(mode)) {
+                const token = response?.data?.token;
+                if (!token) return;
+                setToken(token);
+                onAuth();
+            }
         },
     });
 
     const submitButtonPressHandler = () => {
+        if (mode === "register" && !tacChecked) return;
         const data = {
             name,
             phone: countryCode + phone,
@@ -272,7 +279,7 @@ export default function AuthFormScreen() {
                                 }
                                 style={[
                                     styles.inputIcon,
-                                    { left: "initial", right: 10 },
+                                    { left: "auto", right: 10 },
                                 ]}
                             >
                                 <Ionicons

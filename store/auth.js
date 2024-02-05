@@ -16,4 +16,6 @@ export function checkToken() {
     return !!getToken();
 }
 
-export function checkAuth() {}
+export function checkAuth() {
+    return checkToken();
+}
