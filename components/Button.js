@@ -5,14 +5,32 @@ import { AntDesign } from "@expo/vector-icons";
 import Colors from "../constants/colors";
 import Sizes from "../constants/sizes";
 
-export default function Button({ children, style, mode = "text", onPress }) {
+export default function Button({
+    children,
+    style,
+    mode = "text",
+    onPress,
+    disabled,
+}) {
     const styles = styleModes[mode];
     const isSecondary = mode === "secondary";
 
+    const buttonOnPress = () => {
+        if (disabled) return;
+        onPress();
+    };
+
     return (
-        <Pressable onPress={onPress} style={[styles.container, style]}>
+        <Pressable
+            onPress={buttonOnPress}
+            style={[styles.container, disabled && styles.disabled, style]}
+        >
             <LinearGradient
-                colors={gradientColorModes[mode]}
+                colors={
+                    disabled
+                        ? gradientColorModes["disabled"]
+                        : gradientColorModes[mode]
+                }
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
                 style={styles.gradient}
@@ -29,6 +47,7 @@ const gradientColorModes = {
     primary: Colors.mainLinearGradient,
     secondary: [Colors.secondary500, Colors.secondary500],
     text: ["transparent", "transparent"],
+    disabled: ["#555", "#888"],
 };
 
 const styleModes = {

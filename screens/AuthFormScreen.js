@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
     Image,
     StyleSheet,
@@ -14,6 +14,7 @@ import MaskInput, { Masks } from "react-native-mask-input";
 import Checkbox from "expo-checkbox";
 import { CountryPicker } from "react-native-country-codes-picker";
 import { useMutation } from "@tanstack/react-query";
+import CountryFlag from "react-native-country-flag";
 
 import { Ionicons, Feather, Octicons } from "@expo/vector-icons";
 
@@ -25,6 +26,7 @@ import Colors from "../constants/colors";
 import Styles from "../constants/styles";
 import Strings, { deviceLang } from "../util/strings";
 import { setToken } from "../store/auth";
+// import { getLocation, getCountry } from "../util/location";
 
 const loginIllustration = require("../assets/illustrations/login.png");
 const registerIllustration = require("../assets/illustrations/register.png");
@@ -78,10 +80,11 @@ const modes = {
 };
 
 export default function AuthFormScreen({ onAuth }) {
+    // const [location, setLocation] = useState(null);
+    const [countryCode, setCountryCode] = useState("");
+    const [countryDial, setCountryDial] = useState("");
     const [mode, setMode] = useState("login");
     const [name, setName] = useState("");
-    const [countryCode, setCountryCode] = useState("");
-    const [flag, setFlag] = useState("");
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
     const [passwordVisible, setPasswordVisible] = useState(false);
@@ -90,25 +93,41 @@ export default function AuthFormScreen({ onAuth }) {
     const [resetPasswordCode, setResetPasswordCode] = useState("");
     const [confirmCode, setConfirmCode] = useState("");
 
+    const isPhone = countryDial && phone;
+    const validInputs =
+        (mode === "login" && isPhone && password) ||
+        (mode === "register" && name && isPhone && password && tacChecked) ||
+        (mode === "sendResetPasswordCode" && isPhone) ||
+        (mode === "checkResetPasswordCode" && isPhone && resetPasswordCode) ||
+        (mode === "checkConfirmCode" && confirmCode);
+
     const mutation = useMutation({
         mutationFn: (data) => {
             return sendRequest({ api: `/user/${mode}`, data });
         },
         onSuccess: (response) => {
-            if (["login", "register"].includes(mode)) {
+            console.log(response);
+            if (response.status !== 200) return;
+            if (["login", "checkConfirmCode"].includes(mode)) {
                 const token = response?.data?.token;
                 if (!token) return;
                 setToken(token);
                 onAuth();
+            } else if (mode === "register") {
+                setMode("checkConfirmCode");
+            } else if (mode === "sendResetPasswordCode") {
+                setMode("checkResetPasswordCode");
+            } else if (mode === "checkResetPasswordCode") {
+                setMode("login");
             }
         },
     });
 
     const submitButtonPressHandler = () => {
-        if (mode === "register" && !tacChecked) return;
+        if (!validInputs) return;
         const data = {
             name,
-            phone: countryCode + phone,
+            phone: countryDial + phone,
             password,
             newPassword: password,
             confirmCode,
@@ -116,6 +135,15 @@ export default function AuthFormScreen({ onAuth }) {
         };
         mutation.mutate(data);
     };
+
+    // useEffect(() => {
+    //     setLocation(getLocation());
+    // }, []);
+
+    // useEffect(() => {
+    //     const coords = location?._j?.coords;
+    //     if (coords) setCountryCode(getCountry(coords)?.address?.country_code);
+    // }, [location]);
 
     return (
         <KeyboardAvoidingView
@@ -166,8 +194,8 @@ export default function AuthFormScreen({ onAuth }) {
                                     setShowCountrySelector(false)
                                 }
                                 pickerButtonOnPress={(item) => {
-                                    setFlag(item.flag);
-                                    setCountryCode(item.dial_code);
+                                    setCountryCode(item?.code?.toLowerCase());
+                                    setCountryDial(item.dial_code);
                                     setShowCountrySelector(false);
                                 }}
                                 lang={deviceLang}
@@ -179,17 +207,22 @@ export default function AuthFormScreen({ onAuth }) {
                                         setShowCountrySelector(true);
                                     }}
                                 >
-                                    <Text>
-                                        {flag || countryCode ? (
-                                            `${flag} ${countryCode}`
-                                        ) : (
-                                            <Feather
-                                                name='flag'
-                                                size={18}
-                                                color='#0006'
+                                    {countryCode || countryDial ? (
+                                        <>
+                                            <CountryFlag
+                                                style={styles.countryFlag}
+                                                isoCode={countryCode}
+                                                size={14}
                                             />
-                                        )}
-                                    </Text>
+                                            <Text>{countryDial}</Text>
+                                        </>
+                                    ) : (
+                                        <Feather
+                                            name='flag'
+                                            size={18}
+                                            color='#0006'
+                                        />
+                                    )}
                                 </Pressable>
                                 <View
                                     style={[
@@ -243,7 +276,7 @@ export default function AuthFormScreen({ onAuth }) {
                             <TextInput
                                 style={Styles.textInput}
                                 value={resetPasswordCode}
-                                placeholder={`       ${Strings.resetPasswordCode}`}
+                                placeholder={`       ${Strings.resetCode}`}
                                 onChangeText={setResetPasswordCode}
                                 keyboardType='numeric'
                                 returnKeyType='done'
@@ -315,7 +348,7 @@ export default function AuthFormScreen({ onAuth }) {
                         <Button
                             mode='text'
                             style={styles.forgotPassword}
-                            onPress={() => setMode("resetPassword")}
+                            onPress={() => setMode("sendResetPasswordCode")}
                         >
                             {Strings.forgotPassword}
                         </Button>
@@ -351,6 +384,7 @@ export default function AuthFormScreen({ onAuth }) {
                         mode='primary'
                         style={styles.confirmButton}
                         onPress={submitButtonPressHandler}
+                        disabled={!validInputs}
                     >
                         {modes[mode].buttonTitle}
                     </Button>
@@ -456,8 +490,13 @@ const styles = StyleSheet.create({
         width: "28%",
         borderWidth: 1,
         borderColor: "#0004",
+        flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
+        gap: 4,
+    },
+    countryFlag: {
+        borderRadius: 2,
     },
     phoneInputContainer: {
         flexDirection: "row",
