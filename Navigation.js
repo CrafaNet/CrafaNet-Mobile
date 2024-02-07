@@ -26,6 +26,7 @@ const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
 export default function Navigation() {
+    console.log("nav");
     return (
         <NavigationContainer>
             <Tab.Navigator screenOptions={bottomTabScreenOptions}>

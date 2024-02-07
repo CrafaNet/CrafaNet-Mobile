@@ -106,7 +106,6 @@ export default function AuthFormScreen({ onAuth }) {
             return sendRequest({ api: `/user/${mode}`, data });
         },
         onSuccess: (response) => {
-            console.log(response);
             if (response.status !== 200) return;
             if (["login", "checkConfirmCode"].includes(mode)) {
                 const token = response?.data?.token;
