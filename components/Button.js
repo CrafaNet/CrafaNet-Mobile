@@ -28,7 +28,9 @@ export default function Button({
             <LinearGradient
                 colors={
                     disabled
-                        ? gradientColorModes["disabled"]
+                        ? mode === "primary"
+                            ? gradientColorModes.primaryDisabled
+                            : gradientColorModes.disabled
                         : gradientColorModes[mode]
                 }
                 start={{ x: 0, y: 0 }}
@@ -47,7 +49,9 @@ const gradientColorModes = {
     primary: Colors.mainLinearGradient,
     secondary: [Colors.secondary500, Colors.secondary500],
     text: ["transparent", "transparent"],
-    disabled: ["#555", "#888"],
+    gray: ["#ddd", "#ddd"],
+    disabled: ["#555", "#555"],
+    primaryDisabled: ["#555", "#888"],
 };
 
 const styleModes = {
@@ -102,6 +106,27 @@ const styleModes = {
         text: {
             color: Colors.coloredText,
             fontFamily: "poppins-",
+        },
+    }),
+    gray: StyleSheet.create({
+        container: {
+            height: 44,
+            justifyContent: "center",
+            alignItems: "center",
+            borderRadius: 8,
+            overflow: "hidden",
+        },
+        gradient: {
+            width: "100%",
+            height: "100%",
+            justifyContent: "center",
+            alignItems: "center",
+        },
+        text: {
+            color: "#222",
+            fontSize: 18,
+            textTransform: "uppercase",
+            fontFamily: "poppins-bold",
         },
     }),
 };

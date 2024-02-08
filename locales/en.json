@@ -52,5 +52,13 @@
     "upgradeToVipMemberListItem1": "Unlimited messaging with LearnMate.",
     "upgradeToVipMemberListItem2": "Unlimited SkillHub content sharing.",
     "upgradeNow": "Upgrade Now",
-    "videos": "Videos"
+    "videos": "Videos",
+    "welcomeScreenTitle0": "Discover Your Skills",
+    "welcomeScreenTitle1": "Share Your Work",
+    "welcomeScreenTitle2": "Join Communities",
+    "welcomeScreenText0": "We follow you closely and offer suggestions tailored to your tastes and skills.",
+    "welcomeScreenText1": "Meet new people interested in your hobbies and share your ideas and work.",
+    "welcomeScreenText2": "Participate in digital workshops and live classes from communities that interest you.",
+    "next": "next",
+    "skip": "skip"
 }
