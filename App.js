@@ -45,7 +45,7 @@ export default function App() {
     };
 
     const onSeenWelcome = () => {
-        setItem("seenWelcome", true);
+        setItem("seenWelcome", "true");
         setSeenWelcome(true);
     };
 

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
 import PagerView from "react-native-pager-view";
 
@@ -12,6 +12,7 @@ import welcomeImage3 from "../assets/illustrations/welcome3.png";
 const ww = Dimensions.get("window").width;
 
 export default function WelcomeScreen({ onSeenWelcome }) {
+    const pagerViewRef = useRef(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const images = [welcomeImage1, welcomeImage2, welcomeImage3];
 
@@ -19,10 +20,19 @@ export default function WelcomeScreen({ onSeenWelcome }) {
 
     const pageMargin = -(ww * 0.3);
 
+    const nextPressHandler = () => {
+        setActiveIndex((prev) => {
+            const next = Math.min(prev + 1, images.length - 1);
+            pagerViewRef.current.setPage(next);
+            return next;
+        });
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.showcaseContainer}>
                 <PagerView
+                    ref={pagerViewRef}
                     style={styles.viewPager}
                     initialPage={0}
                     pageMargin={pageMargin}
@@ -72,12 +82,22 @@ export default function WelcomeScreen({ onSeenWelcome }) {
                     </Text>
                 </View>
                 <View style={styles.actions}>
-                    <Button style={styles.button} mode='gray'>
+                    <Button
+                        style={styles.button}
+                        mode='gray'
+                        onPress={onSeenWelcome}
+                    >
                         {Strings.skip}
                     </Button>
-                    <Button style={styles.button} mode='primary'>
-                        {Strings.next}
-                    </Button>
+                    {activeIndex !== images.length - 1 && (
+                        <Button
+                            style={styles.button}
+                            mode='primary'
+                            onPress={nextPressHandler}
+                        >
+                            {Strings.next}
+                        </Button>
+                    )}
                 </View>
             </View>
         </View>
