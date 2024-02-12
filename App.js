@@ -38,7 +38,8 @@ export default function App() {
         "montserrat-bold": require("./assets/fonts/Montserrat-Bold.ttf"),
     });
 
-    if (!fontsLoaded) return null;
+    if (!fontsLoaded || isAuthenticated === null || seenWelcome === null)
+        return null;
 
     const onAuth = () => {
         setIsAuthenticated(true);
