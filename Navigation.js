@@ -103,7 +103,8 @@ function WorkfolioStack() {
 
 const bottomTabScreenOptions = {
     headerShown: false,
-    tabBarActiveTintColor: Colors.primary500,
+    tabBarActiveTintColor: Colors.primary800,
+    tabBarInactiveTintColor: "white",
     tabBarLabelStyle: { fontFamily: "poppins-bold" },
     tabBarStyle: {
         paddingBottom: 6,
@@ -112,6 +113,10 @@ const bottomTabScreenOptions = {
         elevation: 0,
         shadowOpacity: 0,
         borderColor: "transparent",
+        backgroundColor: "#6c5bcb",
+        borderRadius: 10,
+        margin: 6,
+        position: "absolute",
     },
 };
 

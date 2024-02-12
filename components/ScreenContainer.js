@@ -25,5 +25,6 @@ const styles = StyleSheet.create({
     },
     scrollView: {
         flexGrow: 1,
+        paddingBottom: 60,
     },
 });
