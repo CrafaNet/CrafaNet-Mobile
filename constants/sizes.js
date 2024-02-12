@@ -1,4 +1,5 @@
 export default {
+    textExtraSmall: 10,
     textSmall: 12,
     textMedium: 14,
     textLarge: 16,

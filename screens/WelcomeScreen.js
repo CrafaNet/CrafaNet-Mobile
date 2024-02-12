@@ -5,9 +5,9 @@ import PagerView from "react-native-pager-view";
 import Button from "../components/Button";
 import Strings from "../util/strings";
 
-import welcomeImage1 from "../assets/illustrations/welcome1.png";
-import welcomeImage2 from "../assets/illustrations/welcome2.png";
-import welcomeImage3 from "../assets/illustrations/welcome3.png";
+import welcomeImage1 from "../assets/images/welcome1.png";
+import welcomeImage2 from "../assets/images/welcome2.png";
+import welcomeImage3 from "../assets/images/welcome3.png";
 
 const ww = Dimensions.get("window").width;
 

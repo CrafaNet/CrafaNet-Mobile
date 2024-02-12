@@ -22,7 +22,7 @@ const DUMMY_EVENTS = [
     "Lorem ipsum dolor sit amet.",
 ];
 
-import DUMMY_THUMBNAIL from "../../assets/illustrations/welcome2.png";
+import DUMMY_THUMBNAIL from "../../assets/images/welcome2.png";
 import { LinearGradient } from "expo-linear-gradient";
 const DUMMY_VIDEOS = Array.from({ length: 12 }, (_, i) => i);
 
