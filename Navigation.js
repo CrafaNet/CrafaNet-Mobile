@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -15,6 +16,7 @@ import LearnMateHomeScreen from "./screens/LearnMate/LearnMateHomeScreen";
 import WorkfolioHomeScreen from "./screens/Workfolio/WorkfolioHomeScreen";
 // Other screens
 import UpgradeToVipScreen from "./screens/UpgradeToVipScreen";
+import ComingSoonScreen from "./screens/ComingSoonScreen";
 
 import { Ionicons, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 
@@ -24,28 +26,31 @@ import Strings from "./util/strings";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
+const releaseDate = new Date("2024-5-15").getTime();
+const isComingSoon = releaseDate > Date.now();
+
 export default function Navigation() {
     return (
         <NavigationContainer>
             <Tab.Navigator screenOptions={bottomTabScreenOptions}>
                 <Tab.Screen
                     name='Community'
-                    component={CommunityStack}
+                    component={isComingSoon ? ComingSoonScreen : CommunityStack}
                     options={communityBottomTabOptions}
                 />
                 <Tab.Screen
                     name='SkillHub'
-                    component={SkillHubStack}
+                    component={isComingSoon ? ComingSoonScreen : SkillHubStack}
                     options={skillHubBottomTabOptions}
                 />
                 <Tab.Screen
                     name='LearnMate'
-                    component={LearnMateStack}
+                    component={isComingSoon ? ComingSoonScreen : LearnMateStack}
                     options={learnMateBottomTabOptions}
                 />
                 <Tab.Screen
                     name='Workfolio'
-                    component={WorkfolioStack}
+                    component={isComingSoon ? ComingSoonScreen : WorkfolioStack}
                     options={workfolioBottomTabOptions}
                 />
             </Tab.Navigator>

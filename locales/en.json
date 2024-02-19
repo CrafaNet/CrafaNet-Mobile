@@ -61,5 +61,9 @@
     "welcomeScreenText2": "Participate in digital workshops and live classes from communities that interest you.",
     "next": "next",
     "skip": "skip",
-    "pastWorkshops": "Past Workshops"
+    "pastWorkshops": "Past Workshops",
+    "comingSoon": "Coming Soon",
+    "comingSoonMessage": "We are developing our app! We will bring you a great experience soon.",
+    "days": "days",
+    "left": "left"
 }
