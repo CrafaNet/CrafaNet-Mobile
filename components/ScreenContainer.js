@@ -1,4 +1,5 @@
 import { StyleSheet, View, ScrollView } from "react-native";
+import Constants from "expo-constants";
 
 export default function ScreenContainer(props) {
     return (
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "white",
         paddingHorizontal: 24,
-        paddingTop: 40,
+        paddingTop: Constants.statusBarHeight,
     },
     scrollView: {
         flexGrow: 1,

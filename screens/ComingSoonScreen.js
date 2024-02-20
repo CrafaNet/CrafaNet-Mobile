@@ -13,7 +13,7 @@ const daysLeft = Math.ceil((releaseDate - Date.now()) / (1000 * 60 * 60 * 24));
 
 export default function ComingSoon() {
     return (
-        <ScreenContainer>
+        <ScreenContainer scrollEnabled={false}>
             <AppHeader />
             <View style={styles.container}>
                 <Text style={styles.title}>{Strings.comingSoon}!</Text>

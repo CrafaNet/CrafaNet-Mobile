@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -26,7 +25,7 @@ import Strings from "./util/strings";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const releaseDate = new Date("2024-5-15").getTime();
+const releaseDate = new Date("2024-2-15").getTime();
 const isComingSoon = releaseDate > Date.now();
 
 export default function Navigation() {
@@ -111,6 +110,7 @@ const bottomTabScreenOptions = {
     tabBarActiveTintColor: Colors.primary800,
     tabBarInactiveTintColor: "white",
     tabBarLabelStyle: { fontFamily: "poppins-bold" },
+    tabBarLabelPosition: "below-icon",
     tabBarStyle: {
         paddingBottom: 6,
         paddingTop: 8,

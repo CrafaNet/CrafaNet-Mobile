@@ -18,7 +18,7 @@ import CountryFlag from "react-native-country-flag";
 
 import { Ionicons, Feather, Octicons } from "@expo/vector-icons";
 
-import { sendRequest } from "../util/http";
+import { queryClient, sendRequest } from "../util/http";
 
 import Button from "../components/Button";
 
@@ -79,7 +79,7 @@ const modes = {
     },
 };
 
-export default function AuthFormScreen({ onAuth }) {
+export default function AuthFormScreen() {
     // const [location, setLocation] = useState(null);
     const [countryCode, setCountryCode] = useState("");
     const [countryDial, setCountryDial] = useState("");
@@ -111,7 +111,9 @@ export default function AuthFormScreen({ onAuth }) {
                 const token = response?.data?.token;
                 if (!token) return;
                 setToken(token);
-                onAuth();
+                queryClient.invalidateQueries({
+                    queryKey: ["isAuthenticated"],
+                });
             } else if (mode === "register") {
                 setMode("checkConfirmCode");
             } else if (mode === "sendResetPasswordCode") {
