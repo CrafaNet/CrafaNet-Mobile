@@ -24,9 +24,10 @@ import Button from "../components/Button";
 
 import Colors from "../constants/colors";
 import Styles from "../constants/styles";
-import Strings, { deviceLang } from "../util/strings";
+import Strings, { deviceLang, deviceRegion } from "../util/strings";
 import { setToken } from "../store/auth";
-// import { getLocation, getCountry } from "../util/location";
+import { getCountryDial, getLocation } from "../util/location";
+import countries from "../data/countries.json";
 
 const loginIllustration = require("../assets/illustrations/login.png");
 const registerIllustration = require("../assets/illustrations/register.png");
@@ -81,8 +82,10 @@ const modes = {
 
 export default function AuthFormScreen() {
     // const [location, setLocation] = useState(null);
-    const [countryCode, setCountryCode] = useState("");
-    const [countryDial, setCountryDial] = useState("");
+    const [countryCode, setCountryCode] = useState(deviceRegion);
+    const [countryDial, setCountryDial] = useState(
+        getCountryDial(deviceRegion)
+    );
     const [mode, setMode] = useState("login");
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
@@ -138,11 +141,12 @@ export default function AuthFormScreen() {
     };
 
     // useEffect(() => {
-    //     setLocation(getLocation());
+    //     setLocation(getLocation()?._j);
     // }, []);
 
     // useEffect(() => {
-    //     const coords = location?._j?.coords;
+    //     console.log(location);
+    //     const coords = location?.coords;
     //     if (coords) setCountryCode(getCountry(coords)?.address?.country_code);
     // }, [location]);
 
@@ -189,6 +193,7 @@ export default function AuthFormScreen() {
                     {modes[mode].phone && (
                         <>
                             <CountryPicker
+                                showOnly={countries.map((item) => item.code)}
                                 style={styles.countryCodePicker}
                                 show={showCountrySelector}
                                 onBackdropPress={() =>

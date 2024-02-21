@@ -1,4 +1,5 @@
 import * as Location from "expo-location";
+import countries from "../data/countries.json";
 
 export async function getLocation() {
     try {
@@ -21,4 +22,11 @@ export async function getCountry({ latitude, longitude }) {
     } catch (err) {
         return;
     }
+}
+
+export function getCountryDial(countryCode) {
+    const country = countries.find(
+        (item) => item.code.toLowerCase() === countryCode.toLowerCase()
+    );
+    return country?.dial_code || "";
 }
