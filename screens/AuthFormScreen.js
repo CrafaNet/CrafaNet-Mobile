@@ -18,14 +18,14 @@ import CountryFlag from "react-native-country-flag";
 
 import { Ionicons, Feather, Octicons } from "@expo/vector-icons";
 
-import { queryClient, sendRequest } from "../util/http";
+import { sendRequest } from "../util/http";
 
 import Button from "../components/Button";
 
 import Colors from "../constants/colors";
 import Styles from "../constants/styles";
 import Strings, { deviceLang, deviceRegion } from "../util/strings";
-import { setToken } from "../store/auth";
+import { login } from "../store/auth";
 import { getCountryDial, getLocation } from "../util/location";
 import countries from "../data/countries.json";
 
@@ -113,10 +113,7 @@ export default function AuthFormScreen() {
             if (["login", "checkConfirmCode"].includes(mode)) {
                 const token = response?.data?.token;
                 if (!token) return;
-                setToken(token);
-                queryClient.invalidateQueries({
-                    queryKey: ["isAuthenticated"],
-                });
+                login(token);
             } else if (mode === "register") {
                 setMode("checkConfirmCode");
             } else if (mode === "sendResetPasswordCode") {

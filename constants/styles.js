@@ -1,5 +1,7 @@
 import { StyleSheet } from "react-native";
 
+// styles that are common app-wide
+
 export default StyleSheet.create({
     textInput: {
         width: "100%",

@@ -1,5 +1,7 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
+// helper functions for managing async storage
+
 export async function setItem(key, value) {
     try {
         await AsyncStorage.setItem(key, value);

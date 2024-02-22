@@ -4,8 +4,13 @@ export const queryClient = new QueryClient();
 export async function sendRequest({ api, data, token }) {
     const url = "http://31.223.111.227:3000";
 
+    /*
+        api paths are not appended to the url but are appended to body due to security reasons
+        and token is appended to data object due to same reasons
+    */
+
     const config = {
-        method: "POST",
+        method: "POST", // since our api's include only post requests
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ api, data: { token, ...data } }),
     };

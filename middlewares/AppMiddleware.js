@@ -11,19 +11,20 @@ import WelcomeScreen from "./../screens/WelcomeScreen";
 export default function AppMiddleware() {
     const [seenWelcome, setSeenWelcome] = useState();
 
+    // useQuery here might seem unnecessary
+    // but it is used to make use of its invalidateQuery feature
     const { data: isAuthenticated } = useQuery({
         queryKey: ["isAuthenticated"],
         queryFn: checkAuth,
     });
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const result = await getItem("seenWelcome");
-            setSeenWelcome(result);
-        };
-        fetchData();
+    // welcome screen seen information is stored on the device
+    useEffect(async () => {
+        const result = await getItem("seenWelcome");
+        setSeenWelcome(result);
     }, []);
 
+    // if seen, welcome screen will not be shown again to the user
     const onSeenWelcome = () => {
         setItem("seenWelcome", "true");
         setSeenWelcome(true);
@@ -33,6 +34,7 @@ export default function AppMiddleware() {
     const authFormJsx = <AuthFormScreen />;
     const welcomeJsx = <WelcomeScreen onSeenWelcome={onSeenWelcome} />;
 
+    // content to be shown is decided according to the authentication and seen wolcome screen conditions
     let content = isAuthenticated ? navJsx : authFormJsx;
     if (!seenWelcome) content = welcomeJsx;
 

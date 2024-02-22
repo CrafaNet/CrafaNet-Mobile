@@ -5,6 +5,17 @@ import { AntDesign } from "@expo/vector-icons";
 import Colors from "../constants/colors";
 import Sizes from "../constants/sizes";
 
+/*
+    different modes are different styles of buttons,
+    available modes:
+    - primary
+    - secondary
+    - text
+    - gray
+
+    you can add more styles of buttons as done in the styles object below
+*/
+
 export default function Button({
     children,
     style,
