@@ -1,5 +1,6 @@
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import LoadingDots from "react-native-loading-dots";
 import { AntDesign } from "@expo/vector-icons";
 
 import Colors from "../constants/colors";
@@ -22,12 +23,13 @@ export default function Button({
     mode = "text",
     onPress,
     disabled,
+    isLoading,
 }) {
     const styles = styleModes[mode];
     const isSecondary = mode === "secondary";
 
     const buttonOnPress = () => {
-        if (disabled) return;
+        if (disabled || isLoading) return;
         onPress();
     };
 
@@ -48,7 +50,15 @@ export default function Button({
                 end={{ x: 1, y: 0 }}
                 style={styles.gradient}
             >
-                <Text style={styles.text}>{children}</Text>
+                {isLoading && mode === "primary" && (
+                    <LoadingDots
+                        dots={3}
+                        size={12}
+                        colors={["#EEF5FF", "#B4D4FF", "#86B6F6"]}
+                        bounceHeight={8}
+                    />
+                )}
+                {!isLoading && <Text style={styles.text}>{children}</Text>}
                 {isSecondary && (
                     <AntDesign name='rightcircle' size={14} color='white' />
                 )}

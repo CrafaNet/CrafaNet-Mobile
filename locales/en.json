@@ -4,7 +4,7 @@
     "connect": "connect",
     "joinUs": "join us",
     "forgotPassword": "Forgot Password",
-    "iAgreeToThe": "I agree to the",
+    "byClickingYouAgree": "By clicking the sign up button you agree to our ",
     "termsAndConditions": "Terms and Conditions",
     "youDontHaveAnAccount": "Don't you have an account?",
     "youHaveAnAccount": "Do you have an existing account?",
@@ -65,5 +65,13 @@
     "comingSoon": "Coming Soon",
     "comingSoonMessage": "We are developing our app! We will bring you a great experience soon.",
     "days": "days",
-    "left": "left"
+    "left": "left",
+    "success": "Success",
+    "responseMessageFallback": "Oops! Something went wrong...",
+    "message_login_200": "Login successful.",
+    "message_login_201": "Phone number or password is incomplete!",
+    "message_login_202": "Wrong password!",
+    "message_login_203": "Account not found for the provided phone number!",
+    "message_register_200": "Register successful.",
+    "message_register_201": "Phone number already exists. Please login."
 }

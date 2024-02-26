@@ -7,7 +7,7 @@ import Showcase from "./WorkfolioComponents/Showcase";
 
 import Colors from "../../constants/colors";
 import Sizes from "../../constants/sizes";
-import { removeToken } from "../../store/auth";
+import { logout } from "../../store/auth";
 import { queryClient } from "../../util/http";
 
 export default function WorkfolioHomeScreen() {
@@ -17,6 +17,7 @@ export default function WorkfolioHomeScreen() {
             <Bio />
             <Showcase />
             <View style={styles.workshops}></View>
+            <Button title='logout' onPress={logout} />
         </ScreenContainer>
     );
 }

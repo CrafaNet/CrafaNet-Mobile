@@ -11,10 +11,10 @@ import {
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import MaskInput, { Masks } from "react-native-mask-input";
-import Checkbox from "expo-checkbox";
 import { CountryPicker } from "react-native-country-codes-picker";
 import { useMutation } from "@tanstack/react-query";
 import CountryFlag from "react-native-country-flag";
+import { showMessage, hideMessage } from "react-native-flash-message";
 
 import { Ionicons, Feather, Octicons } from "@expo/vector-icons";
 
@@ -26,7 +26,7 @@ import Colors from "../constants/colors";
 import Styles from "../constants/styles";
 import Strings, { deviceLang, deviceRegion } from "../util/strings";
 import { login } from "../store/auth";
-import { getCountryDial, getLocation } from "../util/location";
+import { getCountryDial } from "../util/location";
 import countries from "../data/countries.json";
 
 const loginIllustration = require("../assets/illustrations/login.png");
@@ -53,6 +53,7 @@ const modes = {
         password: true,
         terms: true,
         haveAnAccount: true,
+        nextMode: "checkConfirmCode",
     },
     sendResetPasswordCode: {
         title: Strings.resetPassword,
@@ -61,6 +62,7 @@ const modes = {
         phone: true,
         notHaveAnAccount: true,
         iRemember: true,
+        nextMode: "checkResetPasswordCode",
     },
     checkResetPasswordCode: {
         title: Strings.resetPassword,
@@ -70,6 +72,7 @@ const modes = {
         notHaveAnAccount: true,
         iRemember: true,
         resetPasswordCode: true,
+        nextMode: "login",
     },
     checkConfirmCode: {
         title: Strings.confirmAccount,
@@ -91,36 +94,43 @@ export default function AuthFormScreen() {
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const [tacChecked, setTacChecked] = useState(false);
-    const [showCountrySelector, setShowCountrySelector] = useState(false);
+    const [showCountrySelector, setShowCountrySelector] = useState(true);
     const [resetPasswordCode, setResetPasswordCode] = useState("");
     const [confirmCode, setConfirmCode] = useState("");
+
+    useEffect(() => {
+        setShowCountrySelector(false);
+    }, []);
 
     const isPhone = countryDial && phone;
     const validInputs =
         (mode === "login" && isPhone && password) ||
-        (mode === "register" && name && isPhone && password && tacChecked) ||
+        (mode === "register" && name && isPhone && password) ||
         (mode === "sendResetPasswordCode" && isPhone) ||
         (mode === "checkResetPasswordCode" && isPhone && resetPasswordCode) ||
         (mode === "checkConfirmCode" && confirmCode);
 
     const mutation = useMutation({
         mutationFn: (data) => {
+            hideMessage();
             return sendRequest({ api: `/user/${mode}`, data });
         },
         onSuccess: (response) => {
             if (response.status !== 200) return;
-            if (["login", "checkConfirmCode"].includes(mode)) {
+            if (mode === "login" || mode === "checkConfirmCode") {
                 const token = response?.data?.token;
                 if (!token) return;
                 login(token);
-            } else if (mode === "register") {
-                setMode("checkConfirmCode");
-            } else if (mode === "sendResetPasswordCode") {
-                setMode("checkResetPasswordCode");
-            } else if (mode === "checkResetPasswordCode") {
-                setMode("login");
+                const message = Strings[response.message] || Strings.success;
+                showMessage({ message, type: "success" });
             }
+            if (modes[mode].nextMode) setMode(modes[mode].nextMode);
+        },
+        onSettled: (response) => {
+            if (response.status === 200) return;
+            const fallbackMsg = `${Strings.responseMessageFallback} ${response.status}`;
+            const message = Strings[response.message] || fallbackMsg;
+            showMessage({ message, type: "danger" });
         },
     });
 
@@ -256,6 +266,7 @@ export default function AuthFormScreen() {
                                         }}
                                         mask={Masks.USA_PHONE}
                                         returnKeyType='done'
+                                        maxLength={14}
                                     />
                                 </View>
                             </View>
@@ -358,26 +369,26 @@ export default function AuthFormScreen() {
                     )}
                     {modes[mode].terms && (
                         <View style={styles.tacContainer}>
-                            <Checkbox
-                                style={styles.checkbox}
-                                value={tacChecked}
-                                onValueChange={() =>
-                                    setTacChecked((prev) => !prev)
-                                }
-                            />
-                            <Text>{Strings.iAgreeToThe} </Text>
+                            <Text style={[styles.text, styles.tacText]}>
+                                {Strings.byClickingYouAgree}{" "}
+                            </Text>
                             <Pressable>
-                                <Text style={styles.tacText}>
+                                <Text
+                                    style={[
+                                        styles.tacText,
+                                        styles.tacPressableText,
+                                    ]}
+                                >
                                     {Strings.termsAndConditions}
                                 </Text>
                             </Pressable>
                         </View>
                     )}
                     {modes[mode].iRemember && (
-                        <View style={styles.tacContainer}>
+                        <View style={styles.iRememberContainer}>
                             <Text>{Strings.iRememberMyPassword} </Text>
                             <Pressable onPress={() => setMode("login")}>
-                                <Text style={styles.tacText}>
+                                <Text style={styles.inlineButton}>
                                     {Strings.login}
                                 </Text>
                             </Pressable>
@@ -388,6 +399,7 @@ export default function AuthFormScreen() {
                         style={styles.confirmButton}
                         onPress={submitButtonPressHandler}
                         disabled={!validInputs}
+                        isLoading={mutation.isPending}
                     >
                         {modes[mode].buttonTitle}
                     </Button>
@@ -472,15 +484,16 @@ const styles = StyleSheet.create({
         fontFamily: "poppins-",
     },
     tacContainer: {
-        flexDirection: "row",
+        alignItems: "center",
         marginTop: 12,
         marginBottom: 20,
-    },
-    checkbox: {
-        aspectRatio: 1,
-        marginRight: 10,
+        width: "100%",
     },
     tacText: {
+        fontSize: 10,
+        textAlign: "center",
+    },
+    tacPressableText: {
         color: Colors.coloredText,
         textTransform: "capitalize",
     },
@@ -491,7 +504,7 @@ const styles = StyleSheet.create({
     },
     countryCodePickerButton: {
         width: "28%",
-        borderWidth: 1,
+        borderBottomWidth: 1,
         borderColor: "#0004",
         flexDirection: "row",
         justifyContent: "center",
@@ -509,5 +522,14 @@ const styles = StyleSheet.create({
     phoneTextInputContainer: {
         flex: 1,
         marginVertical: 0,
+    },
+    iRememberContainer: {
+        flexDirection: "row",
+        marginTop: 12,
+        marginBottom: 20,
+    },
+    inlineButton: {
+        color: Colors.coloredText,
+        textTransform: "capitalize",
     },
 });

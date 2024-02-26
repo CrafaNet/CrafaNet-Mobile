@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
+import FlashMessage from "react-native-flash-message"; // docs: https://www.npmjs.com/package/react-native-flash-message
+import Constants from "expo-constants";
 
 import { checkAuth } from "./../store/auth";
 import { getItem, setItem } from "./../store/async-storage";
@@ -19,9 +21,11 @@ export default function AppMiddleware() {
     });
 
     // welcome screen seen information is stored on the device
-    useEffect(async () => {
-        const result = await getItem("seenWelcome");
-        setSeenWelcome(result);
+    useEffect(() => {
+        (async () => {
+            const result = await getItem("seenWelcome");
+            setSeenWelcome(result);
+        })();
     }, []);
 
     // if seen, welcome screen will not be shown again to the user
@@ -38,5 +42,19 @@ export default function AppMiddleware() {
     let content = isAuthenticated ? navJsx : authFormJsx;
     if (!seenWelcome) content = welcomeJsx;
 
-    return <>{content}</>;
+    // FlashMessage docs link is provided above in this file
+    return (
+        <>
+            {content}
+            <FlashMessage {...flashMessageConfig} />
+        </>
+    );
 }
+
+const flashMessageConfig = {
+    position: "top",
+    duration: 10000,
+    statusBarHeight: Constants.statusBarHeight,
+    floating: true,
+    icon: "auto",
+};
