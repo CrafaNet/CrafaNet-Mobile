@@ -124,7 +124,8 @@ export default function AuthFormScreen() {
                 const message = Strings[response.message] || Strings.success;
                 showMessage({ message, type: "success" });
             }
-            if (modes[mode].nextMode) setMode(modes[mode].nextMode);
+            const nextMode = modes[mode].nextMode;
+            if (nextMode) setMode(nextMode);
         },
         onSettled: (response) => {
             if (response.status === 200) return;

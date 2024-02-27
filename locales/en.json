@@ -70,8 +70,18 @@
     "responseMessageFallback": "Oops! Something went wrong...",
     "message_login_200": "Login successful.",
     "message_login_201": "Phone number or password is incomplete!",
-    "message_login_202": "Wrong password!",
+    "message_login_202": "Password is incorrect!",
     "message_login_203": "Account not found for the provided phone number!",
-    "message_register_200": "Register successful.",
-    "message_register_201": "Phone number already exists. Please login."
+    "message_register_201": "Phone number already exists. Please login.",
+    "message_logout_200": "Logout successful.",
+    "message_sendConfirmCode_200": "Confirm code sent.",
+    "message_sendConfirmCode_201": "Account not found!",
+    "message_sendConfirmCode_202": "Wait for 2 minutes before resend.",
+    "message_checkConfirmCode_200": "Register successful.",
+    "message_checkConfirmCode_201": "Incorrect confirm code!",
+    "message_sendResetPasswordCode_200": "Password reset code sent.",
+    "message_sendResetPasswordCode_201": "Account not found!",
+    "message_sendResetPasswordCode_202": "Wait for 2 minutes before resend.",
+    "message_checkResetPasswordCode_200": "Password reset successful.",
+    "message_checkResetPasswordCode_201": "Incorrect reset code!"
 }
