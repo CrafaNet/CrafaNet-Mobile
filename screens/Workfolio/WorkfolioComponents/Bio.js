@@ -1,5 +1,6 @@
 import { Image, Pressable, StyleSheet, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation } from "@react-navigation/native";
 
 import ScreenContainer from "../../../components/ScreenContainer";
 import AppHeader from "../../../components/AppHeader";
@@ -18,6 +19,12 @@ import wizard from "../../../assets/achievements/wizard.png";
 import zeus from "../../../assets/achievements/zeus.png";
 
 export default function Bio() {
+    const navigation = useNavigation();
+
+    const editButtonPressHandler = () => {
+        navigation.navigate("UpdateUser");
+    };
+
     return (
         <View style={styles.container}>
             <View style={styles.profileImageContainer}>
@@ -25,7 +32,10 @@ export default function Bio() {
                     source={defaultProfileImage}
                     style={styles.profileImage}
                 />
-                <Pressable style={styles.editProfileBtn}>
+                <Pressable
+                    style={styles.editProfileBtn}
+                    onPress={editButtonPressHandler}
+                >
                     <Feather name='edit-2' size={12} color='white' />
                 </Pressable>
             </View>

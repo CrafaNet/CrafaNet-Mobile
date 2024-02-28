@@ -9,12 +9,16 @@ import {
     ScrollView,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useQuery } from "@tanstack/react-query";
 
 import ScreenContainer from "../../components/ScreenContainer";
 import AppHeader from "../../components/AppHeader";
 import UpgradeToVipBox from "./ComunityComponents/UpgradeToVipBox";
 import SearchBox from "./ComunityComponents/SearchBox";
 import ClassListItem from "./ComunityComponents/ClassListItem";
+
+import { queryClient, sendRequest } from "../../util/http";
+import { getToken } from "../../store/auth";
 
 import Colors from "../../constants/colors";
 import Strings from "../../util/strings";
@@ -23,6 +27,15 @@ import categories from "../../DUMMY_DATA/categories.json";
 import classes from "../../DUMMY_DATA/classes.json";
 
 export default function CommunityHomeScreen() {
+    const { data: userData } = useQuery({
+        queryKey: ["userData"],
+        queryFn: () => {
+            const token = queryClient.getQueryData(["token"]);
+            const api = "/user/sendUserInfo";
+            return sendRequest({ api, token });
+        },
+    });
+
     const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
     let classesList = classes;
     if (categories[activeCategoryIndex] !== "all") {

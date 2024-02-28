@@ -5,6 +5,7 @@ export default function ScreenContainer(props) {
     return (
         <View style={styles.container}>
             <ScrollView
+                showsVerticalScrollIndicator={false}
                 {...props}
                 contentContainerStyle={[
                     styles.scrollView,

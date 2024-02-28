@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Pressable, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import { Ionicons, AntDesign } from "@expo/vector-icons";
+import { Ionicons, AntDesign, Octicons } from "@expo/vector-icons";
 
 import Colors from "../constants/colors";
 import { LinearGradient } from "expo-linear-gradient";
@@ -43,8 +43,8 @@ export default function AppHeader() {
                     size={iconSize}
                     color={Colors.primary500}
                 />
-                <Ionicons
-                    name='chatbubble-outline'
+                <Octicons
+                    name='arrow-switch'
                     size={iconSize}
                     color={Colors.primary500}
                 />

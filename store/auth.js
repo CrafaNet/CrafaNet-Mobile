@@ -55,10 +55,13 @@ export async function checkAuth() {
     }
 }
 
-export function login(token) {
+export async function login(token) {
     try {
-        setToken(token);
-        queryClient.invalidateQueries({ queryKey: ["isAuthenticated"] });
+        const isTokenSet = await setToken(token);
+        if (!isTokenSet) throw Error("Token is not set");
+        ["isAuthenticated", "token", "userData"].forEach((item) => {
+            queryClient.invalidateQueries({ queryKey: [item] });
+        });
         return true;
     } catch (error) {
         console.error("Error logging in:", error);

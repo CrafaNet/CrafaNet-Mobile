@@ -1,3 +1,4 @@
+import { useQuery } from "@tanstack/react-query";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -13,6 +14,7 @@ import SkillHubHomeScreen from "./screens/SkillHub/SkillHubHomeScreen";
 import LearnMateHomeScreen from "./screens/LearnMate/LearnMateHomeScreen";
 // Workfolio
 import WorkfolioHomeScreen from "./screens/Workfolio/WorkfolioHomeScreen";
+import UpdateUserScreen from "./screens/Workfolio/UpdateUserScreen";
 // Other screens
 import UpgradeToVipScreen from "./screens/UpgradeToVipScreen";
 import ComingSoonScreen from "./screens/ComingSoonScreen";
@@ -29,6 +31,12 @@ const releaseDate = new Date("2024-2-15").getTime();
 const isComingSoon = releaseDate > Date.now();
 
 export default function Navigation() {
+    // pre-chaching the token data to be used throughout the app by queryClient.getQueryData(["token"]);
+    useQuery({
+        queryKey: ["token"],
+        queryFn: () => getToken(),
+    });
+
     return (
         <NavigationContainer>
             <Tab.Navigator screenOptions={bottomTabScreenOptions}>
@@ -101,6 +109,7 @@ function WorkfolioStack() {
                 name='WorkfolioHome'
                 component={WorkfolioHomeScreen}
             />
+            <Stack.Screen name='UpdateUser' component={UpdateUserScreen} />
         </Stack.Navigator>
     );
 }

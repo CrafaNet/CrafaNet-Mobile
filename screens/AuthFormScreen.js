@@ -34,6 +34,9 @@ const registerIllustration = require("../assets/illustrations/register.png");
 const resetPasswordIllustration = require("../assets/illustrations/resetPassword.png");
 const verifiedIllustration = require("../assets/illustrations/verified.png");
 
+// modes are like different pages
+// all 5 authentication form pages are coded in this component
+// you can add, remove, or configure an existing page by adjusting configurations below in the modes object
 const modes = {
     login: {
         title: Strings.login,
