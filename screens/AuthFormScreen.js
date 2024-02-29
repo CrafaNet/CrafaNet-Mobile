@@ -21,6 +21,7 @@ import { Ionicons, Feather, Octicons } from "@expo/vector-icons";
 import { sendRequest } from "../util/http";
 
 import Button from "../components/Button";
+import FormInput from "../components/FormInput";
 
 import Colors from "../constants/colors";
 import Styles from "../constants/styles";
@@ -182,24 +183,13 @@ export default function AuthFormScreen() {
                 <View style={styles.formContainer}>
                     <Text style={styles.title}>{modes[mode].title}</Text>
                     {modes[mode].name && (
-                        <View style={styles.inputContainer}>
-                            <Ionicons
-                                name='person-circle-outline'
-                                size={20}
-                                color='black'
-                                style={[
-                                    styles.inputIcon,
-                                    { display: name ? "none" : "flex" },
-                                ]}
-                            />
-                            <TextInput
-                                style={Styles.textInput}
-                                value={name}
-                                placeholder={`       ${Strings.name}`}
-                                onChangeText={setName}
-                                returnKeyType='done'
-                            />
-                        </View>
+                        <FormInput
+                            value={name}
+                            onChangeText={setName}
+                            placeholderKey='name'
+                            iconPack='ionicons'
+                            iconName='person-circle-outline'
+                        />
                     )}
                     {modes[mode].phone && (
                         <>
@@ -277,29 +267,14 @@ export default function AuthFormScreen() {
                         </>
                     )}
                     {modes[mode].resetPasswordCode && (
-                        <View style={styles.inputContainer}>
-                            <Ionicons
-                                name='barcode-outline'
-                                size={20}
-                                color='black'
-                                style={[
-                                    styles.inputIcon,
-                                    {
-                                        display: resetPasswordCode
-                                            ? "none"
-                                            : "flex",
-                                    },
-                                ]}
-                            />
-                            <TextInput
-                                style={Styles.textInput}
-                                value={resetPasswordCode}
-                                placeholder={`       ${Strings.resetCode}`}
-                                onChangeText={setResetPasswordCode}
-                                keyboardType='numeric'
-                                returnKeyType='done'
-                            />
-                        </View>
+                        <FormInput
+                            value={resetPasswordCode}
+                            onChangeText={setResetPasswordCode}
+                            placeholderKey='resetCode'
+                            keyboardType='numeric'
+                            iconPack='ionicons'
+                            iconName='barcode-outline'
+                        />
                     )}
                     {(modes[mode].password || modes[mode].newPassword) && (
                         <View style={styles.inputContainer}>
@@ -342,25 +317,14 @@ export default function AuthFormScreen() {
                         </View>
                     )}
                     {modes[mode].confirmCode && (
-                        <View style={styles.inputContainer}>
-                            <Octicons
-                                name='verified'
-                                size={20}
-                                color='black'
-                                style={[
-                                    styles.inputIcon,
-                                    { display: confirmCode ? "none" : "flex" },
-                                ]}
-                            />
-                            <TextInput
-                                style={Styles.textInput}
-                                value={confirmCode}
-                                placeholder={`       ${Strings.confirmCode}`}
-                                onChangeText={setConfirmCode}
-                                keyboardType='numeric'
-                                returnKeyType='done'
-                            />
-                        </View>
+                        <FormInput
+                            value={confirmCode}
+                            onChangeText={setConfirmCode}
+                            placeholderKey='confirmCode'
+                            keyboardType='numeric'
+                            iconPack='octicons'
+                            iconName='verified'
+                        />
                     )}
                     {modes[mode].forgotPassword && (
                         <Button

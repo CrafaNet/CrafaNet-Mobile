@@ -15,6 +15,11 @@
     "password": "Password",
     "newPassword": "New Password",
     "resetPassword": "Reset Password",
+    "email": "Email",
+    "dateOfBirth": "Date Of Birth",
+    "male": "Male",
+    "female": "Female",
+    "gender": "Gender",
     "sendCode": "send code",
     "iRememberMyPassword": "I remember my password",
     "reset": "reset",
@@ -83,5 +88,7 @@
     "message_sendResetPasswordCode_201": "Account not found!",
     "message_sendResetPasswordCode_202": "Wait for 2 minutes before resend.",
     "message_checkResetPasswordCode_200": "Password reset successful.",
-    "message_checkResetPasswordCode_201": "Incorrect reset code!"
+    "message_checkResetPasswordCode_201": "Incorrect reset code!",
+    "update": "update",
+    "updateUserScreenTitle": "Update User"
 }

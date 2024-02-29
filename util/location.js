@@ -35,3 +35,12 @@ export function getCountryDial(countryCode) {
     );
     return country?.dial_code || "";
 }
+
+export function getCountryCodeByDial(countryDial) {
+    // gives the country code of the country by the dial code
+    // e.g: countryCode = "tr" returns "+90"
+    const country = countries.find(
+        (item) => item.dial_code.toLowerCase() === countryDial.toLowerCase()
+    );
+    return country?.code || "";
+}

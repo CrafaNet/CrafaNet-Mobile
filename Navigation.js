@@ -23,6 +23,7 @@ import { Ionicons, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
 
 import Colors from "./constants/colors";
 import Strings from "./util/strings";
+import { getToken } from "./store/auth";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
