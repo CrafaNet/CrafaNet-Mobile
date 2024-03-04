@@ -9,14 +9,16 @@ import Strings from "../../util/strings";
 import classAssetIllustration from "../../assets/illustrations/classAsset.png";
 
 export default function JoinClassScreen({ route }) {
-    const { item } = route.params || {};
+    const { course } = route.params || {};
+
+    const joinClassHandler = () => {};
 
     return (
         <ScreenContainer>
             <AppHeader />
             <View style={styles.container}>
                 <View>
-                    <Text style={styles.title}>{item.name}</Text>
+                    <Text style={styles.title}>{course.name}</Text>
                     <Text style={styles.title}>{Strings.applyNow}!</Text>
                 </View>
 
@@ -28,7 +30,9 @@ export default function JoinClassScreen({ route }) {
                     source={classAssetIllustration}
                     resizeMode='contain'
                 />
-                <Button mode='primary'>{Strings.joinClass}</Button>
+                <Button mode='primary' onPress={joinClassHandler}>
+                    {`${Strings.joinClass} (${course.price} €/mo)`}
+                </Button>
             </View>
         </ScreenContainer>
     );

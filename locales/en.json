@@ -90,5 +90,9 @@
     "message_checkResetPasswordCode_200": "Password reset successful.",
     "message_checkResetPasswordCode_201": "Incorrect reset code!",
     "update": "update",
-    "updateUserScreenTitle": "Update User"
+    "updateUserScreenTitle": "Update User",
+    "category_0": "All",
+    "category_65e58ad3d72f7ac225dd441c": "Age 0-3",
+    "category_65e58a8bd72f7ac225dd4419": "Age 3-6",
+    "category_65e58abdd72f7ac225dd441a": "Age 6-12"
 }

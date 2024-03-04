@@ -12,17 +12,23 @@ import Colors from "../../../constants/colors";
 import Sizes from "../../../constants/sizes";
 import Strings from "../../../util/strings";
 
-export default function ClassListItem({ item: course }) {
+export default function ClassListItem({ item: course, isUserMember }) {
     const navigation = useNavigation();
+
+    const memberCount = course.members.length;
     let memberText = `+50 ${Strings.members}`;
-    if (course.memberCount < 50)
-        memberText = `${course.memberCount} ${Strings.members}`;
-    if (course.memberCount < 11) memberText = Strings.miniClass;
+    if (memberCount < 50) memberText = `${memberCount} ${Strings.members}`;
+    if (memberCount < 11) memberText = Strings.miniClass;
+
+    const joinButtonHandler = () => {
+        const next = isUserMember ? "ClassScreen" : "JoinClassScreen";
+        navigation.navigate(next, { course });
+    };
 
     return (
         <ImageBackground
             style={styles.container}
-            source={{ uri: course.image }}
+            source={{ uri: course.coverImage }}
         >
             <View style={styles.contentContainer}>
                 <View>
@@ -38,9 +44,7 @@ export default function ClassListItem({ item: course }) {
                 </View>
                 <Pressable
                     style={styles.joinButton}
-                    onPress={() =>
-                        navigation.navigate("ClassScreen", { course })
-                    }
+                    onPress={joinButtonHandler}
                 >
                     <Text style={styles.joinButtonText}>{Strings.join}</Text>
                 </Pressable>

@@ -23,24 +23,42 @@ import { getToken } from "../../store/auth";
 import Colors from "../../constants/colors";
 import Strings from "../../util/strings";
 
-import categories from "../../DUMMY_DATA/categories.json";
-import classes from "../../DUMMY_DATA/classes.json";
-
 export default function CommunityHomeScreen() {
-    const { data: userData } = useQuery({
-        queryKey: ["userData"],
+    const { data: userResponse } = useQuery({
+        queryKey: ["user"],
         queryFn: () => {
             const token = queryClient.getQueryData(["token"]);
             const api = "/user/sendUserInfo";
             return sendRequest({ api, token });
         },
     });
+    const userData = userResponse?.data;
+
+    const { data: communitiesResponse } = useQuery({
+        queryKey: ["communities"],
+        queryFn: () => sendRequest({ api: "/comunity/listAllComunities" }),
+    });
+    const communitiesData = communitiesResponse?.data;
+
+    const { data: categoriesResponse } = useQuery({
+        queryKey: ["communityCategories"],
+        queryFn: () => {
+            const token = queryClient.getQueryData(["token"]);
+            const api = "/comunity/listOfCategories";
+            return sendRequest({ api, token });
+        },
+    });
+    let categoriesData = categoriesResponse?.data;
 
     const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
-    let classesList = classes;
-    if (categories[activeCategoryIndex] !== "all") {
-        classesList = classes.filter(
-            (item) => item.category === categories[activeCategoryIndex]
+
+    if (!userData || !communitiesData || !categoriesData) return;
+    categoriesData = [{ _id: "0" }, ...categoriesData];
+
+    let communitiesList = communitiesData;
+    if (activeCategoryIndex !== 0) {
+        communitiesList = communitiesData.filter((item) =>
+            item.categories.includes(categoriesData[activeCategoryIndex])
         );
     }
 
@@ -60,8 +78,8 @@ export default function CommunityHomeScreen() {
 
                 <SafeAreaView>
                     <FlatList
-                        data={categories}
-                        keyExtractor={(item) => item}
+                        data={categoriesData}
+                        keyExtractor={(item) => item._id}
                         renderItem={(props) => (
                             <Pressable
                                 onPress={() =>
@@ -79,9 +97,9 @@ export default function CommunityHomeScreen() {
 
             <SafeAreaView>
                 <FlatList
-                    data={classesList}
+                    data={communitiesList}
                     keyExtractor={(item) => item.name}
-                    renderItem={(props) => <ClassListItem {...props} />}
+                    renderItem={(props) => classListRenderItem(props, userData)}
                     showsVerticalScrollIndicator={false}
                     scrollEnabled={false}
                 />
@@ -106,9 +124,16 @@ function categoriesItem({ item, index }, activeCategoryIndex) {
             end={{ x: 1, y: 0 }}
             style={styles.categoriesItem}
         >
-            <Text style={textStyles}>{Strings[item]}</Text>
+            <Text style={textStyles}>{Strings[`category_${item._id}`]}</Text>
         </LinearGradient>
     );
+}
+
+function classListRenderItem(props, userData) {
+    const workshopId = props?.item?._id;
+    const userWorkshops = userData?.interestWorkshop;
+    const isUserMember = userWorkshops?.includes(workshopId);
+    return <ClassListItem {...props} isUserMember={isUserMember} />;
 }
 
 const styles = StyleSheet.create({
