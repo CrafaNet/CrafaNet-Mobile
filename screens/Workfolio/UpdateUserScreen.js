@@ -8,6 +8,7 @@ import {
     Pressable,
     KeyboardAvoidingView,
     Platform,
+    ActionSheetIOS,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import MaskInput, { Masks } from "react-native-mask-input";
@@ -17,7 +18,7 @@ import CountryFlag from "react-native-country-flag";
 import { showMessage, hideMessage } from "react-native-flash-message";
 import { Picker } from "@react-native-picker/picker";
 
-import { Ionicons, Feather } from "@expo/vector-icons";
+import { Ionicons, Feather, Octicons } from "@expo/vector-icons";
 
 import { queryClient, sendRequest } from "../../util/http";
 import { getBasePhoneNumber, getDialCodeFromPhone } from "../../util/helpers";
@@ -46,6 +47,7 @@ export default function UpdateUserScreen() {
             return sendRequest({ api, token });
         },
     });
+    if (!userData) return null;
 
     const phoneData = userData?.data?.phone;
     const countryDialData =
@@ -61,8 +63,8 @@ export default function UpdateUserScreen() {
     const [gender, setGender] = useState("");
     const [language, setLanguage] = useState("");
     const [country, setCountry] = useState("");
-    const [password, setPassword] = useState("");
-    const [passwordVisible, setPasswordVisible] = useState(false);
+    // const [password, setPassword] = useState("");
+    // const [passwordVisible, setPasswordVisible] = useState(false);
     const [showCountrySelector, setShowCountrySelector] = useState(true);
     const [showDatePicker, setShowDatePicker] = useState(false);
     const [dateOfBirth, setDateOfBirth] = useState({
@@ -90,11 +92,26 @@ export default function UpdateUserScreen() {
         },
     });
 
+    const actionSheetIosHandler = () => {
+        ActionSheetIOS.showActionSheetWithOptions(
+            {
+                options: ["Cancel", Strings.male, Strings.female],
+                cancelButtonIndex: 0,
+                userInterfaceStyle: "light",
+            },
+            (buttonIndex) => {
+                if (buttonIndex === 0);
+                else if (buttonIndex === 1) setGender("male");
+                else if (buttonIndex === 2) setGender("female");
+            }
+        );
+    };
+
     const submitButtonPressHandler = () => {
         const data = {
             name,
             phone: countryDial + phone,
-            password,
+            // password,
             email,
             birthDate: dateOfBirth.string,
             gender,
@@ -202,7 +219,7 @@ export default function UpdateUserScreen() {
                         iconPack='fontisto'
                         iconName='email'
                     />
-                    <View style={styles.inputContainer}>
+                    {/* <View style={styles.inputContainer}>
                         <Ionicons
                             name='lock-closed-outline'
                             size={20}
@@ -233,7 +250,7 @@ export default function UpdateUserScreen() {
                                 color='black'
                             />
                         </Pressable>
-                    </View>
+                    </View> */}
                     {showDatePicker && (
                         <RNDateTimePicker
                             mode='date'
@@ -271,15 +288,57 @@ export default function UpdateUserScreen() {
                             readOnly
                         />
                     </Pressable>
-                    <Picker
-                        style={{ width: "100%" }}
-                        selectedValue={gender}
-                        onValueChange={(item) => setGender(item)}
-                    >
-                        <Picker.Item label={Strings.gender} value='-1' />
-                        <Picker.Item label={Strings.male} value='m' />
-                        <Picker.Item label={Strings.female} value='f' />
-                    </Picker>
+                    {Platform.select({
+                        android: (
+                            <View style={styles.androidPickerWrapper}>
+                                <Picker
+                                    style={{ width: "100%" }}
+                                    selectedValue={gender}
+                                    onValueChange={(item) => setGender(item)}
+                                >
+                                    <Picker.Item
+                                        label={Strings.gender}
+                                        value='-1'
+                                    />
+                                    <Picker.Item
+                                        label={Strings.male}
+                                        value='m'
+                                    />
+                                    <Picker.Item
+                                        label={Strings.female}
+                                        value='f'
+                                    />
+                                </Picker>
+                            </View>
+                        ),
+                        ios: (
+                            <Pressable
+                                style={styles.inputContainer}
+                                onPress={actionSheetIosHandler}
+                            >
+                                <Octicons
+                                    name='check'
+                                    size={20}
+                                    color='black'
+                                    style={[
+                                        styles.inputIcon,
+                                        {
+                                            display: gender ? "none" : "flex",
+                                        },
+                                    ]}
+                                />
+                                <TextInput
+                                    style={Styles.textInput}
+                                    value={gender}
+                                    placeholder={`       ${Strings.gender}`}
+                                    onChangeText={setGender}
+                                    returnKeyType='done'
+                                    readOnly
+                                />
+                            </Pressable>
+                        ),
+                    })}
+
                     <Button
                         mode='primary'
                         style={styles.confirmButton}
@@ -392,5 +451,11 @@ const styles = StyleSheet.create({
     inlineButton: {
         color: Colors.coloredText,
         textTransform: "capitalize",
+    },
+    androidPickerWrapper: {
+        width: "100%",
+        borderBottomWidth: 1,
+        borderColor: "#0004",
+        marginBottom: 20,
     },
 });
