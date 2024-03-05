@@ -8,6 +8,7 @@ import CommunityHomeScreen from "./screens/Community/CommunityHomeScreen";
 import JoinClassScreen from "./screens/Community/JoinClassScreen";
 import ClassScreen from "./screens/Community/ClassScreen";
 import VideoScreen from "./screens/Community/VideoScreen";
+import JoinPayScreen from "./screens/Community/JoinPayScreen";
 // SkillHub
 import SkillHubHomeScreen from "./screens/SkillHub/SkillHubHomeScreen";
 // LearnMate
@@ -80,6 +81,7 @@ function CommunityStack() {
                 component={UpgradeToVipScreen}
             />
             <Stack.Screen name='VideoScreen' component={VideoScreen} />
+            <Stack.Screen name='JoinPayScreen' component={JoinPayScreen} />
         </Stack.Navigator>
     );
 }

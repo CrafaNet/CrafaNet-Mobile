@@ -5,38 +5,38 @@ import Constants from "expo-constants";
 
 import { checkAuth } from "./../store/auth";
 import { getItem, setItem } from "./../store/async-storage";
+import { queryClient } from "../util/http";
 
 import Navigation from "./../Navigation";
 import AuthFormScreen from "./../screens/AuthFormScreen";
 import WelcomeScreen from "./../screens/WelcomeScreen";
 
 export default function AppMiddleware() {
-    const [seenWelcome, setSeenWelcome] = useState();
-
     // useQuery here might seem unnecessary
-    // but it is used to make use of its invalidateQuery feature
-    const { data: isAuthenticated } = useQuery({
-        queryKey: ["isAuthenticated"],
-        queryFn: checkAuth,
-    });
+    // but it is used to make use of its invalidateQuery and isLoading feature
+    const { data: isAuthenticated, isLoading: isIsAuthenticatedLoading } =
+        useQuery({
+            queryKey: ["isAuthenticated"],
+            queryFn: checkAuth,
+        });
 
     // welcome screen seen information is stored on the device
-    useEffect(() => {
-        (async () => {
-            const result = await getItem("seenWelcome");
-            setSeenWelcome(result);
-        })();
-    }, []);
+    const { data: seenWelcome, isLoading: isSeenWelcomeLoading } = useQuery({
+        queryKey: ["seenWelcome"],
+        queryFn: () => getItem("seenWelcome"),
+    });
 
     // if seen, welcome screen will not be shown again to the user
     const onSeenWelcome = () => {
         setItem("seenWelcome", "true");
-        setSeenWelcome(true);
+        queryClient.invalidateQueries({ queryKey: ["seenWelcome"] });
     };
 
     const navJsx = <Navigation />;
     const authFormJsx = <AuthFormScreen />;
     const welcomeJsx = <WelcomeScreen onSeenWelcome={onSeenWelcome} />;
+
+    if (isIsAuthenticatedLoading || isSeenWelcomeLoading) return;
 
     // content to be shown is decided according to the authentication and seen wolcome screen conditions
     let content = isAuthenticated ? navJsx : authFormJsx;

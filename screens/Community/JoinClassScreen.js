@@ -8,10 +8,12 @@ import Strings from "../../util/strings";
 
 import classAssetIllustration from "../../assets/illustrations/classAsset.png";
 
-export default function JoinClassScreen({ route }) {
+export default function JoinClassScreen({ route, navigation }) {
     const { course } = route.params || {};
 
-    const joinClassHandler = () => {};
+    const joinClassHandler = () => {
+        navigation.navigate("JoinPayScreen", { course });
+    };
 
     return (
         <ScreenContainer>

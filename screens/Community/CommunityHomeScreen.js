@@ -24,7 +24,7 @@ import Colors from "../../constants/colors";
 import Strings from "../../util/strings";
 
 export default function CommunityHomeScreen() {
-    const { data: userResponse } = useQuery({
+    const { data: userResponse, isLoading: isUserLoading } = useQuery({
         queryKey: ["user"],
         queryFn: () => {
             const token = queryClient.getQueryData(["token"]);
@@ -34,25 +34,27 @@ export default function CommunityHomeScreen() {
     });
     const userData = userResponse?.data;
 
-    const { data: communitiesResponse } = useQuery({
-        queryKey: ["communities"],
-        queryFn: () => sendRequest({ api: "/comunity/listAllComunities" }),
-    });
+    const { data: communitiesResponse, isLoading: isCommunityLoading } =
+        useQuery({
+            queryKey: ["communities"],
+            queryFn: () => sendRequest({ api: "/comunity/listAllComunities" }),
+        });
     const communitiesData = communitiesResponse?.data;
 
-    const { data: categoriesResponse } = useQuery({
-        queryKey: ["communityCategories"],
-        queryFn: () => {
-            const token = queryClient.getQueryData(["token"]);
-            const api = "/comunity/listOfCategories";
-            return sendRequest({ api, token });
-        },
-    });
+    const { data: categoriesResponse, isLoading: isCategoriesLoading } =
+        useQuery({
+            queryKey: ["communityCategories"],
+            queryFn: () => {
+                const token = queryClient.getQueryData(["token"]);
+                const api = "/comunity/listOfCategories";
+                return sendRequest({ api, token });
+            },
+        });
     let categoriesData = categoriesResponse?.data;
 
     const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
 
-    if (!userData || !communitiesData || !categoriesData) return;
+    if (isUserLoading || isCommunityLoading || isCategoriesLoading) return;
     categoriesData = [{ _id: "0" }, ...categoriesData];
 
     let communitiesList = communitiesData;

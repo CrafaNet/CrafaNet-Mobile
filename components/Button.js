@@ -24,6 +24,7 @@ export default function Button({
     onPress,
     disabled,
     isLoading,
+    secondaryIconSide = "right",
 }) {
     const styles = styleModes[mode];
     const isSecondary = mode === "secondary";
@@ -58,8 +59,16 @@ export default function Button({
                         bounceHeight={8}
                     />
                 )}
+                {isSecondary && secondaryIconSide === "left" && (
+                    <AntDesign
+                        style={{ transform: [{ rotate: "180deg" }] }}
+                        name='rightcircle'
+                        size={14}
+                        color='white'
+                    />
+                )}
                 {!isLoading && <Text style={styles.text}>{children}</Text>}
-                {isSecondary && (
+                {isSecondary && secondaryIconSide === "right" && (
                     <AntDesign name='rightcircle' size={14} color='white' />
                 )}
             </LinearGradient>

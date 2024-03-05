@@ -66,6 +66,7 @@
     "welcomeScreenText2": "Participate in digital workshops and live classes from communities that interest you.",
     "next": "next",
     "skip": "skip",
+    "prev": "previous",
     "pastWorkshops": "Past Workshops",
     "comingSoon": "Coming Soon",
     "comingSoonMessage": "We are developing our app! We will bring you a great experience soon.",
@@ -94,5 +95,9 @@
     "category_0": "All",
     "category_65e58ad3d72f7ac225dd441c": "Age 0-3",
     "category_65e58a8bd72f7ac225dd4419": "Age 3-6",
-    "category_65e58abdd72f7ac225dd441a": "Age 6-12"
+    "category_65e58abdd72f7ac225dd441a": "Age 6-12",
+    "cardNumber": "card number",
+    "expiry": "expiry",
+    "cvc": "cvc/ccv",
+    "confirmPayment": "confirm payment"
 }
