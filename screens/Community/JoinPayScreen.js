@@ -16,22 +16,30 @@ export default function JoinPayScreen({ route, navigation }) {
     const inputFieldsList = ["number", "expiry", "cvc", "name"];
 
     const { course } = route.params || {};
-    const user = queryClient.getQueryData(["userData"]);
+    const user = queryClient.getQueryData(["user"]);
 
     const mutation = useMutation({
         mutationFn: (data) => {
-            return sendRequest({ api: "/comunity/joinComunity", data });
+            // on production, uncomment the following line
+            // return sendRequest({ api: "/comunity/joinComunity", data });
         },
         onSuccess: (response) => {
             const message = "Successfully joined.";
             showMessage({ message, type: "success" });
             navigation.navigate("ClassScreen", { course });
         },
+        onSettled: () => {
+            // on production, delete this onSettled section completely
+            navigation.pop();
+            navigation.pop();
+            navigation.navigate("ClassScreen", { course });
+        },
     });
 
     const submitHandler = () => {
         const values = form.values;
-        if (!form.valid) return;
+        // on production, uncomment the following line
+        // if (!form.valid) return;
         const [month, year] = form.values.expiry.split("/");
         mutation.mutate({
             userID: user._id,
