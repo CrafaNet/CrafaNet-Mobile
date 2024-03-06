@@ -30,11 +30,17 @@ export default function JoinPayScreen({ route, navigation }) {
     });
 
     const submitHandler = () => {
+        const values = form.values;
         if (!form.valid) return;
+        const [month, year] = form.values.expiry.split("/");
         mutation.mutate({
             userID: user._id,
             comunityID: course._id,
-            ...form.values,
+            name: form.values.name,
+            cardNumber: form.values.number,
+            cvc: form.values.cvc,
+            month,
+            year,
         });
     };
 
