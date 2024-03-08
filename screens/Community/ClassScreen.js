@@ -6,28 +6,34 @@ import {
     Pressable,
     Image,
 } from "react-native";
+import { useQuery } from "@tanstack/react-query";
+import { LinearGradient } from "expo-linear-gradient";
 
 import ScreenContainer from "../../components/ScreenContainer";
 import AppHeader from "../../components/AppHeader";
 
+import { sendRequest } from "../../util/http";
 import Strings from "../../util/strings";
 import Colors from "../../constants/colors";
 import Sizes from "../../constants/sizes";
 
 import vrClass from "../../assets/images/vr_class.png";
 
-const DUMMY_EVENTS = [
-    "Lorem ipsum dolor sit amet.",
-    "Lorem ipsum dolor sit amet.",
-    "Lorem ipsum dolor sit amet.",
-];
-
 import DUMMY_THUMBNAIL from "../../assets/images/welcome2.png";
-import { LinearGradient } from "expo-linear-gradient";
 const DUMMY_VIDEOS = Array.from({ length: 12 }, (_, i) => i);
 
 export default function ClassScreen({ route, navigation }) {
     const { course } = route.params || {};
+
+    const { data } = useQuery({
+        queryKey: ["communities", { communityId: course._id }],
+        queryFn: () => {
+            const api = "/comunity/comunityDetail";
+            const data = { id: course._id };
+            return sendRequest({ api, data });
+        },
+    });
+    const courseData = data?.data;
 
     const thumbnailPressHandler = () => {
         navigation.navigate("VideoScreen", { course });
@@ -36,16 +42,14 @@ export default function ClassScreen({ route, navigation }) {
     return (
         <ScreenContainer>
             <AppHeader />
-            <Text style={styles.title}>{course.name}</Text>
-            <Text style={styles.description}>
-                {Strings.DUMMY_CLASS_DESCRIPTION}
-            </Text>
+            <Text style={styles.title}>{courseData?.name}</Text>
+            <Text style={styles.description}>{courseData?.description}</Text>
             <LinearGradient
                 style={styles.lessonBanner}
                 colors={styles.lessonBannerGradientColors}
             >
                 <Image
-                    source={vrClass}
+                    source={{ uri: courseData?.coverImage } || vrClass}
                     style={styles.lessonBannerImage}
                     resizeMode='cover'
                 />

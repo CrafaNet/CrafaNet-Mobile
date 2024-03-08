@@ -47,7 +47,6 @@ export default function UpdateUserScreen() {
             return sendRequest({ api, token });
         },
     });
-    if (!userData) return null;
 
     const phoneData = userData?.data?.phone;
     const countryDialData =
@@ -79,9 +78,11 @@ export default function UpdateUserScreen() {
     const mutation = useMutation({
         mutationFn: (data) => {
             hideMessage();
-            return sendRequest({ api: `/user/updateUserInfo`, data });
+            const token = queryClient.getQueryData(["token"]);
+            return sendRequest({ api: `/user/updateUserInfo`, data, token });
         },
         onSuccess: (response) => {
+            const message = Strings[response.message];
             showMessage({ message, type: "success" });
         },
         onSettled: (response) => {
@@ -91,6 +92,8 @@ export default function UpdateUserScreen() {
             showMessage({ message, type: "danger" });
         },
     });
+
+    if (!userData) return null;
 
     const actionSheetIosHandler = () => {
         ActionSheetIOS.showActionSheetWithOptions(

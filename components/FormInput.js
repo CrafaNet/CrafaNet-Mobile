@@ -1,6 +1,12 @@
 import { StyleSheet, View, TextInput } from "react-native";
 
-import { Ionicons, Feather, Octicons, Fontisto } from "@expo/vector-icons";
+import {
+    Ionicons,
+    Feather,
+    Octicons,
+    Fontisto,
+    Entypo,
+} from "@expo/vector-icons";
 
 import Styles from "../constants/styles";
 import Strings from "../util/strings";
@@ -10,6 +16,7 @@ const iconPacks = {
     feather: Feather,
     octicons: Octicons,
     fontisto: Fontisto,
+    entypo: Entypo,
 };
 
 export default function FormInput({

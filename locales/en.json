@@ -99,5 +99,6 @@
     "cardNumber": "card number",
     "expiry": "expiry",
     "cvc": "cvc/ccv",
-    "confirmPayment": "confirm payment"
+    "confirmPayment": "confirm payment",
+    "message_updateUserInfo_200": "User info updated successfully."
 }

@@ -44,11 +44,7 @@ export default function CommunityHomeScreen() {
     const { data: categoriesResponse, isLoading: isCategoriesLoading } =
         useQuery({
             queryKey: ["communityCategories"],
-            queryFn: () => {
-                const token = queryClient.getQueryData(["token"]);
-                const api = "/comunity/listOfCategories";
-                return sendRequest({ api, token });
-            },
+            queryFn: () => sendRequest({ api: "/comunity/listOfCategories" }),
         });
     let categoriesData = categoriesResponse?.data;
 

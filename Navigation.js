@@ -29,7 +29,7 @@ import { getToken } from "./store/auth";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
-const releaseDate = new Date("2024-5-15").getTime();
+const releaseDate = new Date("2024-2-15").getTime();
 const isComingSoon = releaseDate > Date.now();
 
 export default function Navigation() {
