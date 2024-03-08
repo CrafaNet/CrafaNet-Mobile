@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import FlashMessage from "react-native-flash-message"; // docs: https://www.npmjs.com/package/react-native-flash-message
 import Constants from "expo-constants";
