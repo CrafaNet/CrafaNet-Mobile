@@ -2,7 +2,7 @@ import { QueryClient } from "@tanstack/react-query";
 export const queryClient = new QueryClient();
 
 export async function sendRequest({ api, data, token }) {
-    const url = "http://31.223.111.227:3000";
+    const url = "https://crafanet.exnoremo.com";
 
     /*
         api paths are not appended to the url but are appended to body due to security reasons
