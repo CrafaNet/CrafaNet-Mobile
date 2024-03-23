@@ -1,13 +1,5 @@
 import { useState } from "react";
-import {
-    StyleSheet,
-    Text,
-    View,
-    FlatList,
-    Pressable,
-    SafeAreaView,
-    ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, FlatList, Pressable, SafeAreaView, ScrollView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useQuery } from "@tanstack/react-query";
 
@@ -34,18 +26,16 @@ export default function CommunityHomeScreen() {
     });
     const userData = userResponse?.data;
 
-    const { data: communitiesResponse, isLoading: isCommunityLoading } =
-        useQuery({
-            queryKey: ["communities"],
-            queryFn: () => sendRequest({ api: "/comunity/listAllComunities" }),
-        });
+    const { data: communitiesResponse, isLoading: isCommunityLoading } = useQuery({
+        queryKey: ["communities"],
+        queryFn: () => sendRequest({ api: "/comunity/listAllComunities" }),
+    });
     const communitiesData = communitiesResponse?.data;
 
-    const { data: categoriesResponse, isLoading: isCategoriesLoading } =
-        useQuery({
-            queryKey: ["communityCategories"],
-            queryFn: () => sendRequest({ api: "/comunity/listOfCategories" }),
-        });
+    const { data: categoriesResponse, isLoading: isCategoriesLoading } = useQuery({
+        queryKey: ["communityCategories"],
+        queryFn: () => sendRequest({ api: "/comunity/listOfCategories" }),
+    });
     let categoriesData = categoriesResponse?.data;
 
     const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
@@ -55,9 +45,7 @@ export default function CommunityHomeScreen() {
 
     let communitiesList = communitiesData;
     if (activeCategoryIndex !== 0) {
-        communitiesList = communitiesData.filter((item) =>
-            item.categories.includes(categoriesData[activeCategoryIndex])
-        );
+        communitiesList = communitiesData.filter((item) => item.categories.includes(categoriesData[activeCategoryIndex]));
     }
 
     return (
@@ -79,11 +67,7 @@ export default function CommunityHomeScreen() {
                         data={categoriesData}
                         keyExtractor={(item) => item._id}
                         renderItem={(props) => (
-                            <Pressable
-                                onPress={() =>
-                                    setActiveCategoryIndex(props.index)
-                                }
-                            >
+                            <Pressable onPress={() => setActiveCategoryIndex(props.index)}>
                                 {categoriesItem(props, activeCategoryIndex)}
                             </Pressable>
                         )}
@@ -110,10 +94,7 @@ function categoriesItem({ item, index }, activeCategoryIndex) {
     const isActive = index === activeCategoryIndex;
     const defaultGradient = ["transparent", "transparent"];
 
-    const textStyles = [
-        styles.categoriesItemText,
-        isActive && styles.activeCategoryText,
-    ];
+    const textStyles = [styles.categoriesItemText, isActive && styles.activeCategoryText];
 
     return (
         <LinearGradient

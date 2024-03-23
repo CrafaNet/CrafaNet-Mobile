@@ -100,5 +100,7 @@
     "expiry": "expiry",
     "cvc": "cvc/ccv",
     "confirmPayment": "confirm payment",
-    "message_updateUserInfo_200": "User info updated successfully."
+    "message_updateUserInfo_200": "User info updated successfully.",
+    "successfullyJoined": "Successfully joined.",
+    "congratulationsYouBecameVIP": "Congratulations! You became VIP!"
 }

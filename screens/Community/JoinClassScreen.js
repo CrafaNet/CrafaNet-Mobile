@@ -42,12 +42,15 @@ export default function JoinClassScreen({ route, navigation }) {
                     api='/comunity/joinComunity'
                     data={{ userID: user._id, comunityID: course._id }}
                     price={course.price}
-                    onSuccess={() => {
-                        const message = "Successfully joined.";
+                    onSuccess={(response) => {
+                        const message = Strings.successfullyJoined;
                         showMessage({ message, type: "success" });
+                        navigation.pop();
+                        navigation.pop();
                         navigation.navigate("ClassScreen", { course });
                     }}
                     onSettled={() => {
+                        // on production, delete this onSettled function completely
                         navigation.pop();
                         navigation.pop();
                         navigation.navigate("ClassScreen", { course });

@@ -8,7 +8,7 @@ import Button from "../components/Button";
 import Strings from "../util/strings";
 import { sendRequest } from "../util/http";
 
-export default function CreditCard({ navigation, route, api, data, price, onSuccess, onSettled }) {
+export default function CreditCard({ api, data, price, onSuccess, onSettled }) {
     const cardInputRef = useRef(null);
     const [form, setForm] = useState({});
     const [activeInputIndex, setActiveInputIndex] = useState(0);
@@ -27,7 +27,7 @@ export default function CreditCard({ navigation, route, api, data, price, onSucc
         const values = form.values;
         // on production, uncomment the following line
         // if (!form.valid) return;
-        const [month, year] = form.values.expiry.split("/");
+        const [month, year] = values.expiry.split("/");
         mutation.mutate({
             name: form.values.name,
             cardNumber: form.values.number,

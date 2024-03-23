@@ -1,10 +1,4 @@
-import {
-    StyleSheet,
-    Text,
-    View,
-    ImageBackground,
-    Pressable,
-} from "react-native";
+import { StyleSheet, Text, View, ImageBackground, Pressable } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Octicons } from "@expo/vector-icons";
 
@@ -26,26 +20,16 @@ export default function ClassListItem({ item: course, isUserMember }) {
     };
 
     return (
-        <ImageBackground
-            style={styles.container}
-            source={{ uri: course.coverImage }}
-        >
+        <ImageBackground style={styles.container} source={{ uri: course.coverImage }}>
             <View style={styles.contentContainer}>
                 <View>
                     <Text style={styles.title}>{course.name}</Text>
                     <View style={styles.row}>
-                        <Octicons
-                            name='people'
-                            size={18}
-                            color={Colors.primary500}
-                        />
+                        <Octicons name='people' size={18} color={Colors.primary500} />
                         <Text style={styles.memberCount}>{memberText}</Text>
                     </View>
                 </View>
-                <Pressable
-                    style={styles.joinButton}
-                    onPress={joinButtonHandler}
-                >
+                <Pressable style={styles.joinButton} onPress={joinButtonHandler}>
                     <Text style={styles.joinButtonText}>{Strings.join}</Text>
                 </Pressable>
             </View>
