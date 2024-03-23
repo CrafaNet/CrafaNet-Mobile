@@ -1,18 +1,9 @@
 import { useEffect, useState } from "react";
-import {
-    Image,
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    Pressable,
-    KeyboardAvoidingView,
-    Platform,
-} from "react-native";
+import { Image, StyleSheet, Text, View, TextInput, Pressable, KeyboardAvoidingView, Platform } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import MaskInput, { Masks } from "react-native-mask-input";
 import { CountryPicker } from "react-native-country-codes-picker";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import CountryFlag from "react-native-country-flag";
 import { showMessage, hideMessage } from "react-native-flash-message";
 
@@ -90,10 +81,8 @@ const modes = {
 export default function AuthFormScreen() {
     // const [location, setLocation] = useState(null);
     const [countryCode, setCountryCode] = useState(deviceRegion);
-    const [countryDial, setCountryDial] = useState(
-        getCountryDial(deviceRegion)
-    );
-    const [mode, setMode] = useState("login");
+    const [countryDial, setCountryDial] = useState(getCountryDial(deviceRegion));
+    const [mode, setMode] = useState("register");
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
@@ -113,6 +102,19 @@ export default function AuthFormScreen() {
         (mode === "sendResetPasswordCode" && isPhone) ||
         (mode === "checkResetPasswordCode" && isPhone && resetPasswordCode) ||
         (mode === "checkConfirmCode" && confirmCode);
+
+    const ipQuery = useQuery({
+        queryKey: ["ipData"],
+        queryFn: () => sendRequest({ method: "GET", url: "http://ip-api.com/json" }),
+    });
+    const ipData = ipQuery?.data;
+
+    useEffect(() => {
+        if (!ipData) return () => {};
+        setCountryCode(ipData.countryCode);
+        const countryCallingCode = countries.find((c) => c.code === ipData.countryCode).dial_code;
+        setCountryDial(countryCallingCode);
+    }, [ipData]);
 
     const mutation = useMutation({
         mutationFn: (data) => {
@@ -163,22 +165,10 @@ export default function AuthFormScreen() {
     // }, [location]);
 
     return (
-        <KeyboardAvoidingView
-            style={{ flex: 1 }}
-            behavior={Platform.select({ android: "height", ios: "padding" })}
-        >
-            <LinearGradient
-                colors={Colors.mainLinearGradient}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-                style={styles.background}
-            >
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior={Platform.select({ android: "height", ios: "padding" })}>
+            <LinearGradient colors={Colors.mainLinearGradient} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.background}>
                 <View style={styles.imageContainer}>
-                    <Image
-                        source={modes[mode].image}
-                        resizeMode='contain'
-                        style={styles.image}
-                    />
+                    <Image source={modes[mode].image} resizeMode='contain' style={styles.image} />
                 </View>
                 <View style={styles.formContainer}>
                     <Text style={styles.title}>{modes[mode].title}</Text>
@@ -197,9 +187,7 @@ export default function AuthFormScreen() {
                                 showOnly={countries.map((item) => item.code)}
                                 style={styles.countryCodePicker}
                                 show={showCountrySelector}
-                                onBackdropPress={() =>
-                                    setShowCountrySelector(false)
-                                }
+                                onBackdropPress={() => setShowCountrySelector(false)}
                                 pickerButtonOnPress={(item) => {
                                     setCountryCode(item?.code?.toLowerCase());
                                     setCountryDial(item.dial_code);
@@ -216,27 +204,14 @@ export default function AuthFormScreen() {
                                 >
                                     {countryCode || countryDial ? (
                                         <>
-                                            <CountryFlag
-                                                style={styles.countryFlag}
-                                                isoCode={countryCode}
-                                                size={14}
-                                            />
+                                            <CountryFlag style={styles.countryFlag} isoCode={countryCode} size={14} />
                                             <Text>{countryDial}</Text>
                                         </>
                                     ) : (
-                                        <Feather
-                                            name='flag'
-                                            size={18}
-                                            color='#0006'
-                                        />
+                                        <Feather name='flag' size={18} color='#0006' />
                                     )}
                                 </Pressable>
-                                <View
-                                    style={[
-                                        styles.inputContainer,
-                                        styles.phoneTextInputContainer,
-                                    ]}
-                                >
+                                <View style={[styles.inputContainer, styles.phoneTextInputContainer]}>
                                     <Feather
                                         name='phone'
                                         size={20}
@@ -244,9 +219,7 @@ export default function AuthFormScreen() {
                                         style={[
                                             styles.inputIcon,
                                             {
-                                                display: phone
-                                                    ? "none"
-                                                    : "flex",
+                                                display: phone ? "none" : "flex",
                                             },
                                         ]}
                                     />
@@ -282,37 +255,21 @@ export default function AuthFormScreen() {
                                 name='lock-closed-outline'
                                 size={20}
                                 color='black'
-                                style={[
-                                    styles.inputIcon,
-                                    { display: password ? "none" : "flex" },
-                                ]}
+                                style={[styles.inputIcon, { display: password ? "none" : "flex" }]}
                             />
                             <TextInput
                                 style={Styles.textInput}
                                 value={password}
-                                placeholder={`       ${
-                                    modes[mode].newPassword
-                                        ? Strings.newPassword
-                                        : Strings.password
-                                }`}
+                                placeholder={`       ${modes[mode].newPassword ? Strings.newPassword : Strings.password}`}
                                 onChangeText={setPassword}
                                 secureTextEntry={!passwordVisible}
                                 returnKeyType='done'
                             />
                             <Pressable
-                                onPress={() =>
-                                    setPasswordVisible((prev) => !prev)
-                                }
-                                style={[
-                                    styles.inputIcon,
-                                    { left: "auto", right: 10 },
-                                ]}
+                                onPress={() => setPasswordVisible((prev) => !prev)}
+                                style={[styles.inputIcon, { left: "auto", right: 10 }]}
                             >
-                                <Ionicons
-                                    name={passwordVisible ? "eye-off" : "eye"}
-                                    size={20}
-                                    color='black'
-                                />
+                                <Ionicons name={passwordVisible ? "eye-off" : "eye"} size={20} color='black' />
                             </Pressable>
                         </View>
                     )}
@@ -327,28 +284,15 @@ export default function AuthFormScreen() {
                         />
                     )}
                     {modes[mode].forgotPassword && (
-                        <Button
-                            mode='text'
-                            style={styles.forgotPassword}
-                            onPress={() => setMode("sendResetPasswordCode")}
-                        >
+                        <Button mode='text' style={styles.forgotPassword} onPress={() => setMode("sendResetPasswordCode")}>
                             {Strings.forgotPassword}
                         </Button>
                     )}
                     {modes[mode].terms && (
                         <View style={styles.tacContainer}>
-                            <Text style={[styles.text, styles.tacText]}>
-                                {Strings.byClickingYouAgree}{" "}
-                            </Text>
+                            <Text style={[styles.text, styles.tacText]}>{Strings.byClickingYouAgree} </Text>
                             <Pressable>
-                                <Text
-                                    style={[
-                                        styles.tacText,
-                                        styles.tacPressableText,
-                                    ]}
-                                >
-                                    {Strings.termsAndConditions}
-                                </Text>
+                                <Text style={[styles.tacText, styles.tacPressableText]}>{Strings.termsAndConditions}</Text>
                             </Pressable>
                         </View>
                     )}
@@ -356,9 +300,7 @@ export default function AuthFormScreen() {
                         <View style={styles.iRememberContainer}>
                             <Text>{Strings.iRememberMyPassword} </Text>
                             <Pressable onPress={() => setMode("login")}>
-                                <Text style={styles.inlineButton}>
-                                    {Strings.login}
-                                </Text>
+                                <Text style={styles.inlineButton}>{Strings.login}</Text>
                             </Pressable>
                         </View>
                     )}
@@ -373,26 +315,16 @@ export default function AuthFormScreen() {
                     </Button>
                     {modes[mode].notHaveAnAccount && (
                         <>
-                            <Text style={[styles.text, { marginTop: 18 }]}>
-                                {Strings.youDontHaveAnAccount}
-                            </Text>
-                            <Button
-                                mode='text'
-                                onPress={() => setMode("register")}
-                            >
+                            <Text style={[styles.text, { marginTop: 18 }]}>{Strings.youDontHaveAnAccount}</Text>
+                            <Button mode='text' onPress={() => setMode("register")}>
                                 {Strings.createNewAccount}
                             </Button>
                         </>
                     )}
                     {modes[mode].haveAnAccount && (
                         <>
-                            <Text style={[styles.text, { marginTop: 18 }]}>
-                                {Strings.youDontHaveAnAccount}
-                            </Text>
-                            <Button
-                                mode='text'
-                                onPress={() => setMode("login")}
-                            >
+                            <Text style={[styles.text, { marginTop: 18 }]}>{Strings.youDontHaveAnAccount}</Text>
+                            <Button mode='text' onPress={() => setMode("login")}>
                                 {Strings.loginNow}
                             </Button>
                         </>

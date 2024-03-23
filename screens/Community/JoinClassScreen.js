@@ -1,18 +1,25 @@
+import { useRef } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 import ScreenContainer from "../../components/ScreenContainer";
 import AppHeader from "../../components/AppHeader";
 import Button from "../../components/Button";
+import CreditCard from "../../components/CreditCard";
 
 import Strings from "../../util/strings";
+import { queryClient } from "../../util/http";
 
 import classAssetIllustration from "../../assets/illustrations/classAsset.png";
 
 export default function JoinClassScreen({ route, navigation }) {
+    const bottomSheetModalRef = useRef(null);
     const { course } = route.params || {};
 
+    const user = queryClient.getQueryData(["user"]);
+
     const joinClassHandler = () => {
-        navigation.navigate("JoinPayScreen", { course });
+        bottomSheetModalRef.current?.present();
     };
 
     return (
@@ -24,18 +31,29 @@ export default function JoinClassScreen({ route, navigation }) {
                     <Text style={styles.title}>{Strings.applyNow}!</Text>
                 </View>
 
-                <Text style={styles.description}>
-                    {Strings.DUMMY_CLASS_DESCRIPTION}
-                </Text>
-                <Image
-                    style={styles.image}
-                    source={classAssetIllustration}
-                    resizeMode='contain'
-                />
+                <Text style={styles.description}>{Strings.DUMMY_CLASS_DESCRIPTION}</Text>
+                <Image style={styles.image} source={classAssetIllustration} resizeMode='contain' />
                 <Button mode='primary' onPress={joinClassHandler}>
                     {`${Strings.joinClass} (${course.price} €/mo)`}
                 </Button>
             </View>
+            <BottomSheetModal ref={bottomSheetModalRef} index={0} snapPoints={["60%", "90%"]}>
+                <CreditCard
+                    api='/comunity/joinComunity'
+                    data={{ userID: user._id, comunityID: course._id }}
+                    price={course.price}
+                    onSuccess={() => {
+                        const message = "Successfully joined.";
+                        showMessage({ message, type: "success" });
+                        navigation.navigate("ClassScreen", { course });
+                    }}
+                    onSettled={() => {
+                        navigation.pop();
+                        navigation.pop();
+                        navigation.navigate("ClassScreen", { course });
+                    }}
+                />
+            </BottomSheetModal>
         </ScreenContainer>
     );
 }

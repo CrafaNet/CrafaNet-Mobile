@@ -8,7 +8,6 @@ import CommunityHomeScreen from "./screens/Community/CommunityHomeScreen";
 import JoinClassScreen from "./screens/Community/JoinClassScreen";
 import ClassScreen from "./screens/Community/ClassScreen";
 import VideoScreen from "./screens/Community/VideoScreen";
-import JoinPayScreen from "./screens/Community/JoinPayScreen";
 // SkillHub
 import SkillHubHomeScreen from "./screens/SkillHub/SkillHubHomeScreen";
 // LearnMate
@@ -34,10 +33,12 @@ const isComingSoon = releaseDate > Date.now();
 
 export default function Navigation() {
     // pre-chaching the token data to be used throughout the app by queryClient.getQueryData(["token"]);
-    useQuery({
+    const { isLoading } = useQuery({
         queryKey: ["token"],
         queryFn: () => getToken(),
     });
+
+    if (isLoading) return null;
 
     return (
         <NavigationContainer>
@@ -70,18 +71,11 @@ export default function Navigation() {
 function CommunityStack() {
     return (
         <Stack.Navigator screenOptions={stackScreenOptions}>
-            <Stack.Screen
-                name='CommunityHome'
-                component={CommunityHomeScreen}
-            />
+            <Stack.Screen name='CommunityHome' component={CommunityHomeScreen} />
             <Stack.Screen name='JoinClassScreen' component={JoinClassScreen} />
             <Stack.Screen name='ClassScreen' component={ClassScreen} />
-            <Stack.Screen
-                name='UpgradeToVipScreen'
-                component={UpgradeToVipScreen}
-            />
+            <Stack.Screen name='UpgradeToVipScreen' component={UpgradeToVipScreen} />
             <Stack.Screen name='VideoScreen' component={VideoScreen} />
-            <Stack.Screen name='JoinPayScreen' component={JoinPayScreen} />
         </Stack.Navigator>
     );
 }
@@ -97,10 +91,7 @@ function SkillHubStack() {
 function LearnMateStack() {
     return (
         <Stack.Navigator screenOptions={stackScreenOptions}>
-            <Stack.Screen
-                name='LearnMateHome'
-                component={LearnMateHomeScreen}
-            />
+            <Stack.Screen name='LearnMateHome' component={LearnMateHomeScreen} />
         </Stack.Navigator>
     );
 }
@@ -108,10 +99,7 @@ function LearnMateStack() {
 function WorkfolioStack() {
     return (
         <Stack.Navigator screenOptions={stackScreenOptions}>
-            <Stack.Screen
-                name='WorkfolioHome'
-                component={WorkfolioHomeScreen}
-            />
+            <Stack.Screen name='WorkfolioHome' component={WorkfolioHomeScreen} />
             <Stack.Screen name='UpdateUser' component={UpdateUserScreen} />
         </Stack.Navigator>
     );
@@ -146,48 +134,22 @@ const stackScreenOptions = {
         fontFamily: "poppins-bold",
         fontSize: 24,
     },
-    headerRight: () => (
-        <Entypo
-            name='dots-three-vertical'
-            size={20}
-            color={Colors.primary500}
-        />
-    ),
+    headerRight: () => <Entypo name='dots-three-vertical' size={20} color={Colors.primary500} />,
 };
 
 const communityBottomTabOptions = {
-    tabBarIcon: (props) => (
-        <Ionicons
-            name={`people${props.focused ? "" : "-outline"}`}
-            {...props}
-        />
-    ),
+    tabBarIcon: (props) => <Ionicons name={`people${props.focused ? "" : "-outline"}`} {...props} />,
     tabBarLabel: Strings.community,
 };
 const skillHubBottomTabOptions = {
-    tabBarIcon: (props) => (
-        <MaterialCommunityIcons
-            name={`puzzle${props.focused ? "" : "-outline"}`}
-            {...props}
-        />
-    ),
+    tabBarIcon: (props) => <MaterialCommunityIcons name={`puzzle${props.focused ? "" : "-outline"}`} {...props} />,
     tabBarLabel: Strings.skillhub,
 };
 const learnMateBottomTabOptions = {
-    tabBarIcon: (props) => (
-        <MaterialCommunityIcons
-            name={`robot-happy${props.focused ? "" : "-outline"}`}
-            {...props}
-        />
-    ),
+    tabBarIcon: (props) => <MaterialCommunityIcons name={`robot-happy${props.focused ? "" : "-outline"}`} {...props} />,
     tabBarLabel: Strings.learnmate,
 };
 const workfolioBottomTabOptions = {
-    tabBarIcon: (props) => (
-        <MaterialCommunityIcons
-            name={`briefcase-account${props.focused ? "" : "-outline"}`}
-            {...props}
-        />
-    ),
+    tabBarIcon: (props) => <MaterialCommunityIcons name={`briefcase-account${props.focused ? "" : "-outline"}`} {...props} />,
     tabBarLabel: Strings.workfolio,
 };

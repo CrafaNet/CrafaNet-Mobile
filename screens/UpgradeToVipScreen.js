@@ -15,14 +15,8 @@ export default function UpgradeToVipScreen() {
             <AppHeader />
             <View style={styles.container}>
                 <Text style={styles.title}>{Strings.upgradeToVipMember}!</Text>
-                <Text style={styles.text}>
-                    {Strings.upgradeToVipMemberDescription}
-                </Text>
-                <Image
-                    style={styles.image}
-                    source={classAsset10Illustration}
-                    resizeMode='contain'
-                />
+                <Text style={styles.text}>{Strings.upgradeToVipMemberDescription}</Text>
+                <Image style={styles.image} source={classAsset10Illustration} resizeMode='contain' />
 
                 <View style={styles.listContainer}>
                     <Text style={styles.listItem}>
@@ -39,7 +33,9 @@ export default function UpgradeToVipScreen() {
                     </Text>
                 </View>
 
-                <Button mode='primary'>{Strings.upgradeNow}</Button>
+                <Button mode='primary' onPress={() => {}}>
+                    {Strings.upgradeNow}
+                </Button>
             </View>
         </ScreenContainer>
     );

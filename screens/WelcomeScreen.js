@@ -41,24 +41,15 @@ export default function WelcomeScreen({ onSeenWelcome }) {
                     tvParallaxTiltAngle={45}
                 >
                     {images.map((item, index) => {
-                        const inactiveStyle =
-                            index !== activeIndex && styles.inactivePage;
+                        const inactiveStyle = index !== activeIndex && styles.inactivePage;
                         return (
-                            <View
-                                style={[styles.page, inactiveStyle]}
-                                key={index}
-                            >
-                                <Image
-                                    source={item}
-                                    style={styles.image}
-                                    resizeMode='contain'
-                                    height={480}
-                                />
+                            <View style={[styles.page, inactiveStyle]} key={index}>
+                                <Image source={item} style={styles.image} resizeMode='contain' height={480} />
                             </View>
                         );
                     })}
                 </PagerView>
-                <View style={styles.circlesContainer}>
+                {/* <View style={styles.circlesContainer}>
                     {images.map((_, index) => {
                         const activeStyle =
                             index === activeIndex && styles.activeCircle;
@@ -69,32 +60,20 @@ export default function WelcomeScreen({ onSeenWelcome }) {
                             />
                         );
                     })}
-                </View>
+                </View> */}
             </View>
 
             <View style={styles.detailsContainer}>
                 <View>
-                    <Text style={[styles.text, styles.title]}>
-                        {Strings[`welcomeScreenTitle${activeIndex}`]}
-                    </Text>
-                    <Text style={styles.text}>
-                        {Strings[`welcomeScreenText${activeIndex}`]}
-                    </Text>
+                    <Text style={[styles.text, styles.title]}>{Strings[`welcomeScreenTitle${activeIndex}`]}</Text>
+                    <Text style={styles.text}>{Strings[`welcomeScreenText${activeIndex}`]}</Text>
                 </View>
                 <View style={styles.actions}>
-                    <Button
-                        style={styles.button}
-                        mode='gray'
-                        onPress={onSeenWelcome}
-                    >
+                    <Button style={styles.button} mode='gray' onPress={onSeenWelcome}>
                         {Strings.skip}
                     </Button>
                     {activeIndex !== images.length - 1 && (
-                        <Button
-                            style={styles.button}
-                            mode='primary'
-                            onPress={nextPressHandler}
-                        >
+                        <Button style={styles.button} mode='primary' onPress={nextPressHandler}>
                             {Strings.next}
                         </Button>
                     )}
