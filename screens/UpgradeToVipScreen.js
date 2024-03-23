@@ -1,6 +1,5 @@
-import { useRef } from "react";
 import { StyleSheet, Text, View, Image } from "react-native";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import useBottomModal from "../hooks/useBottomModal";
 import { Feather } from "@expo/vector-icons";
 
 import ScreenContainer from "../components/ScreenContainer";
@@ -13,7 +12,7 @@ import Strings from "../util/strings";
 import classAsset10Illustration from "../assets/illustrations/classAsset10.png";
 
 export default function UpgradeToVipScreen({ navigation }) {
-    const bottomSheetModalRef = useRef(null);
+    const [BottomModal, showBottomModal] = useBottomModal();
 
     return (
         <ScreenContainer>
@@ -37,14 +36,14 @@ export default function UpgradeToVipScreen({ navigation }) {
                         {Strings.upgradeToVipMemberListItem2}
                     </Text>
                 </View>
-                <Button mode='primary' onPress={() => bottomSheetModalRef.current?.present()}>
+                <Button mode='primary' onPress={() => showBottomModal()}>
                     {Strings.upgradeNow}
                 </Button>
-                <BottomSheetModal ref={bottomSheetModalRef} index={0} snapPoints={["60%", "90%"]}>
+                <BottomModal snapPoints={["60%", "90%"]}>
                     <CreditCard
                         api=''
                         data={{}}
-                        price={0}
+                        price={10}
                         onSuccess={() => {
                             const message = Strings.congratulationsYouBecameVIP;
                             showMessage({ message, type: "success" });
@@ -54,7 +53,7 @@ export default function UpgradeToVipScreen({ navigation }) {
                             navigation.navigate("CommunityHome");
                         }}
                     />
-                </BottomSheetModal>
+                </BottomModal>
             </View>
         </ScreenContainer>
     );

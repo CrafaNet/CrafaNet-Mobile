@@ -1,6 +1,5 @@
-import { useRef } from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import useBottomModal from "../../hooks/useBottomModal";
 
 import ScreenContainer from "../../components/ScreenContainer";
 import AppHeader from "../../components/AppHeader";
@@ -13,14 +12,10 @@ import { queryClient } from "../../util/http";
 import classAssetIllustration from "../../assets/illustrations/classAsset.png";
 
 export default function JoinClassScreen({ route, navigation }) {
-    const bottomSheetModalRef = useRef(null);
+    const [BottomModal, showBottomModal] = useBottomModal();
     const { course } = route.params || {};
 
     const user = queryClient.getQueryData(["user"]);
-
-    const joinClassHandler = () => {
-        bottomSheetModalRef.current?.present();
-    };
 
     return (
         <ScreenContainer>
@@ -33,11 +28,11 @@ export default function JoinClassScreen({ route, navigation }) {
 
                 <Text style={styles.description}>{Strings.DUMMY_CLASS_DESCRIPTION}</Text>
                 <Image style={styles.image} source={classAssetIllustration} resizeMode='contain' />
-                <Button mode='primary' onPress={joinClassHandler}>
+                <Button mode='primary' onPress={showBottomModal}>
                     {`${Strings.joinClass} (${course.price} €/mo)`}
                 </Button>
             </View>
-            <BottomSheetModal ref={bottomSheetModalRef} index={0} snapPoints={["60%", "90%"]}>
+            <BottomModal snapPoints={["60%", "90%"]}>
                 <CreditCard
                     api='/comunity/joinComunity'
                     data={{ userID: user._id, comunityID: course._id }}
@@ -56,7 +51,7 @@ export default function JoinClassScreen({ route, navigation }) {
                         navigation.navigate("ClassScreen", { course });
                     }}
                 />
-            </BottomSheetModal>
+            </BottomModal>
         </ScreenContainer>
     );
 }
