@@ -37,7 +37,6 @@ export default function Navigation() {
         queryKey: ["token"],
         queryFn: () => getToken(),
     });
-
     if (isLoading) return null;
 
     return (

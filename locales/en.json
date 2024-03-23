@@ -56,7 +56,7 @@
     "upgradeToVipMemberDescription": "Get an unlimited CrafaNet experience as a VIP Crafa member. Join the VIP Crafa members now.",
     "upgradeToVipMemberListItem0": "Access to LearnMate learning.",
     "upgradeToVipMemberListItem1": "Special badge for VIP members.",
-    "upgradeToVipMemberListItem2": "Creating 3 accounts from the same phone.",
+    "upgradeToVipMemberListItem2": "Creating up to 3 profiles in one account.",
     "upgradeNow": "Upgrade Now",
     "videos": "Videos",
     "welcomeScreenTitle0": "Discover Your Skills",
@@ -103,5 +103,6 @@
     "confirmPayment": "confirm payment",
     "message_updateUserInfo_200": "User info updated successfully.",
     "successfullyJoined": "Successfully joined.",
-    "congratulationsYouBecameVIP": "Congratulations! You became VIP!"
+    "congratulationsYouBecameVIP": "Congratulations! You became VIP!",
+    "notifications": "Notifications"
 }
