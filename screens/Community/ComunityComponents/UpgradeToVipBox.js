@@ -6,7 +6,7 @@ import Colors from "../../../constants/colors";
 import Strings from "../../../util/strings";
 import Sizes from "../../../constants/sizes";
 
-const vipIllustration = require("../../../assets/illustrations/vip.png");
+const vipIllustration = require("../../../assets/cartons/idea.png");
 
 export default function UpgradeToVipBox() {
     const navigation = useNavigation();
@@ -22,7 +22,7 @@ export default function UpgradeToVipBox() {
                 style={styles.container}
             >
                 <View style={styles.textContainer}>
-                    <Text style={styles.title}>{Strings.upgradeToVip}</Text>
+                    <Text style={styles.title}>{Strings.getPremium}</Text>
                     <Text style={styles.text}>
                         {Strings.becomeAVipMemberToGetYourPrivateClassNow}
                     </Text>

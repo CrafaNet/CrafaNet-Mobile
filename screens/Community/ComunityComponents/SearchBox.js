@@ -10,7 +10,7 @@ import Sizes from "../../../constants/sizes";
 export default function SearchBox() {
     return (
         <LinearGradient
-            colors={["#7ea3d5", "#dcb4f2"]}
+            colors={["#78ae82", "#53665d"]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.container}
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     },
     icon: {
         marginLeft: 8,
+        color: "white",
     },
     textInput: {
         flex: 1,

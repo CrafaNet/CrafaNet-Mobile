@@ -25,21 +25,22 @@ export default function CommunityHomeScreen() {
         },
     });
     const userData = userResponse?.data;
-
+  
     const { data: communitiesResponse, isLoading: isCommunityLoading } = useQuery({
         queryKey: ["communities"],
-        queryFn: () => sendRequest({ api: "/comunity/listAllComunities" }),
+        queryFn: () => sendRequest({ api: "/comunity/userSpecializedCommunities", data: { token: userData.token} }),
     });
     const communitiesData = communitiesResponse?.data;
 
     const { data: categoriesResponse, isLoading: isCategoriesLoading } = useQuery({
         queryKey: ["communityCategories"],
-        queryFn: () => sendRequest({ api: "/comunity/listOfCategories" }),
-    });
+        queryFn: () => sendRequest({ api: "/comunity/userCustomunizedCategories" , data: { token: userData.token} }),
+    }); 
     let categoriesData = categoriesResponse?.data;
+    console.log(categoriesData); 
 
     const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
-
+ 
     if (isUserLoading || isCommunityLoading || isCategoriesLoading) return;
     categoriesData = [{ _id: "0" }, ...categoriesData];
 
@@ -71,7 +72,7 @@ export default function CommunityHomeScreen() {
                                 {categoriesItem(props, activeCategoryIndex)}
                             </Pressable>
                         )}
-                        horizontal
+                        horizontal 
                         showsHorizontalScrollIndicator={false}
                     />
                 </SafeAreaView>
@@ -84,7 +85,7 @@ export default function CommunityHomeScreen() {
                     renderItem={(props) => classListRenderItem(props, userData)}
                     showsVerticalScrollIndicator={false}
                     scrollEnabled={false}
-                />
+                />  
             </SafeAreaView>
         </ScreenContainer>
     );

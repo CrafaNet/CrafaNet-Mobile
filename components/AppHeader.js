@@ -29,7 +29,8 @@ export default function AppHeader() {
                     </Pressable>
                 )}
                 <Text style={styles.title}>CrafaNet</Text>
-                <LinearGradient colors={["#55fbeb", "#52e722"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.beta}>
+                 {/*
+                <LinearGradient colors={["#78ae82", "#52e722"]} start={{ x: 0, y: 0 }} end={{ x: 1, y: 0 }} style={styles.beta}>
                     <Text style={styles.betaText}>BETA</Text>
                 </LinearGradient>
                 {/* delete this linear gradient and its children when out of beta version*/}
@@ -73,6 +74,7 @@ const styles = StyleSheet.create({
         fontFamily: "poppins-bold",
         color: Colors.primary500,
         fontSize: 24,
+        marginTop:5
     },
     beta: {
         position: "absolute",

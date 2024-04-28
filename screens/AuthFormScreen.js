@@ -21,10 +21,10 @@ import { login } from "../store/auth";
 import { getCountryDial } from "../util/location";
 import countries from "../data/countries.json";
 
-const loginIllustration = require("../assets/illustrations/login.png");
-const registerIllustration = require("../assets/illustrations/register.png");
-const resetPasswordIllustration = require("../assets/illustrations/resetPassword.png");
-const verifiedIllustration = require("../assets/illustrations/verified.png");
+const loginIllustration = require("../assets/white-banner.png");
+const registerIllustration = require("../assets/white-banner.png");
+const resetPasswordIllustration = require("../assets/white-banner.png");
+const verifiedIllustration = require("../assets/white-banner.png");
 
 // modes are like different pages
 // all 5 authentication form pages are coded in this component
@@ -110,7 +110,7 @@ export default function AuthFormScreen() {
     const ipData = ipQuery?.data;
 
     useEffect(() => {
-        if (!ipData) return () => {};
+        if (!ipData) return () => { };
         setCountryCode(ipData.countryCode);
         const countryCallingCode = countries.find((c) => c.code === ipData.countryCode).dial_code;
         setCountryDial(countryCallingCode);
@@ -345,7 +345,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
     },
     image: {
-        width: "76%",
+        width: "85%",
     },
     formContainer: {
         backgroundColor: "white",

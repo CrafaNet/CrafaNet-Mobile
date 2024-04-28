@@ -1,14 +1,14 @@
 export default {
     bg: "#fff",
 
-    primary500: "#764af1",
+    primary500: "#78ae82",
     primary600: "#5d3abe",
     primary700: "#442a8b",
     primary800: "#2b1a57",
 
     secondary500: "#6123dd",
 
-    coloredText: "#5e17eb",
+    coloredText: "#78ae82",
 
-    mainLinearGradient: ["#004aad", "#cb6ce6"],
+    mainLinearGradient: ["#53665d", "#78ae82"],
 };

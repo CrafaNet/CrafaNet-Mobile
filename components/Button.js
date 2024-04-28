@@ -55,7 +55,7 @@ export default function Button({
                     <LoadingDots
                         dots={3}
                         size={12}
-                        colors={["#EEF5FF", "#B4D4FF", "#86B6F6"]}
+                        colors={["#78ae02", "#78ae42", "#78ae82"]}
                         bounceHeight={8}
                     />
                 )}

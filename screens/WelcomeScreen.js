@@ -69,9 +69,11 @@ export default function WelcomeScreen({ onSeenWelcome }) {
                     <Text style={styles.text}>{Strings[`welcomeScreenText${activeIndex}`]}</Text>
                 </View>
                 <View style={styles.actions}>
-                    <Button style={styles.button} mode='gray' onPress={onSeenWelcome}>
-                        {Strings.skip}
+                {activeIndex !== images.length - 3 && activeIndex !== images.length - 2 && (
+                    <Button style={styles.button} mode='primary' onPress={onSeenWelcome}>
+                        {Strings.startNow}
                     </Button>
+                )}
                     {activeIndex !== images.length - 1 && (
                         <Button style={styles.button} mode='primary' onPress={nextPressHandler}>
                             {Strings.next}
@@ -86,7 +88,7 @@ export default function WelcomeScreen({ onSeenWelcome }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingBottom: 40,
+        paddingBottom: 80,
     },
     showcaseContainer: {
         flex: 1,
@@ -117,7 +119,7 @@ const styles = StyleSheet.create({
         borderRadius: 999,
     },
     activeCircle: {
-        backgroundColor: "#1b4bb0",
+        backgroundColor: "#78ae82",
     },
     detailsContainer: {
         paddingHorizontal: 20,
@@ -127,15 +129,19 @@ const styles = StyleSheet.create({
         justifyContent: "space-evenly",
     },
     button: {
-        width: "40%",
+        width: "50%",
+        marginTop: 20,
+        marginBottom: 10,
     },
     text: {
-        fontFamily: "poppins-",
+        fontFamily: "poppins-bold",
         textAlign: "center",
-        marginBottom: 8,
+        marginBottom: 2,
+        color: "#78ae82"
     },
     title: {
         fontFamily: "poppins-bold",
-        fontSize: 18,
+        fontSize: 22,
+        color: "#4E7455",
     },
 });
