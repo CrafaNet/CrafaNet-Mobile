@@ -4,7 +4,7 @@ export default {
     primary500: "#78ae82",
     primary600: "#5d3abe",
     primary700: "#442a8b",
-    primary800: "#2b1a57",
+    primary800: "#53665d",
 
     secondary500: "#6123dd",
 

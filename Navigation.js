@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { LinearGradient } from "expo-linear-gradient";
 
 // Community
 import CommunityHomeScreen from "./screens/Community/CommunityHomeScreen";
@@ -40,30 +41,30 @@ export default function Navigation() {
     if (isLoading) return null;
 
     return (
-        <NavigationContainer>
-            <Tab.Navigator screenOptions={bottomTabScreenOptions}>
-                <Tab.Screen
-                    name='Community'
-                    component={isComingSoon ? ComingSoonScreen : CommunityStack}
-                    options={communityBottomTabOptions}
-                />
-                <Tab.Screen
-                    name='SkillHub'
-                    component={isComingSoon ? ComingSoonScreen : SkillHubStack}
-                    options={skillHubBottomTabOptions}
-                />
-                <Tab.Screen
-                    name='LearnMate'
-                    component={isComingSoon ? ComingSoonScreen : LearnMateStack}
-                    options={learnMateBottomTabOptions}
-                />
-                <Tab.Screen
-                    name='Workfolio'
-                    component={isComingSoon ? ComingSoonScreen : WorkfolioStack}
-                    options={workfolioBottomTabOptions}
-                />
-            </Tab.Navigator>
-        </NavigationContainer>
+            <NavigationContainer>
+                <Tab.Navigator screenOptions={bottomTabScreenOptions}>
+                    <Tab.Screen
+                        name='Community'
+                        component={isComingSoon ? ComingSoonScreen : CommunityStack}
+                        options={communityBottomTabOptions}
+                    />
+                    <Tab.Screen
+                        name='SkillHub'
+                        component={isComingSoon ? ComingSoonScreen : SkillHubStack}
+                        options={skillHubBottomTabOptions}
+                    />
+                    <Tab.Screen
+                        name='LearnMate'
+                        component={isComingSoon ? ComingSoonScreen : LearnMateStack}
+                        options={learnMateBottomTabOptions}
+                    />
+                    <Tab.Screen
+                        name='Workfolio'
+                        component={isComingSoon ? ComingSoonScreen : WorkfolioStack}
+                        options={workfolioBottomTabOptions}
+                    />
+                </Tab.Navigator>
+            </NavigationContainer>
     );
 }
 
@@ -117,7 +118,7 @@ const bottomTabScreenOptions = {
         elevation: 0,
         shadowOpacity: 0,
         borderColor: "transparent",
-        backgroundColor: "#6c5bcb",
+        backgroundColor: "#78ae82",
         borderRadius: 10,
         margin: 6,
         position: "absolute",

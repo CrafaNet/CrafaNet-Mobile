@@ -9,7 +9,7 @@ import CreditCard from "../components/CreditCard";
 
 import Strings from "../util/strings";
 
-import classAsset10Illustration from "../assets/illustrations/classAsset10.png";
+import classAsset10Illustration from "../assets/cartons/idea.png";
 
 export default function UpgradeToVipScreen({ navigation }) {
     const [BottomModal, showBottomModal] = useBottomModal();
@@ -17,7 +17,7 @@ export default function UpgradeToVipScreen({ navigation }) {
     return (
         <ScreenContainer>
             <AppHeader />
-            <View style={styles.container}>
+            <View style={styles.container}> 
                 <Text style={styles.title}>{Strings.upgradeToVipMember}!</Text>
                 <Text style={styles.text}>{Strings.upgradeToVipMemberDescription}</Text>
                 <Image style={styles.image} source={classAsset10Illustration} resizeMode='contain' />
@@ -37,7 +37,7 @@ export default function UpgradeToVipScreen({ navigation }) {
                     </Text>
                 </View>
                 <Button mode='primary' onPress={() => showBottomModal()}>
-                    {Strings.upgradeNow}
+                    {Strings.getPremiumForDolar}
                 </Button>
                 <BottomModal snapPoints={["60%", "90%"]}>
                     <CreditCard
@@ -65,18 +65,20 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         paddingTop: 20,
         paddingBottom: 60,
-        paddingHorizontal: 10,
+        paddingHorizontal: 0,
     },
     title: {
         fontFamily: "poppins-bold",
-        fontSize: 24,
+        fontSize: 20,
     },
     text: {
         fontFamily: "poppins-",
     },
     image: {
-        width: "90%",
+        width: "50%",
         alignSelf: "center",
+        marginTop: -100,
+        marginBottom: -100
     },
     listContainer: {
         gap: 10,
