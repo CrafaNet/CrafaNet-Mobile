@@ -1,7 +1,7 @@
 import { QueryClient } from "@tanstack/react-query";
 export const queryClient = new QueryClient();
 
-export async function sendRequest({ api, data, token, method = "POST", url = "https://crafanet.exnoremo.com" }) {
+export async function sendRequest({ api, data, token, method = "POST", url = "https://api.crafanet.com.tr" }) {
     /*
         api paths are not appended to the url but are appended to body due to security reasons
         and token is appended to data object due to same reasons
