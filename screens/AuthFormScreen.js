@@ -2,13 +2,12 @@ import { useEffect, useState } from "react";
 import { Image, StyleSheet, Text, View, TextInput, Pressable, KeyboardAvoidingView, Platform } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import MaskInput, { Masks } from "react-native-mask-input";
-import { CountryPicker } from "react-native-country-codes-picker";
+//import { CountryPicker } from "react-native-country-codes-picker";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import CountryFlag from "react-native-country-flag";
+//import CountryFlag from "react-native-country-flag";
 import { showMessage, hideMessage } from "react-native-flash-message";
 
 import { Ionicons, Feather, Octicons } from "@expo/vector-icons";
-
 import { sendRequest } from "../util/http";
 
 import Button from "../components/Button";
@@ -16,16 +15,16 @@ import FormInput from "../components/FormInput";
 
 import Colors from "../constants/colors";
 import Styles from "../constants/styles";
-import Strings, { deviceLang, deviceRegion } from "../util/strings";
+import Strings from "../util/strings";
 import { login } from "../store/auth";
-import { getCountryDial } from "../util/location";
-import countries from "../data/countries.json";
+//import { getCountryDial } from "../util/location";
+
+//import countries from "../data/countries.json";
 
 const loginIllustration = require("../assets/white-banner.png");
 const registerIllustration = require("../assets/white-banner.png");
 const resetPasswordIllustration = require("../assets/white-banner.png");
 const verifiedIllustration = require("../assets/white-banner.png");
-
 // modes are like different pages
 // all 5 authentication form pages are coded in this component
 // you can add, remove, or configure an existing page by adjusting configurations below in the modes object
@@ -80,19 +79,21 @@ const modes = {
 
 export default function AuthFormScreen() {
     // const [location, setLocation] = useState(null);
-    const [countryCode, setCountryCode] = useState(deviceRegion);
-    const [countryDial, setCountryDial] = useState(getCountryDial(deviceRegion));
+    //ülke ,kod seçimi için tr ve 90 olarak düzenlendi.
+    const [countryCode, setCountryCode] = useState("tr");
+    const [countryDial, setCountryDial] = useState("90");
     const [mode, setMode] = useState("register");
     const [name, setName] = useState("");
     const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
     const [passwordVisible, setPasswordVisible] = useState(false);
-    const [showCountrySelector, setShowCountrySelector] = useState(true);
     const [resetPasswordCode, setResetPasswordCode] = useState("");
     const [confirmCode, setConfirmCode] = useState("");
 
+    //Sadece  Türkiye olarak ayarlandı.
     useEffect(() => {
-        setShowCountrySelector(false);
+        setCountryCode("tr");
+        setCountryDial("+90");
     }, []);
 
     const isPhone = countryDial && phone;
@@ -102,19 +103,20 @@ export default function AuthFormScreen() {
         (mode === "sendResetPasswordCode" && isPhone) ||
         (mode === "checkResetPasswordCode" && isPhone && resetPasswordCode) ||
         (mode === "checkConfirmCode" && confirmCode);
-
-    const ipQuery = useQuery({
+    //Ip alma kaldırıldı
+    //ulke secici bileşen olan CountryPicker kaldırıldı.
+    /* const ipQuery = useQuery({
         queryKey: ["ipData"],
         queryFn: () => sendRequest({ method: "GET", url: "http://ip-api.com/json" }),
     });
     const ipData = ipQuery?.data;
-
+ 
     useEffect(() => {
         if (!ipData) return () => { };
         setCountryCode(ipData.countryCode);
         const countryCallingCode = countries.find((c) => c.code === ipData.countryCode).dial_code;
         setCountryDial(countryCallingCode);
-    }, [ipData]);
+    }, [ipData]);*/
 
     const mutation = useMutation({
         mutationFn: (data) => {
@@ -122,6 +124,7 @@ export default function AuthFormScreen() {
             return sendRequest({ api: `/user/${mode}`, data });
         },
         onSuccess: (response) => {
+            console.log("Response onSuccess:", response);
             if (response.status !== 200) return;
             if (mode === "login" || mode === "checkConfirmCode") {
                 const token = response?.data?.token;
@@ -134,6 +137,7 @@ export default function AuthFormScreen() {
             if (nextMode) setMode(nextMode);
         },
         onSettled: (response) => {
+            console.log("Response onSettled:", response);
             if (response.status === 200) return;
             const fallbackMsg = `${Strings.responseMessageFallback} ${response.status}`;
             const message = Strings[response.message] || fallbackMsg;
@@ -153,7 +157,6 @@ export default function AuthFormScreen() {
         };
         mutation.mutate(data);
     };
-
     // useEffect(() => {
     //     setLocation(getLocation()?._j);
     // }, []);
@@ -182,62 +185,36 @@ export default function AuthFormScreen() {
                         />
                     )}
                     {modes[mode].phone && (
-                        <>
-                            <CountryPicker
-                                showOnly={countries.map((item) => item.code)}
-                                style={styles.countryCodePicker}
-                                show={showCountrySelector}
-                                onBackdropPress={() => setShowCountrySelector(false)}
-                                pickerButtonOnPress={(item) => {
-                                    setCountryCode(item?.code?.toLowerCase());
-                                    setCountryDial(item.dial_code);
-                                    setShowCountrySelector(false);
-                                }}
-                                lang={deviceLang}
-                            />
-                            <View style={styles.phoneInputContainer}>
-                                <Pressable
-                                    style={styles.countryCodePickerButton}
-                                    onPress={() => {
-                                        setShowCountrySelector(true);
-                                    }}
-                                >
-                                    {countryCode || countryDial ? (
-                                        <>
-                                            <CountryFlag style={styles.countryFlag} isoCode={countryCode} size={14} />
-                                            <Text>{countryDial}</Text>
-                                        </>
-                                    ) : (
-                                        <Feather name='flag' size={18} color='#0006' />
-                                    )}
-                                </Pressable>
-                                <View style={[styles.inputContainer, styles.phoneTextInputContainer]}>
-                                    <Feather
-                                        name='phone'
-                                        size={20}
-                                        color='black'
-                                        style={[
-                                            styles.inputIcon,
-                                            {
-                                                display: phone ? "none" : "flex",
-                                            },
-                                        ]}
-                                    />
-                                    <MaskInput
-                                        style={Styles.textInput}
-                                        value={phone}
-                                        placeholder={`       ${Strings.phoneNumber}`}
-                                        keyboardType='phone-pad'
-                                        onChangeText={(_, unmasked) => {
-                                            setPhone(unmasked);
-                                        }}
-                                        mask={Masks.USA_PHONE}
-                                        returnKeyType='done'
-                                        maxLength={14}
-                                    />
-                                </View>
+                        <View style={styles.phoneInputContainer}>
+                            <View style={styles.countryCodePickerButton}>
+                                <Text>{countryDial}</Text>
                             </View>
-                        </>
+                            <View style={[styles.inputContainer, styles.phoneTextInputContainer]}>
+                                <Feather
+                                    name='phone'
+                                    size={20}
+                                    color='black'
+                                    style={[
+                                        styles.inputIcon,
+                                        {
+                                            display: phone ? "none" : "flex",
+                                        },
+                                    ]}
+                                />
+                                <MaskInput
+                                    style={Styles.textInput}
+                                    value={phone}
+                                    placeholder={`       ${Strings.phoneNumber}`}
+                                    keyboardType='phone-pad'
+                                    onChangeText={(_, unmasked) => {
+                                        setPhone(unmasked);
+                                    }}
+                                    mask={Masks.USA_PHONE}
+                                    returnKeyType='done'
+                                    maxLength={14}
+                                />
+                            </View>
+                        </View>
                     )}
                     {modes[mode].resetPasswordCode && (
                         <FormInput
@@ -397,11 +374,6 @@ const styles = StyleSheet.create({
         color: Colors.coloredText,
         textTransform: "capitalize",
     },
-    countryCodePicker: {
-        modal: {
-            height: "70%",
-        },
-    },
     countryCodePickerButton: {
         width: "28%",
         borderBottomWidth: 1,
@@ -410,9 +382,6 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         gap: 4,
-    },
-    countryFlag: {
-        borderRadius: 2,
     },
     phoneInputContainer: {
         flexDirection: "row",

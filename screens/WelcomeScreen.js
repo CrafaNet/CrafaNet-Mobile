@@ -49,18 +49,6 @@ export default function WelcomeScreen({ onSeenWelcome }) {
                         );
                     })}
                 </PagerView>
-                {/* <View style={styles.circlesContainer}>
-                    {images.map((_, index) => {
-                        const activeStyle =
-                            index === activeIndex && styles.activeCircle;
-                        return (
-                            <View
-                                key={index}
-                                style={[styles.circle, activeStyle]}
-                            />
-                        );
-                    })}
-                </View> */}
             </View>
 
             <View style={styles.detailsContainer}>
@@ -69,12 +57,11 @@ export default function WelcomeScreen({ onSeenWelcome }) {
                     <Text style={styles.text}>{Strings[`welcomeScreenText${activeIndex}`]}</Text>
                 </View>
                 <View style={styles.actions}>
-                {activeIndex !== images.length - 3 && activeIndex !== images.length - 2 && (
-                    <Button style={styles.button} mode='primary' onPress={onSeenWelcome}>
-                        {Strings.startNow}
-                    </Button>
-                )}
-                    {activeIndex !== images.length - 1 && (
+                    {activeIndex === images.length - 1 ? (
+                        <Button style={styles.button} mode='primary' onPress={onSeenWelcome}>
+                            {Strings.startNow}
+                        </Button>
+                    ) : (
                         <Button style={styles.button} mode='primary' onPress={nextPressHandler}>
                             {Strings.next}
                         </Button>
@@ -106,21 +93,6 @@ const styles = StyleSheet.create({
     image: {
         width: "70%",
     },
-    circlesContainer: {
-        flexDirection: "row",
-        alignSelf: "center",
-        gap: 10,
-        marginVertical: 4,
-    },
-    circle: {
-        width: 12,
-        aspectRatio: 1,
-        backgroundColor: "#dcdcdc",
-        borderRadius: 999,
-    },
-    activeCircle: {
-        backgroundColor: "#78ae82",
-    },
     detailsContainer: {
         paddingHorizontal: 20,
     },
@@ -137,11 +109,11 @@ const styles = StyleSheet.create({
         fontFamily: "poppins-bold",
         textAlign: "center",
         marginBottom: 2,
-        color: "#78ae82"
+        color: "#cb6ce6"
     },
     title: {
         fontFamily: "poppins-bold",
         fontSize: 22,
-        color: "#4E7455",
+        color: "#cb6ce4",
     },
 });

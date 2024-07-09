@@ -12,4 +12,7 @@ export default StyleSheet.create({
         paddingHorizontal: 6,
         fontFamily: "poppins-",
     },
+    customButton: {
+        backgroundColor: "purple",
+    }
 });

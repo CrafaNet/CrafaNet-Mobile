@@ -1,15 +1,9 @@
-import { locale } from "expo-localization";
+//Sadece Türkçe dil desteği ayarlama
 
-// register language packages here
-// as they are added to locales folder
-const locales = {
-    en: require("../locales/en.json"),
-};
+const strings = require("../locales/tr.json");
 
-const defaultLang = "en";
-const [deviceLang, deviceRegion] = locale.split("-"); // e.g: locale is "en-US" or "tr-TR"
-
-const strings = locales[deviceLang] || locales[defaultLang];
+const deviceLang = "tr";
+const deviceRegion = "TR";
 
 export default strings;
 export { deviceLang, deviceRegion };

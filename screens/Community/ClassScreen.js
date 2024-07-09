@@ -140,5 +140,5 @@ const styles = StyleSheet.create({
         fontSize: Sizes.textSmall,
         fontFamily: "poppins-",
     },
-    lessonBannerGradientColors: ["#9aa8bb", "#bbb4bd", "#2236ef"],
+    lessonBannerGradientColors: ["#9aa8bb", "#bbb4bd", "#cb6ce6"],
 });
