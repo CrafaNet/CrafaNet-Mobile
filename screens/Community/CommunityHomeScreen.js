@@ -1,17 +1,14 @@
 import { useState } from "react";
-import { StyleSheet, Text, View, FlatList, Pressable, SafeAreaView, ScrollView } from "react-native";
+import { StyleSheet, Text, View, FlatList, Pressable, SafeAreaView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useQuery } from "@tanstack/react-query";
 
 import ScreenContainer from "../../components/ScreenContainer";
 import AppHeader from "../../components/AppHeader";
 import UpgradeToVipBox from "./ComunityComponents/UpgradeToVipBox";
-import SearchBox from "./ComunityComponents/SearchBox";
 import ClassListItem from "./ComunityComponents/ClassListItem";
 
 import { queryClient, sendRequest } from "../../util/http";
-import { getToken } from "../../store/auth";
-
 import Colors from "../../constants/colors";
 import Strings from "../../util/strings";
 
@@ -36,15 +33,15 @@ export default function CommunityHomeScreen() {
         queryKey: ["communityCategories"],
         queryFn: () => sendRequest({ api: "/comunity/userCustomunizedCategories", data: { token: userData.token } }),
     });
-    let categoriesData = categoriesResponse?.data;
-    console.log(categoriesData);
 
-    const [activeCategoryIndex, setActiveCategoryIndex] = useState(0);
-
-    if (isUserLoading || isCommunityLoading || isCategoriesLoading) return;
+    let categoriesData = categoriesResponse?.data || [];  // categoriesData başlangıç değeri eklendi
     categoriesData = [{ _id: "0" }, ...categoriesData];
 
-    let communitiesList = communitiesData;
+    const [activeCategoryIndex, setActiveCategoryIndex] = useState(0); // Dönüş değeri olarak null eklendi
+
+    if (isUserLoading || isCommunityLoading || isCategoriesLoading) return null;
+
+    let communitiesList = communitiesData;     // _id kontrolü eklendi
     if (activeCategoryIndex !== 0) {
         communitiesList = communitiesData.filter((item) => item.categories.includes(categoriesData[activeCategoryIndex]));
     }
@@ -59,9 +56,6 @@ export default function CommunityHomeScreen() {
             <AppHeader />
             <UpgradeToVipBox />
             <View style={styles.stickyHeaderWrapper}>
-                {/*<View style={styles.searchBoxWrapper}>
-                      <SearchBox />
-                    </View>*/} 
                 <SafeAreaView>
                     <FlatList
                         data={categoriesData}
