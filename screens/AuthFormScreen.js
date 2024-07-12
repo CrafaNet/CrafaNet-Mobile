@@ -300,7 +300,7 @@ export default function AuthFormScreen() {
                     )}
                     {modes[mode].haveAnAccount && (
                         <>
-                            <Text style={[styles.text, { marginTop: 18 }]}>{Strings.youDontHaveAnAccount}</Text>
+                            <Text style={[styles.text, { marginTop: 18 }]}>{Strings.youHaveAnAccount}</Text>
                             <Button mode='text' onPress={() => setMode("login")}>
                                 {Strings.loginNow}
                             </Button>
