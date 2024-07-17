@@ -3,7 +3,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { LinearGradient } from "expo-linear-gradient";
-
+import { Image } from 'react-native'
 // Community
 import CommunityHomeScreen from "./screens/Community/CommunityHomeScreen";
 import JoinClassScreen from "./screens/Community/JoinClassScreen";
@@ -41,30 +41,30 @@ export default function Navigation() {
     if (isLoading) return null;
 
     return (
-            <NavigationContainer>
-                <Tab.Navigator screenOptions={bottomTabScreenOptions}>
-                    <Tab.Screen
-                        name='Community'
-                        component={isComingSoon ? ComingSoonScreen : CommunityStack}
-                        options={communityBottomTabOptions}
-                    />
-                    <Tab.Screen
-                        name='SkillHub'
-                        component={isComingSoon ? ComingSoonScreen : SkillHubStack}
-                        options={skillHubBottomTabOptions}
-                    />
-                    <Tab.Screen
-                        name='LearnMate'
-                        component={isComingSoon ? ComingSoonScreen : LearnMateStack}
-                        options={learnMateBottomTabOptions}
-                    />
-                    <Tab.Screen
-                        name='Workfolio'
-                        component={isComingSoon ? ComingSoonScreen : WorkfolioStack}
-                        options={workfolioBottomTabOptions}
-                    />
-                </Tab.Navigator>
-            </NavigationContainer>
+        <NavigationContainer>
+            <Tab.Navigator screenOptions={bottomTabScreenOptions}>
+                <Tab.Screen
+                    name='Community'
+                    component={isComingSoon ? ComingSoonScreen : CommunityStack}
+                    options={communityBottomTabOptions}
+                />
+                <Tab.Screen
+                    name='SkillHub'
+                    component={isComingSoon ? ComingSoonScreen : SkillHubStack}
+                    options={skillHubBottomTabOptions}
+                />
+                <Tab.Screen
+                    name='LearnMate'
+                    component={isComingSoon ? ComingSoonScreen : LearnMateStack}
+                    options={learnMateBottomTabOptions}
+                />
+                <Tab.Screen
+                    name='Workfolio'
+                    component={isComingSoon ? ComingSoonScreen : WorkfolioStack}
+                    options={workfolioBottomTabOptions}
+                />
+            </Tab.Navigator>
+        </NavigationContainer>
     );
 }
 
@@ -118,7 +118,7 @@ const bottomTabScreenOptions = {
         elevation: 0,
         shadowOpacity: 0,
         borderColor: "transparent",
-        backgroundColor: "#78ae82",
+        backgroundColor: "#793a87",  //renk yeşilden mora çevrildi.
         borderRadius: 10,
         margin: 6,
         position: "absolute",
@@ -136,20 +136,21 @@ const stackScreenOptions = {
     },
     headerRight: () => <Entypo name='dots-three-vertical' size={20} color={Colors.primary500} />,
 };
-
+//Tab da yer alan iconlar asset içindeki icons klasörüne göre düzenlendi.İsimler değiştirildi.
 const communityBottomTabOptions = {
-    tabBarIcon: (props) => <Ionicons name={`people${props.focused ? "" : "-outline"}`} {...props} />,
-    tabBarLabel: Strings.community,
+    tabBarIcon: (props) => <Image source={require('./assets/icons/video.png')} style={{ width: 70, height: 70 }} />,
+    tabBarLabel: Strings.Video,
 };
+
 const skillHubBottomTabOptions = {
-    tabBarIcon: (props) => <MaterialCommunityIcons name={`puzzle${props.focused ? "" : "-outline"}`} {...props} />,
-    tabBarLabel: Strings.skillhub,
+    tabBarIcon: (props) => <Image source={require('./assets/icons/Reels.png')} style={{ width: 50, height: 50 }} />,
+    tabBarLabel: Strings.Shorts,
 };
 const learnMateBottomTabOptions = {
-    tabBarIcon: (props) => <MaterialCommunityIcons name={`robot-happy${props.focused ? "" : "-outline"}`} {...props} />,
-    tabBarLabel: Strings.learnmate,
+    tabBarIcon: (props) => <Image source={require('./assets/icons/Learnmate.png')} style={{ width: 50, height: 50 }} />,
+    tabBarLabel: Strings.AI,
 };
 const workfolioBottomTabOptions = {
-    tabBarIcon: (props) => <MaterialCommunityIcons name={`briefcase-account${props.focused ? "" : "-outline"}`} {...props} />,
-    tabBarLabel: Strings.workfolio,
+    tabBarIcon: (props) => <Image source={require('./assets/icons/person.png')} style={{ width: 50, height: 50 }} />,
+    tabBarLabel: Strings.Account,
 };

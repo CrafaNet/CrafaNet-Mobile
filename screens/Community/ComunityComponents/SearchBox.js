@@ -10,7 +10,7 @@ import Sizes from "../../../constants/sizes";
 export default function SearchBox() {
     return (
         <LinearGradient
-            colors={["#78ae82", "#53665d"]}
+            colors={["#cb6ce6", "#481257"]}   //renkler mor olarak güncellendi.
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
             style={styles.container}

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "CrafaNet-Mobile",
-    "slug": "crafanet-rn",
+    "slug": "crafanet",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -43,7 +43,7 @@
     ],
     "extra": {
       "eas": {
-        "projectId": "36bdf32c-81af-42c5-aea4-75b91d717bd3"
+        "projectId": "ca6b414a-1a5c-4643-9953-c78093298ef0"
       }
     }
   }

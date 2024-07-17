@@ -113,5 +113,9 @@
     "message_updateUserInfo_200": "Kullanıcı bilgileri başarıyla güncellendi.",
     "successfullyJoined": "Başarıyla katılındı.",
     "congratulationsYouBecameVIP": "Tebrikler! VIP oldunuz!",
-    "notifications": "Bildirimler"
+    "notifications": "Bildirimler",
+    "Video": "Video",
+    "Shorts": "Reels",
+    "Account": "Hesap",
+    "AI": "AI"
 }

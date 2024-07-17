@@ -1,43 +1,45 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import React from 'react'
+import { View, Text, Dimensions } from 'react-native'
+import Feather from 'react-native-vector-icons'
+import ReelsComponent from '../../components/ReelsComponent'
 
-import ScreenContainer from "../../components/ScreenContainer";
-import AppHeader from "../../components/AppHeader";
+const SkillHubHomeScreen = () => {
+    const windowWidth = Dimensions.get('window').width
+    const windowHeight = Dimensions.get('window').height
 
-import Strings from "../../util/strings";
-import Colors from "../../constants/colors";
-
-const skillhubIllustration = require("../../assets/illustrations/skillhub.png");
-const comingSoonIllustration = require("../../assets/illustrations/comingSoon.png");
-
-export default function SkillHubHomeScreen() {
     return (
-        <ScreenContainer contentContainerStyle={{ flex: 1 }}>
-            <View style={styles.container}>
-                <AppHeader />
-                <Text style={styles.title}>{Strings.skillhub}</Text>
-                <Image
-                    style={styles.image}
-                    source={skillhubIllustration}
-                    resizeMode='contain'
-                />
-                <Image source={comingSoonIllustration} resizeMode='contain' />
-            </View>
-        </ScreenContainer>
-    );
-}
+        <View style={{
+            width: windowWidth,
+            height: windowHeight,
+            backgroundColor: 'white',
+            position: 'relative',
+            backgroundColor: 'black'
+        }}>
+            <View
+                style={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    right: 0,
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    zIndex: 1,
+                    padding: 10,
+                }}>
+                <View style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    padding: 30
+                }}>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white', position: 'absolute', top: 10, left: 10 }}>CrafeNet</Text>
+                    <Text style={{ fontSize: 20, fontWeight: 'bold', color: 'white' }}>Reels</Text>
+                </View>
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-    },
-    title: {
-        fontSize: 36,
-        fontFamily: "poppins-bold",
-        color: Colors.primary500,
-        marginTop: "10%",
-    },
-    image: {
-        height: "58%",
-    },
-});
+
+            </View>
+            <ReelsComponent />
+        </View>
+    )
+}
+export default SkillHubHomeScreen;
