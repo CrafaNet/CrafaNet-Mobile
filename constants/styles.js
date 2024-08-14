@@ -1,7 +1,5 @@
 import { StyleSheet } from "react-native";
 
-// styles that are common app-wide
-
 export default StyleSheet.create({
     textInput: {
         width: "100%",
@@ -10,7 +8,7 @@ export default StyleSheet.create({
         fontSize: 16,
         paddingVertical: 6,
         paddingHorizontal: 6,
-        fontFamily: "poppins-",
+        fontWeight: "bold",
     },
     customButton: {
         backgroundColor: "purple",

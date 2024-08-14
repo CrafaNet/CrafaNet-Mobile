@@ -1,156 +1,88 @@
-import { useQuery } from "@tanstack/react-query";
-import { NavigationContainer } from "@react-navigation/native";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { LinearGradient } from "expo-linear-gradient";
-import { Image } from 'react-native'
-// Community
-import CommunityHomeScreen from "./screens/Community/CommunityHomeScreen";
-import JoinClassScreen from "./screens/Community/JoinClassScreen";
-import ClassScreen from "./screens/Community/ClassScreen";
-import VideoScreen from "./screens/Community/VideoScreen";
-// SkillHub
-import SkillHubHomeScreen from "./screens/SkillHub/SkillHubHomeScreen";
-// LearnMate
-import LearnMateHomeScreen from "./screens/LearnMate/LearnMateHomeScreen";
-// Workfolio
-import WorkfolioHomeScreen from "./screens/Workfolio/WorkfolioHomeScreen";
-import UpdateUserScreen from "./screens/Workfolio/UpdateUserScreen";
-// Other screens
-import UpgradeToVipScreen from "./screens/UpgradeToVipScreen";
-import ComingSoonScreen from "./screens/ComingSoonScreen";
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { QueryClient, QueryClientProvider } from "react-query";
+import { Image, StyleSheet } from 'react-native';
+import 'react-native-gesture-handler';
 
-import { Ionicons, MaterialCommunityIcons, Entypo } from "@expo/vector-icons";
+import HomeScreen from './screens/HomeScreen';
+import WorkFolioScreen from './screens/WorkFolioScreen';
+import ReelsScreen from './screens/ReelsScreen';
+import LearnMateScreen from './screens/LearnMateScreen';
+import WelcomeScreen from './screens/WelcomeScreen';
+import SignUpScreen from './screens/SignUpScreen';
+import PreminumScreen from './screens/PreminumScreen';
 
-import Colors from "./constants/colors";
-import Strings from "./util/strings";
-import { getToken } from "./store/auth";
-
+const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-const Stack = createNativeStackNavigator();
+const queryClient = new QueryClient();
 
-const releaseDate = new Date("2024-2-15").getTime();
-const isComingSoon = releaseDate > Date.now();
+const homeIcon = require('./assets/tabicons/video.png');
+const reelsIcon = require('./assets/tabicons/Reels.png');
+const learnmateIcon = require('./assets/tabicons/Learnmate.png');
+const profilIcon = require('./assets/tabicons/person.png');
 
+
+function HomeTabs() {
+    return (
+        <Tab.Navigator
+            screenOptions={({ route }) => ({
+                tabBarIcon: ({ color, size }) => {
+                    let iconName;
+
+                    switch (route.name) {
+                        case 'Home':
+                            iconName = homeIcon;
+                            break;
+                        case 'Reels':
+                            iconName = reelsIcon;
+                            break;
+                        case 'LearnMate':
+                            iconName = learnmateIcon;
+                            break;
+                        case 'Profil':
+                            iconName = profilIcon;
+                            break;
+                        default:
+                            iconName = profilIcon; // varsayılan bir ikon
+                    }
+
+                    return (
+                        <Image
+                            source={iconName}
+                            style={{ width: 60, height: 60 }}
+                        />
+                    );
+                },
+                tabBarActiveTintColor: 'white',
+                tabBarInactiveTintColor: 'gray',
+                tabBarStyle: {
+                    backgroundColor: '#42176E',
+                    borderTopLeftRadius: 20,
+                    borderTopRightRadius: 20,
+                    height: 60,
+                    borderRadius: 10,
+                    margin: 10,
+                },
+            })}
+        >
+            <Tab.Screen name="Home" component={HomeScreen} />
+            <Tab.Screen name="Reels" component={ReelsScreen} />
+            <Tab.Screen name="LearnMate" component={LearnMateScreen} />
+            <Tab.Screen name="WorkFolio" component={WorkFolioScreen} />
+        </Tab.Navigator>
+
+    );
+}
 export default function Navigation() {
-    // pre-chaching the token data to be used throughout the app by queryClient.getQueryData(["token"]);
-    const { isLoading } = useQuery({
-        queryKey: ["token"],
-        queryFn: () => getToken(),
-    });
-    if (isLoading) return null;
-
     return (
         <NavigationContainer>
-            <Tab.Navigator screenOptions={bottomTabScreenOptions}>
-                <Tab.Screen
-                    name='Community'
-                    component={isComingSoon ? ComingSoonScreen : CommunityStack}
-                    options={communityBottomTabOptions}
-                />
-                <Tab.Screen
-                    name='SkillHub'
-                    component={isComingSoon ? ComingSoonScreen : SkillHubStack}
-                    options={skillHubBottomTabOptions}
-                />
-                <Tab.Screen
-                    name='LearnMate'
-                    component={isComingSoon ? ComingSoonScreen : LearnMateStack}
-                    options={learnMateBottomTabOptions}
-                />
-                <Tab.Screen
-                    name='Workfolio'
-                    component={isComingSoon ? ComingSoonScreen : WorkfolioStack}
-                    options={workfolioBottomTabOptions}
-                />
-            </Tab.Navigator>
+            <Stack.Navigator initialRouteName="Welcome">
+                <Stack.Screen name="Welcome" component={WelcomeScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="SignUp" component={SignUpScreen} options={{ headerShown: false }} />
+                <Stack.Screen name="HomeTabs" component={HomeTabs} options={{ headerShown: false }} />
+                <Stack.Screen name="Premium" component={PreminumScreen} options={{ headerShown: false }} />
+            </Stack.Navigator>
         </NavigationContainer>
     );
 }
-
-function CommunityStack() {
-    return (
-        <Stack.Navigator screenOptions={stackScreenOptions}>
-            <Stack.Screen name='CommunityHome' component={CommunityHomeScreen} />
-            <Stack.Screen name='JoinClassScreen' component={JoinClassScreen} />
-            <Stack.Screen name='ClassScreen' component={ClassScreen} />
-            <Stack.Screen name='UpgradeToVipScreen' component={UpgradeToVipScreen} />
-            <Stack.Screen name='VideoScreen' component={VideoScreen} />
-        </Stack.Navigator>
-    );
-}
-
-function SkillHubStack() {
-    return (
-        <Stack.Navigator screenOptions={stackScreenOptions}>
-            <Stack.Screen name='SkillHubHome' component={SkillHubHomeScreen} />
-        </Stack.Navigator>
-    );
-}
-
-function LearnMateStack() {
-    return (
-        <Stack.Navigator screenOptions={stackScreenOptions}>
-            <Stack.Screen name='LearnMateHome' component={LearnMateHomeScreen} />
-        </Stack.Navigator>
-    );
-}
-
-function WorkfolioStack() {
-    return (
-        <Stack.Navigator screenOptions={stackScreenOptions}>
-            <Stack.Screen name='WorkfolioHome' component={WorkfolioHomeScreen} />
-            <Stack.Screen name='UpdateUser' component={UpdateUserScreen} />
-        </Stack.Navigator>
-    );
-}
-
-const bottomTabScreenOptions = {
-    headerShown: false,
-    tabBarActiveTintColor: Colors.primary800,
-    tabBarInactiveTintColor: "white",
-    tabBarLabelStyle: { fontFamily: "poppins-bold" },
-    tabBarLabelPosition: "below-icon",
-    tabBarStyle: {
-        paddingBottom: 6,
-        paddingTop: 8,
-        height: 58,
-        elevation: 0,
-        shadowOpacity: 0,
-        borderColor: "transparent",
-        backgroundColor: "#793a87",  //renk yeşilden mora çevrildi.
-        borderRadius: 10,
-        margin: 6,
-        position: "absolute",
-    },
-};
-
-const stackScreenOptions = {
-    headerTitle: "CrafaNet",
-    headerShadowVisible: false,
-    headerShown: false,
-    headerTitleStyle: {
-        color: Colors.primary500,
-        fontFamily: "poppins-bold",
-        fontSize: 24,
-    },
-    headerRight: () => <Entypo name='dots-three-vertical' size={20} color={Colors.primary500} />,
-};
-//Tab da yer alan iconlar asset içindeki icons klasörüne göre düzenlendi.İsimler değiştirildi.
-const communityBottomTabOptions = {
-    tabBarIcon: (props) => <Image source={require('./assets/icons/video.png')} style={{ width: 70, height: 70 }} />,
-    tabBarLabel: Strings.Video,
-};
-
-const skillHubBottomTabOptions = {
-    tabBarIcon: (props) => <Image source={require('./assets/icons/Reels.png')} style={{ width: 50, height: 50 }} />,
-    tabBarLabel: Strings.Shorts,
-};
-const learnMateBottomTabOptions = {
-    tabBarIcon: (props) => <Image source={require('./assets/icons/Learnmate.png')} style={{ width: 50, height: 50 }} />,
-    tabBarLabel: Strings.AI,
-};
-const workfolioBottomTabOptions = {
-    tabBarIcon: (props) => <Image source={require('./assets/icons/person.png')} style={{ width: 50, height: 50 }} />,
-    tabBarLabel: Strings.Account,
-};

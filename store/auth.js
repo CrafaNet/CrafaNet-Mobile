@@ -1,5 +1,5 @@
 import { setItem, getItem, removeItem } from "./async-storage";
-import { queryClient } from "../util/http";
+import { queryClient } from "../util/http"
 
 // helper functions for managing token and authentication
 
